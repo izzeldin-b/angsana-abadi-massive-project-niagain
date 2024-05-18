@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <link rel="stylesheet" href="styles/my-orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="myorders-page">
+        <div class="myorders-page-left-container"> <!-- LEFT CONTAINER -->
+            <div class="myorders-page-left-container-wrapper">
+                <div class="myorders-page-left-container-header">
+                    <span><i class="fas fa-user-circle"></i></span>angsana_abadi
+                </div>
+                <div class="myorders-page-left-container-menus">
+                    <i class="fas fa-user-circle"></i> Profil
+                </div>
+                <div class="myorders-page-left-container-menus" id="selected">
+                    <i class="fa fa-shopping-bag"></i> Pesanan Saya
+                </div>
+                <div class="myorders-page-left-container-menus">
+                    <i class="fa fa-usd"></i>&nbsp;Niaga Saya
+                </div>
+                <div class="myorders-page-left-container-menus">
+                    <i class="fa fa-comment"></i> Chat
+                </div>
+                <div class="myorders-page-left-container-menus">
+                    <i class="fa fa-bell"></i> Notifikasi
+                </div>
+                <div class="myorders-page-left-container-menus">
+                    <i class="fa fa-line-chart"></i> Reputasi
+                </div>
+            </div>
+        </div>
+
+        <div class="myorders-page-right-container"> <!-- RIGHT CONTAINER -->
+            <div class="myorders-page-right-container-wrapper">
+                <div class="myorders-page-right-container-header-wrapper">
+                    <div class="myorders-page-right-container-header-parts" id="myorders-page-right-container-header-parts-selected">
+                        Belum Bayar
+                    </div>
+                    <div class="myorders-page-right-container-header-parts">
+                        Sedang Dikemas
+                    </div>
+                    <div class="myorders-page-right-container-header-parts">
+                        Dikirim
+                    </div>
+                    <div class="myorders-page-right-container-header-parts">
+                        Selesai
+                    </div>
+                    <div class="myorders-page-right-container-header-parts">
+                        Dibatalkan
+                    </div>
+                </div>
+
+                <div class="myorders-page-right-container-contents-wrapper">
+
+                    <div class="myorders-page-right-container-contents-individual-container"> <!-- ADD ANOTHER ORDER HERE -->
+                        <div class="myorders-page-right-container-contents-individual-header">
+                            <div class="myorders-page-right-container-contents-individual-header-contents" id="order-type">
+                                <i class="fa-solid fa-box"></i>&nbsp;&nbsp;<b>Produk</b>
+                            </div>
+                            <div class="myorders-page-right-container-contents-individual-header-contents">
+                                18 Mei 2024
+                            </div>
+                            <div class="myorders-page-right-container-contents-individual-header-contents">
+                                <b>ID:</b>&nbsp;&nbsp;INV/20240514/MPL/3903666570
+                            </div>
+                        </div>
+                        <div class="myorders-page-right-container-contents-individual-description">
+                            <div class="myorders-page-right-container-contents-individual-description-image">
+                                <img src="src\bag-product.png" alt="">
+                            </div>
+                            <div class="myorders-page-right-container-contents-individual-description-text">
+                                Tas Kulit Buaya Berkepala Tiga - Original BHS Dibuat Langsung Dari Pegunungan Asli
+                                <p>Variasi: Hitam</p>
+                            </div>
+                            <div class="myorders-page-right-container-contents-individual-description-total">
+                                Total Belanja
+                                <span>Rp 66.980</span>
+                            </div>
+                        </div>
+                        <div class="myorders-page-right-container-contents-individual-description-paybutton">
+                            <button>Bayar</button>
+                        </div>
+                    </div> <!-- UNTIL HERE -->
+
+                    <div class="myorders-page-right-container-contents-individual-container"> 
+                        <div class="myorders-page-right-container-contents-individual-header">
+                            <div class="myorders-page-right-container-contents-individual-header-contents" id="order-type">
+                                <i class="fa-solid fa-wrench"></i>&nbsp;&nbsp;<b>Jasa</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="myorders-page-right-container-contents-individual-header-contents">
+                                18 Mei 2024
+                            </div>
+                            <div class="myorders-page-right-container-contents-individual-header-contents">
+                                <b>ID:</b>&nbsp;&nbsp;INV/20240520/MPL/3903184374
+                            </div>
+                        </div>
+                        <div class="myorders-page-right-container-contents-individual-description">
+                            <div class="myorders-page-right-container-contents-individual-description-image">
+                                <img src="src\ppt-jasa.png" alt="">
+                            </div>
+                            <div class="myorders-page-right-container-contents-individual-description-text">
+                                PPT - Jasa Pembuatan Power Point Wrap
+                                <p>Variasi: Ber Animasi</p>
+                            </div>
+                            <div class="myorders-page-right-container-contents-individual-description-total">
+                                Total Belanja
+                                <span>Rp 49.788</span>
+                            </div>
+                        </div>
+                        <div class="myorders-page-right-container-contents-individual-description-paybutton">
+                            <button>Bayar</button>
+                        </div>
+                    </div> 
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="scripts\my-orders.js"></script>
+</body>
+</html>
