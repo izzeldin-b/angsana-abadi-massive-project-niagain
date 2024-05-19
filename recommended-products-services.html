@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Products</title>
+    <link rel="stylesheet" href="styles\recommended-products-services.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="recommended-products-page">
+        <div class="recommended-products-container">
+
+            <!-- Photo Slideshow -->
+            <div class="image-slideshow-container">
+                <div class="image-slideshow-container-wrapper">
+                    <img src="images\banner-slideshow\banner-1.jpg">
+                    <img src="images\banner-slideshow\banner-2.jpg">
+                    <img src="images\banner-slideshow\banner-3.jpg">
+                    <img src="images\banner-slideshow\banner-1.jpg">
+                </div>
+            </div>
+
+            <!-- Header -->
+            <div class="recommended-products-page-header-container">
+                <div class="recommended-products-page-header-filter">
+                    FILTER
+                </div>
+                <div class="recommended-products-page-header-products" id="header-selected">
+                    PRODUK YANG TERSEDIA
+                </div>
+                <div class="recommended-products-page-header-services">
+                    JASA YANG TERSEDIA
+                </div>
+            </div>
+
+            <div class="recommended-products-contents-container">
+                <!-- Filter Sidebar -->
+                <div class="recommended-products-filter-sidebar-container">
+                    <div class="recommended-products-filter-sidebar-wrapper">
+                        
+                        <!-- Location Filter -->
+                        <div class="recommended-products-filter-sidebar-location">
+                            <div class="location-options" id="filter-header">
+                                Lokasi
+                            </div>
+                            <div class="location-options" id="option-selected">
+                                <input type="checkbox" class="purple-checkbox" checked> DKI Jakarta
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Jawa Barat
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Jawa Tengah
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> DI Yogyakarta
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Jawa Timur
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Bali
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Nusa Tenggara Barat
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Nusa Tenggara Timur
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Kalimantan Tengah
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Kalimantan Barat
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Kalimantan Timur
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Sulawesi
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Kep. Riau
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Papua
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Aceh
+                            </div>
+                            <div class="location-options">
+                                <input type="checkbox" class="purple-checkbox"> Sumatera
+                            </div>
+                            <div class="location-options" id="option-selected">
+                                Lihat Selengkapnya
+                            </div>
+                        </div>
+
+                        <!-- Reputation Filter -->
+                        <div class="recommended-products-filter-sidebar-reputation">
+                            <div class="reputation-options" id="filter-header">
+                                Reputasi Toko
+                            </div>
+                            <div class="reputation-options">
+                                <input type="checkbox" class="purple-checkbox"> Star+
+                            </div>
+                            <div class="reputation-options">
+                                <input type="checkbox" class="purple-checkbox"> Star
+                            </div>
+                            <div class="reputation-options">
+                                <input type="checkbox" class="purple-checkbox"> Basic
+                            </div>
+                        </div>
+
+                        <!-- Price Filter -->
+                        <div class="recommended-products-filter-sidebar-price">
+                            <div class="price-options" id="price-header">
+                                Batasan Harga
+                            </div>
+                            <div class="price-options">
+                                <span class="currency-prefix">Rp</span>
+                                <input type="text" class="minimum-price-input" placeholder="Harga Minimum">
+                            </div>
+                            <div class="price-options" id="price-example">
+                                Contoh: 25000
+                            </div>
+                            <div class="price-options">
+                                <span class="currency-prefix">Rp</span>
+                                <input type="text" class="minimum-price-input" placeholder="Harga Maximum">
+                            </div>
+                            <div class="price-options" id="price-example">
+                                Contoh: 25000
+                            </div>
+                        </div>
+
+                        <!-- Rating Filter -->
+                        <div class="recommended-products-filter-sidebar-ratings">
+                            <div class="ratings-options" id="filter-header">
+                                Rating
+                            </div>
+                            <div class="ratings-options">
+                                <input type="checkbox" class="purple-checkbox">
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                            </div>
+                            <div class="ratings-options">
+                                <input type="checkbox" class="purple-checkbox">
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                            </div>
+                            <div class="ratings-options">
+                                <input type="checkbox" class="purple-checkbox">
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                            </div>
+                            <div class="ratings-options">
+                                <input type="checkbox" class="purple-checkbox">
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                            </div>
+                            <div class="ratings-options">
+                                <input type="checkbox" class="purple-checkbox">
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                                <span><i class="fa-regular fa-star"></i></span>
+                            </div>
+                        </div>
+
+                        <!-- Final Buttons -->
+                        <div class="recommended-products-filter-sidebar-final-buttons">
+                            <button id="reset">Atur<br>Ulang</button>
+                            <button id="search">Gunakan</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-list-container">
+
+                    <div class="product-item-container"> <!-- ADD NEW PRODUCT -->
+                        <div class="product-item-image">
+                            <img src="images\shelve.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Mr. DIY Kayu Alami Warna Coklat Original Dari Pegu.....
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- UNTIL HERE-->
+
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\bag-product.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Tas Kulit Buaya Berkepala Tiga - Original BHS
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\keychain.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Custom Gantungan Kunci MUnyuk Bapuk
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\bracelet.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Gelang Hitam Couple Two In One [Borgol]
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\shirt-black.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    [Ngabers Studio] T-Shirt Oversize Josh Smith
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\shirt-white.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    [Ngabers Studio] T-Shirt Clasic Mustang Cotton C.....
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\shelve.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Tas Kulit Buaya Berkepala Tiga - Original BHS
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\bag-product.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Custom Gantungan Kunci MUnyuk Bapuk
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\keychain.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Gelang Hitam Couple Two In One [Borgol]
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\bracelet.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Mr. DIY Kayu Alami Warna Coklat Original Dari Pegu.....
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\shirt-black.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Mr. DIY Kayu Alami Warna Coklat Original Dari Pegu.....
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\bracelet.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Mr. DIY Kayu Alami Warna Coklat Original Dari Pegu.....
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\shirt-white.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    [Ngabers Studio] T-Shirt Clasic Mustang Cotton C.....
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\shelve.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Tas Kulit Buaya Berkepala Tiga - Original BHS
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item-container">
+                        <div class="product-item-image">
+                            <img src="images\bag-product.png">
+                        </div>
+                        <div class="product-item-description">
+                            <div class="product-item-description-wrapper">
+                                <div class="product-item-name">
+                                    Custom Gantungan Kunci MUnyuk Bapuk
+                                </div>
+                                <div class="product-item-price">
+                                    Rp 66.999
+                                </div>
+                                <div class="product-item-ratings">
+                                    <i class="fa fa-star fa-xs"></i>4.6 | 16+ Terjual
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/d3c432ac8d.js" crossorigin="anonymous"></script>
+    <script src="scripts\recommended-products-services.js"></script>
+</body>
+</html>

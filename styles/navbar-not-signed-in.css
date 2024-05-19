@@ -1,0 +1,291 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    /* min-height: 100vh; */
+    font-family: 'Figtree', sans-serif;
+}
+
+
+
+/* Base Nav Styling */
+
+
+nav{
+    background-image: linear-gradient(#5F2EEB, #A738FF);
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    position: sticky; /* Make the nav sticky */
+    top: 0;           /* Stick it to the top */
+    z-index: 100;  
+    padding-left: 14%;
+    padding-right: 8%;
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+.nav-container{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+.nav-element{
+    color: white;
+    font-weight: 600;
+}
+
+
+
+/* Nav Row 1 */
+
+
+/* Logo */
+#logo{
+    /* background: green; */
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#logo-image{
+    width: 8.5rem;
+    height: auto;
+    object-fit: cover;
+}
+
+
+/* Search Bar and Button */
+#searchbar{
+    /* background-color: red; */
+    width: 50%;
+}
+
+.actual-search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    width: 100%;
+}
+
+.actual-search-bar input[type="text"] {
+    font-family: 'Figtree', sans-serif;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 11px;
+    border: none;
+    outline: none;
+    flex: 1;
+    overflow: hidden;
+}
+
+.actual-search-bar button {
+    background-color: #5F2EEB;
+    color: #fff;
+    border: none;
+    outline: none;
+    height: 2.2rem;
+    width: 2.2rem;
+    margin-right: 0.3rem;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+
+/* Cart */
+#cart{
+    /* background-color: orange; */
+    width: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.74);
+    margin-right: -1px;
+}
+
+
+/* Sign In and Sign Up */
+#sign-in-up{
+    /* background-color: darkkhaki; */
+    margin-left: 3%;
+    width: 19%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.sign-in-button {
+    background-color: transparent; 
+    font-family: "Figtree", sans-serif;
+    font-size: 0.9rem;
+    border-radius: 7px; 
+    border: 1px solid #fff; 
+    color: #fff; 
+    cursor: pointer; 
+    padding: 0.7rem;
+    /* margin-left: 1.9rem; */
+}
+
+.sign-up-button {
+    background-color: #fff; 
+    font-family: "Figtree", sans-serif;
+    font-size: 0.9rem;
+    border-radius: 7px;
+    border: 1px solid #fff; 
+    color: #682ae9;
+    cursor: pointer; 
+    padding: 0.7rem;
+    margin-left: 1rem;
+}
+
+
+
+/* Nav Row 2 */
+
+
+/* Filler */
+#empty-section-1{
+    /* background-color: turquoise; */
+    width: 20%;
+}
+
+
+/* Description Text */
+#text-below-searchbar{
+    font-weight: normal;
+    font-size: 0.7rem;
+    width: 36%;
+    /* background-color: grey; */
+    margin-top: 0.7rem;
+}
+
+
+/* Notification */
+#notification-below-searchbar{
+    width: 7%;
+    /* background-color: aquamarine; */
+    font-size: 0.7rem;
+    font-weight: normal;
+    margin-top: 0.7rem;
+    text-align: right;
+}
+
+
+/* Help */
+#help-below-searchbar{
+    width: 7%;
+    /* background-color: rgb(74, 168, 137); */
+    font-size: 0.7rem;
+    font-weight: normal;
+    margin-top: 0.7rem;
+    text-align: center;
+}
+
+
+/* Filler */
+#empty-section-2{
+    /* background-color: red; */
+    width: 8%;
+}
+
+
+/* Address */
+#send-location{
+    width: 19%;
+    margin-left: 3%;
+    /* background-color: rgb(175, 60, 60); */
+    font-weight: normal;
+    font-size: 0.7rem;
+    /* text-align: right; */
+    margin-top: 0.7rem;
+    /* margin-left: 2%; */
+}
+
+
+
+/* Responsiveness For 1920, 1366, 1280, and 800 width screens */
+/* Other screen widths above AND below those are compatible, but lower than 800 will not be supported design wise */
+
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1366px) {
+    nav {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .masuk-button{
+        margin-left: 1.1rem;
+    }
+
+    #send-location{
+        margin-left: 0;
+    }
+
+    #notification-below-searchbar{
+        text-align: center;
+    }
+}
+
+@media (max-width: 1280px) {
+    nav {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    #send-location{
+        margin-left: 0;
+    }
+
+    #notification-below-searchbar{
+        text-align: center;
+    }
+}
+
+@media (max-width: 998px){
+    #notification-below-searchbar span{
+        opacity: 0;
+    }
+
+    #help-below-searchbar span{
+        opacity: 0;
+    }
+
+    
+}
+
+@media (max-width: 800px) {
+    nav {
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+
+    #text-below-searchbar{
+        opacity: 0;
+    }
+
+    #logo-image{
+        margin-right: 1rem;
+    }
+
+    #send-location{
+        margin-left: 0;
+        font-size: 0.6rem;
+    }
+
+    .sign-in-button{
+        padding: 0.4rem;
+        /* margin-left: 1.3rem; */
+    }
+
+    .sign-up-button{
+        padding: 0.4rem;
+    }
+}
