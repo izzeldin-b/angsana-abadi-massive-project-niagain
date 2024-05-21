@@ -1,0 +1,153 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Figtree', sans-serif;
+}
+
+
+/* Sign Up First One Styling */
+
+/* Sign In Styling */
+
+.sign-up-page{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.sign-up-container{
+    /* background-color: grey; */
+    /* border: 1px solid black; */
+    max-width: 62rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8rem;
+    margin-top: 5rem;
+    /* background-color: aquamarine; */
+}
+
+.sign-up-logo-container{
+    display: flex;
+    justify-content: center;
+    /* background-color: yellow; */
+}
+
+.sign-up-logo-container img{
+    width: auto;
+    max-height: 2.8rem;
+    height: 100%;
+}
+
+.sign-up-second-row-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sign-up-left-side-graphic{
+    /* background-color: orange; */
+    max-width: 26rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sign-up-left-side-graphic img{
+    max-width: 100%;
+    width: 100%;
+}
+
+.sign-up-left-side-graphic-text{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    /* background-color: antiquewhite; */
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+.sign-up-left-side-graphic-text span{
+    margin-top: 0.7rem;
+    font-size: 0.8rem;
+    color: #989898;
+}
+
+.sign-up-right-side-form{
+    background-color: #FFF;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    max-width: 26rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sign-up-right-side-form-wrapper{
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+    gap: 1.4rem;
+}
+
+.sign-up-right-side-form-header{
+    /* background-color: #FFD1DC; */
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.8rem;
+    /* margin-bottom: 0.5rem; */
+}
+
+.sign-up-right-side-form-sign-up-description{
+    /* background-color: #E0FFFF; */
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+}
+
+.sign-up-right-side-form-sign-up-description span{
+    font-weight: bold;
+    color: #5F2EEB;
+}
+
+.sign-up-right-side-form-divider{
+    /* background-color: #98FB98; */
+    text-align: center;
+    width: 100%;
+    color: #989898;
+    font-size: 0.8rem;
+    margin: 1rem 0;
+    margin-top: 0;
+    border-bottom: 1px solid lightgray;
+    line-height: 0.1em;
+}
+
+.sign-up-right-side-form-usertype-button button{
+    width: 100%;
+    background-color: #FFF;
+    color: #5F2EEB;
+    padding: 15px 30px;
+    text-align: center; 
+    text-decoration: none;  
+    font-size: 1rem; 
+    font-family: 'Figtree', sans-serif;
+    font-weight: bold;
+    border: 1px solid #5F2EEB; 
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sign-up-right-side-form-usertype-button button:hover {
+    background-color: #4C23CE;
+    color: white;
+}
+
