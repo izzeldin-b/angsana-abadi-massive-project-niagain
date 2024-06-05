@@ -1,0 +1,289 @@
+/* My Business Styling */
+
+.business-page{ 
+    /* background-color: rgb(211, 165, 165); */
+    background-color: #F5F5F5;
+    padding-top: 7.2rem;
+    margin-top: 1.5rem;
+    padding-bottom: 4rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+
+/* LEFT CONTAINER */
+
+
+.business-page-left-container{
+    background-color: #FFF;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 18rem;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+.business-page-left-container-wrapper{
+    /* background-color: rgb(235, 197, 128); */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.business-page-left-container-header{
+    /* background-color: aquamarine; */
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid lightgray;
+}
+
+.business-page-left-container-header span{
+    font-size: 1.7rem;
+    color: #989898;
+}
+
+.business-page-left-container-menus{
+    /* background-color: antiquewhite; */
+    color: #989898;
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-weight: 500;
+    transition: 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.business-page-left-container-menus:hover{
+    transition: 0.2s ease-in-out;
+    color: #5F2EEB;
+    font-weight: bold;
+}
+
+#selected{
+    font-weight: bold;
+    color: #5F2EEB;
+}
+
+
+/* RIGHT CONTAINER */
+
+
+.business-page-right-container{
+    background-color: #FFF;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 64rem;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 1rem;
+    border-radius: 12px;
+    box-sizing: border-box;
+    padding: 1.5rem 2rem;
+    padding-bottom: 2.5rem;
+}
+
+.business-page-right-container-header{
+    /* background-color: rgb(202, 202, 55); */
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid lightgray;
+}
+
+.business-page-right-container-header span{
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.business-page-right-container-linegraph{
+    /* background-color: rgb(219, 219, 155); */
+    /* border-top: 1px solid lightgray; */
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 2rem 1.5rem;
+    padding-bottom: 3rem;
+    margin: 0 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+}
+
+.business-page-right-container-product-list-container{
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+    padding-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    /* gap: 1.5rem; */
+}
+
+.business-page-right-container-product-list-header{
+    /* background-color: lightcoral; */
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.business-page-right-container-product-list-header span{
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.business-page-right-container-product-list{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    /* gap: 1.5rem; */
+    margin-top: 1.5rem;
+    border: 1px solid lightgrey;
+    border-bottom: none;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.business-page-right-container-product-individual{
+    /* border: 1px solid lightgrey; */
+    /* border-radius: 12px; */
+    /* background-color: #f3f3f3; */
+    /* border-radius: 12px; */
+    border-bottom: 1px solid lightgrey;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+    min-width: 100%;
+    min-height: 5rem;
+    /* max-height: 5rem; */
+    /* max-height: 15rem; */
+    height: 100%;
+    /* padding: 0.5rem; */
+    box-sizing: border-box;
+    padding: 1.5rem 1rem;
+}
+
+.business-page-right-container-product-individual-count{
+    font-size: 1.1rem;
+}  
+
+.business-page-right-container-product-individual-image{
+    /* background-color: rgb(144, 226, 226); */
+    min-width: 5rem;
+    min-height: 5rem;
+    max-width: 5rem;
+    max-height: 5rem;
+
+}
+
+.business-page-right-container-product-individual-image img{
+    min-width: 5rem;
+    min-height: 5rem;
+    max-width: 5rem;
+    max-height: 5rem;
+    border-radius: 12px;
+}
+
+.business-page-right-container-product-individual-desc-container{
+    max-width: 37.85rem;
+    width: 100%;
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.business-page-right-container-product-individual-name{
+    /* background-color: lightsalmon; */
+    padding-right: 1rem;
+    font-weight: 500;
+    overflow: hidden;
+}
+
+.business-page-right-container-product-individual-stock{
+    /* background-color: antiquewhite; */
+    font-size: 0.8rem;
+    color: #989898;
+}
+
+.business-page-right-container-product-individual-price{
+    /* background-color: bisque; */
+    font-weight: 500;
+}
+
+.business-page-right-container-product-individual-type-and-edit-container{
+    /* background-color: lightgreen; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    /* align-items: flex-end; */
+    max-width: 6.55rem;
+    width: 100%;
+}
+
+.business-page-right-container-product-individual-type{
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 400;
+    /* background-color: red; */
+}
+
+.business-page-right-container-product-individual-edit{
+    max-width: 6.5rem;
+    max-height: 2.5rem;
+    height: 2.5rem;
+    width: 100%;
+    background-color: #5F2EEB;
+    color: white; 
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Figtree', sans-serif;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.business-page-right-container-product-individual-edit:hover {
+    background-color: #4e21c9; /* Darker purple for hover */
+}
+
+.business-page-right-container-product-add{
+    border: 1px solid lightgrey;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 5rem;
+    max-height: 5rem;
+    height: 100%;
+    font-size: 2rem;
+    color: #989898;
+    cursor: pointer;
+    font-weight: 100;
+    transition: 0.2s ease-in-out;
+    border-top: none;
+}
+
+.business-page-right-container-product-add:hover{
+    background-color: #f3f3f3;
+}
+
+.business-page-right-container-product-add span{
+    font-size: 0.9rem;
+    font-weight: normal;
+}
