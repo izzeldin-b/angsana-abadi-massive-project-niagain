@@ -3,7 +3,8 @@ HOW TO INITIALIZE AND RUN
 1. Run "npm install" on both 'server' and 'client' root directories
 2. Create a .env file inside the root directory of the 'client' directoru
 3. Enter the following contents inside that .env file and input your own credentials (cloudinary API credentials, cloudinary upload preset (if any), database port, host, user, password (if any), and database name)
-    CLOUDINARY_CLOUD_NAME=
+
+   CLOUDINARY_CLOUD_NAME=
    
     CLOUDINARY_API_KEY=
    
