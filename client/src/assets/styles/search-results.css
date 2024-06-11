@@ -249,22 +249,32 @@
 /* The Same Styling From Main Page */
 
 .search-product-list-container{
+    max-width: 57rem;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid black; */
+}
+
+.search-product-list-wrapper{
     /* border: 1px solid black; */
     display: flex;
     flex-wrap: wrap;
-    max-width: 57rem;
-    height: 100%;
     gap: 0.87rem;
-    /* justify-content: flex-start; */
-    width: 100%;
     justify-content: flex-start;
 }
 
-
+#search-space-bottom{
+    margin-bottom: 0.8rem;
+}
 
 @media (max-width: 1050px) {
+    .search-product-list-wrapper{
+        justify-content: flex-start;
+    }
     .search-product-list-container{
-        justify-content: center;
+        max-width: 45.54rem;
     }
 }
 

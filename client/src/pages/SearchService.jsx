@@ -38,7 +38,9 @@ const SearchService = () => {
                         <FilterSidebar/>
                         
                         <div className="search-product-list-container">
-                            <AllService/>
+                            <div className="search-product-list-wrapper">
+                                <AllService/>
+                            </div>
                         </div>  
                     </div>
                 </div>

@@ -153,17 +153,66 @@
     gap: 3rem;
 }
 
-.addproduct-page-right-container-form-type-radio{
+.addproduct-page-right-container-form-type-buttons{
     display: flex;
     flex-wrap: wrap;
-    /* background-color: rgb(252, 179, 179); */
     align-items: center;
-    accent-color: #5F2EEB;
-    font-size: 0.9rem;
+    /* background-color: rgb(252, 179, 179); */
+    /* align-items: center; */
+    gap: 1.2rem;
 }
 
-#type-radio-male{
-    padding-right: 1.5rem;
+.addproduct-page-right-container-product{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF;
+    border: 1px solid lightgrey;
+    border-radius: 12px;
+    gap: 0.3rem;
+    min-width: 7rem;
+    max-width: 7rem;
+    min-height: 2.2rem;
+    max-height: 2.2rem;
+    font-weight: 500;
+    color: #989898;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease-in-out;
+}
+
+.addproduct-page-right-container-service{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF;
+    border: 1px solid lightgrey;
+    border-radius: 12px;
+    gap: 0.3rem;
+    min-width: 7rem;
+    max-width: 7rem;
+    min-height: 2.2rem;
+    max-height: 2.2rem;
+    font-weight: 500;
+    color: #989898;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease-in-out;
+}
+.addproduct-page-right-container-product:hover{
+    color: #5F2EEB;
+    border-color: #5F2EEB;
+    font-weight: bold;
+    transform: scale(1.04) translateZ(0);
+}
+
+.addproduct-page-right-container-service:hover{
+    color: #5F2EEB;
+    border-color: #5F2EEB;
+    font-weight: bold;
+    transform: scale(1.04) translateZ(0);
 }
 
 .addproduct-page-right-container-form-name{
@@ -171,6 +220,12 @@
     display: flex;
     align-items: center;
     gap: 3rem;
+}
+
+#selected-choice-add{
+    color: #5F2EEB;
+    border-color: #5F2EEB;
+    font-weight: bold;
 }
 
 .addproduct-page-right-container-form-description{

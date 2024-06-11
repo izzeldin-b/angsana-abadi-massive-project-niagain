@@ -125,15 +125,19 @@ const AddService = () => {
                             <div className="addproduct-page-right-container-form-header">
                                 Tipe
                             </div>
-                            <div className="addproduct-page-right-container-form-type-radio">
-                                <div id="type-radio-male">
-                                    <input type="radio" name="tipe" value="produk" id="male"/>&nbsp;
-                                    <label htmlFor="male">Produk</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="tipe" value="jasa" id="female"/>&nbsp;
-                                    <label htmlFor="female">Jasa</label>
-                                </div>
+                            <div className="addproduct-page-right-container-form-type-buttons">
+                                <Link to="/addproduct" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <div className="addproduct-page-right-container-product">
+                                        <i class="fa-solid fa-box"></i>
+                                        Produk
+                                    </div>
+                                </Link>
+                                <Link to="/addservice" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <div className="addproduct-page-right-container-service"  id='selected-choice-add'>
+                                        <i class="fa-solid fa-wrench"></i>
+                                        Jasa
+                                    </div>
+                                </Link>
                             </div>
                         </div>
 
@@ -148,7 +152,7 @@ const AddService = () => {
                             <div className="addproduct-page-right-container-form-header">
                                 Deskripsi Jasa
                             </div>
-                            <textarea rows="7" placeholder="Berikan Deskripsi Jasa"  spellCheck="false" onChange={handleChange} name="service_description"/>
+                            <textarea rows="7" placeholder="Berikan Deskripsi Jasa"  spellCheck="false" onChange={handleChange} name="service_description" spellcheck="false"/>
                         </div>
 
                         <div className="addproduct-page-right-container-form-variants">

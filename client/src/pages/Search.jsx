@@ -1,12 +1,28 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import '../assets/styles/search-results.css'
 import ScrollToTop from '../components/ScrollToTop'
 import FilterSidebar from '../components/FilterSidebar'
-import AllProducts from '../components/AllProducts'
 
 function Search() {
 
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const searchTerm = searchParams.get('q');
+    const [products, setProducts] = useState([]);
+    
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const response = await fetch(`http://localhost:5000/search-products?q=${searchTerm}`);
+            const data = await response.json();
+            setProducts(data);
+        };
+
+        if (searchTerm) {
+            fetchProducts();
+        }
+    }, [searchTerm]);
+    
     return (
         <div>
             <ScrollToTop />
@@ -39,13 +55,38 @@ function Search() {
                         <FilterSidebar/>
                         
                         <div className="search-product-list-container">
-                            <AllProducts/>
-                        </div>  
+                            <div id='search-space-bottom'>
+                                Menampilkan hasil untuk "{searchTerm}"
+                            </div>
+                            <div className="search-product-list-wrapper">
+                                {products.map(product => (
+                                    <div className="product-item-container" key={product.id}> {/* ADD NEW PRODUCT */}
+                                        <div className="product-item-image">
+                                            <img src={product.image_link} alt={product.name} />
+                                        </div>
+                                        <div className="product-item-description">
+                                            <div className="product-item-name">
+                                                {product.name}
+                                            </div>
+                                            <div className="product-item-price">
+                                                Rp {product.price.toLocaleString('id-ID', {
+                                                    minimumFractionDigits: 0, 
+                                                    maximumFractionDigits: 2 
+                                                }).replace(/,00$/, '')}
+                                            </div>
+                                            <div className="product-item-ratings">
+                                                <i className="fa fa-star fa-xs"></i> {product.rating} | {product.sold_amount} Terjual
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div> 
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Search

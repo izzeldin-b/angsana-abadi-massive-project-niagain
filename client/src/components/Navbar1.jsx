@@ -1,8 +1,23 @@
-import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
+import React, {useState, useRef} from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import '../assets/styles/navbar-not-signed-in.css'
 
 function Navbar1() {
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+    const inputRef = useRef(null);
+
+    const handleSearch = () => {
+      navigate(`/search-product?q=${searchTerm}`); // Redirect with query parameter
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch(); 
+        }
+    };
+
     return (
         <div>
             <header>
@@ -20,10 +35,12 @@ function Navbar1() {
                                 <input 
                                     type="text" 
                                     placeholder="Cari Produk Yang Kamu Inginkan"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    ref={inputRef}
                                 />
-                                <Link to="/search-product">
-                                <button><i className="fas fa-search"></i></button>
-                                </Link>
+                                <button onClick={handleSearch}><i className="fas fa-search"></i></button>
                             </div>
                         </div>
 
