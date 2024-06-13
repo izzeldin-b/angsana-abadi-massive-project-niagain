@@ -1,107 +1,99 @@
 import React, { useEffect } from 'react'
 import '../assets/styles/product-details.css'
 import { Link } from 'react-router-dom'
+import { initializeCounter, cleanUpCounter } from '../assets/scripts/counter';
 
 function ProductDetails() {
 
     useEffect(() => {
-        const buttons = document.querySelectorAll('.product-variants-choice-button');
-
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                buttons.forEach(btn => btn.classList.remove('product-variants-choice-button-selected'));
-
-                button.classList.add('product-variants-choice-button-selected');
-            });
-        });
-
+        initializeCounter();
+    
         return () => {
-            buttons.forEach(button => {
-                button.removeEventListener('click', () => {
-                    buttons.forEach(btn => btn.classList.remove('product-variants-choice-button-selected'));
-
-                    button.classList.add('product-variants-choice-button-selected');
-                });
-            });
+            cleanUpCounter(); 
         };
-    }, []);
+    }, []); 
 
     return (
         <div>
-            <div className="product-details-container">
-                <div className="product-details">
-                    <div className="product-images-container">
-                        <img src="src\assets\images\bag-product.jpg" alt="" className="product-main-image"/>
-                        <div className="product-small-images-container">
-                            <div className="product-small-images">
-                                <img src="src\assets\images\bag-product.jpg" id="product-small-images-selected"/>
-                                <img src="src\assets\images\bag-product.jpg"/>
-                                <img src="src\assets\images\bag-product.jpg"/>
-                                <img src="src\assets\images\bag-product.jpg"/>
-                                <img src="src\assets\images\bag-product.jpg"/>
+            <div className="product-details-page">
+                <div className="product-details-frame-container">
+
+                    <div className="product-details-container">
+                        <div className="product-details-image-container">
+                            <img src="src\assets\images\bag-product.jpg" alt="" />
+                        </div>
+                        <div className="product-details-actions-container">
+                            <div className="product-details-actions-title">
+                                Tas Kulit Buaya Berkepala Tiga - Original BHS
+                                Dibuat Langsung Dari Pegunungan Asli
                             </div>
+
+                            <div className="product-details-actions-statistics-container">
+                                <div className="product-details-actions-statistics-ratings">
+                                    4.6 &nbsp;
+                                    <span>
+                                        <i className="fa-solid fa-star"></i>
+                                        <i className="fa-solid fa-star"></i>
+                                        <i className="fa-solid fa-star"></i>
+                                        <i className="fa-solid fa-star"></i>
+                                        <i className="fa-solid fa-star"></i>
+                                    </span>
+                                </div>
+                                <div className="product-details-actions-statistics-reviewcount">
+                                    <span>1.7RB</span> Penilaian
+                                </div>
+                                <div className="product-details-actions-statistics-soldamount">
+                                    <span>2.1RB</span> Terjual
+                                </div>
+                            </div>
+
+                            <div className="product-details-actions-price">
+                                Rp 66.999
+                            </div>
+
+                            <div className="product-details-actions-variants-container">
+                                <div className="product-details-actions-variants-header">
+                                    Pilih Warna:
+                                </div>
+                                <div className="product-details-actions-variants-buttons">
+                                    <button id='variant-selected' value="">Putih</button>
+                                    <button value="">Hitam</button>
+                                    <button value="">Abu-Abu</button>
+                                    <button value="">Biru</button>
+                                </div>
+                            </div>
+                            
+                            <div className="product-details-actions-quantity-container">
+                                <div className="product-details-actions-quantity-header">
+                                    Kuantitas:
+                                </div>
+                                <div className="product-details-actions-quantity-button">
+                                    <button id="decrement">-</button>
+                                    <span id="count">1</span>
+                                    <button id="increment">+</button>
+                                    <input type="hidden" id="countValue" name="countValue" value="1"/> 
+                                </div>
+                                <div className="product-details-actions-quantity-stock">
+                                    tersisa 1100 buah
+                                </div>
+                            </div>
+
+                            <div className="product-details-actions-buttons-container">
+                                <div className="product-details-actions-buttons-addtocart">
+                                    <button>
+                                        Masukkan Keranjang
+                                    </button>
+                                </div>
+                                <div className="product-details-actions-buttons-buynow">
+                                    <button>
+                                        Beli Sekarang
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                    <div className="product-name-and-actions-container">
-                        <div className="product-name">
-                            Tas Kulit Buaya Berkepala Tiga - Original BHS Dibuat Langsung Dari Pegunungan Asli
-                        </div>
-                        <div className="product-ratings-container">
-                            <div className="product-star-ratings">
-                                <span className="bold-purple">4.6</span>&nbsp;&nbsp;
-                                <span className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></span>
-                                <span className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></span>
-                                <span className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></span>
-                                <span className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></span>
-                                <span className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></span>
-                            </div>
-                            <div className="line-separator">|</div>
-                            <div className="product-ratings-count">
-                                <span className="bold-purple">1.7RB</span>&nbsp;&nbsp;Penilaian
-                            </div>
-                            <div className="line-separator">|</div>
-                            <div className="product-sell-count">
-                                <span className="bold-purple">2.1RB</span>&nbsp;&nbsp;Terjual
-                            </div>
-                        </div>
-                        <div className="product-price">Rp 66.890</div>
-                        <div className="product-variants-container">
-                            <span>Pilih Warna:</span>
-                            <div className="product-variants">
-                                <div className="product-variants-choice">
-                                    <button className="product-variants-choice-button">Putih</button>
-                                </div>
-                                <div className="product-variants-choice">
-                                    <button className="product-variants-choice-button">Hitam</button>
-                                </div>
-                                <div className="product-variants-choice">
-                                    <button className="product-variants-choice-button">Abu-Abu</button>
-                                </div>
-                                <div className="product-variants-choice">
-                                    <button className="product-variants-choice-button">Biru</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="product-quantity-container">
-                            <div className="product-quantity-label">Kuantitas:</div>
-                            <div className="product-quantity-button-container">
-                                <button className="product-quantity-button">
-                                    <span className="product-quantity-button-operation">-</span>
-                                    <span className="product-quantity-button-value">1</span>
-                                    <span className="product-quantity-button-operation">+</span>
-                                </button>
-                            </div>
-                            <div className="product-quantity-stock">tersisa 1100 buah</div>
-                        </div>
-                        <div className="product-actions-container">
-                            <Link to="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <button className="product-actions-addtocart">Masukkan Keranjang</button>
-                            </Link>
-                            <Link to="/checkout" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <button className="product-actions-buynow">Beli Sekarang</button>
-                            </Link>
-                        </div>
-                    </div>
+
                     <div className="product-description-container">
                         <div className="product-description-header">
                             Detail
@@ -119,10 +111,11 @@ function ProductDetails() {
                             🎒 SKU Utama: 114005905 <br/>
                             <br/>
                             Spec<br/>
-                            🎒 Dimensi: 10x15<br/><br/>
-                            <span>Lihat Selengkapnya</span>
+                            🎒 Dimensi: 10x15<br/><br/><br/>
+                            <button>Lihat Selengkapnya</button>
                         </div>
                     </div>
+
                     <div className="product-reviews-ratings-container">
                         <div className="product-reviews-ratings-values">
                             <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
@@ -141,18 +134,18 @@ function ProductDetails() {
                         {/* <!-- each product --> */}
                         <div className="product-user-reviews-individual-container">
                             <div className="product-user-reviews-individual-profilepic">
-                                <i className="fas fa-user-circle fa-3x"></i> 
+                                <img src=".\src\assets\images\profile-pic.jpg" alt="" />
                             </div>
                             <div className="product-user-reviews-individual-contents">
                                 <div className="product-user-reviews-individual-contents-username">
                                     test_user1
                                 </div>
                                 <div className="product-user-reviews-individual-contents-rating">
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
                                 </div>
                                 <div className="product-user-reviews-individual-contents-date-and-variant">
                                     06-05-2024 | Variasi: Hitam
@@ -170,18 +163,18 @@ function ProductDetails() {
 
                         <div className="product-user-reviews-individual-container">
                             <div className="product-user-reviews-individual-profilepic">
-                                <i className="fas fa-user-circle fa-3x"></i> 
+                                <img src=".\src\assets\images\profile-pic.jpg" alt="" />
                             </div>
                             <div className="product-user-reviews-individual-contents">
                                 <div className="product-user-reviews-individual-contents-username">
                                     test_user1
                                 </div>
                                 <div className="product-user-reviews-individual-contents-rating">
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
                                 </div>
                                 <div className="product-user-reviews-individual-contents-date-and-variant">
                                     06-05-2024 | Variasi: Hitam
@@ -199,18 +192,18 @@ function ProductDetails() {
 
                         <div className="product-user-reviews-individual-container">
                             <div className="product-user-reviews-individual-profilepic">
-                                <i className="fas fa-user-circle fa-3x"></i> 
+                                <img src=".\src\assets\images\profile-pic.jpg" alt="" />
                             </div>
                             <div className="product-user-reviews-individual-contents">
                                 <div className="product-user-reviews-individual-contents-username">
                                     test_user1
                                 </div>
                                 <div className="product-user-reviews-individual-contents-rating">
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
-                                    <i className="fa fa-star fa-xs" style={{ color: '#FFD600' }}></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
+                                    <i className="fa fa-star fa-xs"></i>
                                 </div>
                                 <div className="product-user-reviews-individual-contents-date-and-variant">
                                     06-05-2024 | Variasi: Hitam
@@ -224,6 +217,10 @@ function ProductDetails() {
                                     <img src="src\assets\images\bag-product.jpg"/>
                                 </div>
                             </div>
+                        </div>
+
+                        <div className="product-user-reviews-view-all">
+                            Lihat Semua Ulasan
                         </div>
                     </div>
                 </div>
