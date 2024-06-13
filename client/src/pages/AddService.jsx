@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../assets/styles/add-product.css';
 import ScrollToTop from '../components/ScrollToTop';
 
 const AddService = () => {
+
+    const [imagePreview, setImagePreview] = useState(null); // Add state for preview
+    const fileInputRef = useRef(null);
 
     // State Management
     const [serviceData, setServiceData] = useState({ // Renamed to serviceData
@@ -27,7 +30,19 @@ const AddService = () => {
     };
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+    
+        // Generate preview if a valid image is selected
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(selectedFile);
+            } else {
+            setImagePreview(null);
+        }
     };
 
     // API Interaction
@@ -167,10 +182,22 @@ const AddService = () => {
                                 Grafik Promosi Jasa
                             </div>
                             <div className="addproduct-page-right-container-description-form-image-wrapper">
-                            <input type="file" id="imageUpload" className="hiddenInput" accept=".jpg, .jpeg, .png" onChange={handleFileChange} name="image_link"/>
+                                <input
+                                    type="file"
+                                    id="imageUpload"
+                                    className="hiddenInput"
+                                    accept=".jpg, .jpeg, .png"
+                                    onChange={handleFileChange}
+                                    name="image_link"
+                                    ref={fileInputRef}
+                                />
                                 <label htmlFor="imageUpload">
                                     <div className="addproduct-page-right-container-description-form-image">
-                                        <i className="fa-regular fa-images"></i>
+                                        {imagePreview ? ( 
+                                            <img src={imagePreview} alt="Product Preview" style={{ width: '124px', height: '124px', objectFit: 'cover', borderRadius:'10px' }} />
+                                        ) : (
+                                            <i className="fa-regular fa-images"></i>
+                                        )}
                                     </div>
                                 </label>
                             </div>
