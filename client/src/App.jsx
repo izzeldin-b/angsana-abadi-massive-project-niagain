@@ -9,6 +9,7 @@ import AddService from './pages/AddService'
 import Review from './pages/Review'
 import ProductDetails from './pages/ProductDetails'
 import Profile from './pages/Profile'
+import Address from './pages/Address'
 import Recommended from './pages/Recommended'
 import RecommendedService from './pages/RecommendedService'
 import MyOrdersProcessing from './pages/MyOrdersProcessing'
@@ -68,6 +69,7 @@ function App() {
             <Route path='/myorders-cancelled' element={<MyOrdersCancelled />} />
             <Route path='/productdetails' element={<ProductDetails />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/address' element={<Address />} />
             <Route path='/mybusiness' element={<MyBusiness />} />
             <Route path='/recommended-products' element={<Recommended />} />
             <Route path='/recommended-services' element={<RecommendedService />} />

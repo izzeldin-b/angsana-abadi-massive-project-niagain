@@ -120,12 +120,18 @@
     height: 100%;
     display: flex;
     align-items: center;
+    transition: 0.1s ease-in;
+}
+
+.myorders-page-right-container-header-parts-wrapper:hover{
+    font-size: 1.05rem;
+    transition: 0.1s ease-in;
 }
 
 #myorders-page-right-container-header-parts-selected{
     color: #5F2EEB;
     border-bottom: 2px solid #5F2EEB;
-    padding-top: 2px;
+    /* padding-top: 2px; */
 }
 
 .myorders-page-right-container-contents-wrapper{

@@ -40,10 +40,28 @@ function Profile() {
 
                 <div className="profile-page-right-container"> {/* RIGHT CONTAINER */}
                     <div className="profile-page-right-container-wrapper">
-                        <div className="profile-page-right-container-header">
+
+                        <div className="myorders-page-right-container-header-wrapper">
+                            <div className="myorders-page-right-container-header-parts" id="myorders-page-right-container-header-parts-selected">
+                                <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <div className="myorders-page-right-container-header-parts-wrapper">
+                                        Biodata
+                                    </div>
+                                </Link>
+                            </div>
+                            <div className="myorders-page-right-container-header-parts">
+                                <Link to="/address" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <div className="myorders-page-right-container-header-parts-wrapper">
+                                        Alamat Pengiriman
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* <div className="profile-page-right-container-header">
                             <span>Profil Saya</span>
                             Kelola informasi profil Anda untuk mengontrol, melindungi, dan mengamankan akun
-                        </div>
+                        </div> */}
 
                         <div className="profile-page-right-container-contents">
                             <div className="profile-page-right-container-contents-profilepic-container">
@@ -114,6 +132,7 @@ function Profile() {
                                 </div>
                                 
                             </div>
+
                             <div className="profile-page-right-container-edit-contents-right-side">
                                 <div className="profile-page-right-container-edit-contents-right-side-wrapper">
                                     <div className="profile-page-right-container-edit-contents-right-side-forms-wrapper">
@@ -143,6 +162,9 @@ function Profile() {
                                 </div>
                             </div>
                         </div>
+
+
+                        
                     </div>
                 </div>
             </div>
