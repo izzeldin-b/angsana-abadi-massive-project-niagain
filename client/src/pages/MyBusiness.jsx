@@ -138,7 +138,7 @@ function MyBusiness() {
                                     <div className="">
                                         Status Pesanan
                                     </div>
-                                    <div>
+                                    <div className='order-status-dropdown-wrapper'>
                                         <select value="" className='order-status-dropdown'>
                                             <option value="Belum Bayar">Belum Bayar</option>
                                             <option value="Sedang Dikemas">Sedang Dikemas</option>
@@ -146,6 +146,9 @@ function MyBusiness() {
                                             <option value="Selesai">Selesai</option>
                                             <option value="Dibatalkan">Dibatalkan</option>
                                         </select>
+                                        <button>
+                                            Simpan
+                                        </button>
                                     </div>
                                 </div>
                                 
