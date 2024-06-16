@@ -42,88 +42,115 @@ function MyBusiness() {
                 </div>
 
                 <div className="business-page-right-container"> {/* <!-- RIGHT CONTAINER --> */}
-                    <div className="business-page-right-container-header">
+                    {/* <div className="business-page-right-container-header">
                         <span>Niaga Saya</span>
                         Performa dan tampilan penjualan Niaga kamu saat ini
+                    </div> */}
+
+                    <div className="myorders-page-right-container-header-wrapper">
+                        <div className="myorders-page-right-container-header-parts" id="myorders-page-right-container-header-parts-selected">
+                            <Link to="/mybusiness" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <div className="myorders-page-right-container-header-parts-wrapper">
+                                    Pesanan
+                                </div>
+                            </Link>
+                        </div>
+                        <div className="myorders-page-right-container-header-parts">
+                            <Link to="/my-business-catalog" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <div className="myorders-page-right-container-header-parts-wrapper">
+                                    Catalog
+                                </div>
+                            </Link>
+                        </div>
+                        <div className="myorders-page-right-container-header-parts">
+                            <Link to="/my-business-statistics" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <div className="myorders-page-right-container-header-parts-wrapper">
+                                    Statistik
+                                </div>
+                            </Link>
+                        </div>
                     </div>
 
-                    <div className="business-page-right-container-linegraph">
-                        Performa Toko
-                        <LineChart /> 
-                    </div>
-
-                    <div className="business-page-right-container-product-list-container">
-                        <div className="business-page-right-container-product-list-header">
-                            <span>Daftar Produk</span>
-                            Produk dan Jasa aktif kamu saat ini
+                    <div className="business-page-right-container-orders-list-container">
+                        <div className="business-page-right-container-orders-list-header">
+                            <i className="fa-solid fa-bell"/>
+                            Pesanan Aktif
                         </div>
-                        <div className="business-page-right-container-product-list">
 
-                            <div className="business-page-right-container-product-individual"> {/* <!-- COMPONENT --> */}
-                                <div className="business-page-right-container-product-individual-count">
-                                    1
-                                </div>
-                                <div className="business-page-right-container-product-individual-image">
-                                    <img src="src\assets\images\bag-product.png" alt=""/>
-                                </div>
-                                <div className="business-page-right-container-product-individual-desc-container">
-                                    <div className="business-page-right-container-product-individual-name">
-                                        Tas Kulit Buaya Berkepala Tiga - Original BHS Dibuat Langsung Dari Pegunungan Asli
+                        <div className="business-page-right-container-orders-list"> {/* NEW ORDER */}
+                            <div className="business-page-right-container-orders-list-identifier">
+                                <span>Nomor Pesanan: 1</span>
+                                <div className="business-page-right-container-orders-list-information-one">
+                                    <div className="business-page-right-container-orders-list-type">
+                                        <span><i className="fa-solid fa-box"/></span>Produk
                                     </div>
-                                    <div className="business-page-right-container-product-individual-stock">
-                                        Stok: 5
+                                    <div className="business-page-right-container-orders-list-date">
+                                        18 Mei 2024
                                     </div>
-                                    <div className="business-page-right-container-product-individual-price">
-                                        Rp 68.799
+                                    <div className="business-page-right-container-orders-list-id">
+                                        <span>ID:</span> INV/20240514/2
                                     </div>
                                 </div>
-                                <div className="business-page-right-container-product-individual-type-and-edit-container">
-                                    <div className="business-page-right-container-product-individual-type">
-                                        <i className="fa-solid fa-box"></i>
-                                        <span>Produk</span>
-                                    </div>
-                                        <button className="business-page-right-container-product-individual-edit">
-                                            Edit
-                                        </button>
-                                </div>
-                            </div> {/* <!-- COMPONENT END --> */}
-
-                            <div className="business-page-right-container-product-individual"> {/* <!-- COMPONENT --> */}
-                                <div className="business-page-right-container-product-individual-count">
-                                    2
-                                </div>
-                                <div className="business-page-right-container-product-individual-image">
-                                    <img src="src\assets\images\ppt-jasa.png" alt=""/>
-                                </div>
-                                <div className="business-page-right-container-product-individual-desc-container">
-                                    <div className="business-page-right-container-product-individual-name">
-                                        PPT - Jasa Pembuatan Power Point Wrap
-                                    </div>
-                                    <div className="business-page-right-container-product-individual-stock">
-                                        Status: Aktif
-                                    </div>
-                                    <div className="business-page-right-container-product-individual-price">
-                                        Rp 68.799
-                                    </div>
-                                </div>
-                                <div className="business-page-right-container-product-individual-type-and-edit-container">
-                                    <div className="business-page-right-container-product-individual-type">
-                                        <i className="fa-solid fa-wrench"></i>
-                                        <span>Jasa</span>
-                                    </div>
-                                        <button className="business-page-right-container-product-individual-edit">
-                                            Edit
-                                        </button>
-                                </div>
-                            </div> {/* <!-- COMPONENT END --> */}
-
-                        </div>
-                        <Link to="/addproduct" style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <div className="business-page-right-container-product-add">
-                                +
-                                <span>Tambah</span>
                             </div>
-                        </Link>
+
+                            <div className="business-page-right-container-orders-list-wrapper"> {/* EACH ITEM */}
+                                <div className="business-page-right-container-orders-list-information-two">
+                                    <div className="business-page-right-container-orders-list-image">
+                                        <img src="\src\assets\images\bag-product.jpg" alt="" />
+                                    </div>
+                                    <div className="business-page-right-container-orders-list-name">
+                                        Tas Kulit Buaya Berkepala Tiga - Original BHS Dibuat Langsung Dari Pegunungan Asli
+                                        <span>Variasi: Hitam</span>
+                                        <span>Kuantitas: 1</span>
+                                    </div>
+                                    <div className="business-page-right-container-orders-list-price">
+                                        Rp 69.888
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="business-page-right-container-orders-list-wrapper"> {/* EACH ITEM */}
+                                <div className="business-page-right-container-orders-list-information-two">
+                                    <div className="business-page-right-container-orders-list-image">
+                                        <img src="\src\assets\images\bag-product.jpg" alt="" />
+                                    </div>
+                                    <div className="business-page-right-container-orders-list-name">
+                                        Tas Kulit Buaya Berkepala Tiga - Original BHS Dibuat Langsung Dari Pegunungan Asli
+                                        <span>Variasi: Hitam</span>
+                                        <span>Kuantitas: 1</span>
+                                    </div>
+                                    <div className="business-page-right-container-orders-list-price">
+                                        Rp 69.888
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="business-page-right-container-orders-list-total">
+                                <div className="business-page-right-container-orders-list-total-payment-wrapper">
+                                    <div className="business-page-right-container-orders-list-total-payment-status">
+                                        Status Pembayaran:<span>Berhasil</span>
+                                    </div>
+                                    <div className='business-page-right-container-orders-list-total-price'>
+                                        Total Harga: <span>Rp 139.776</span>
+                                    </div>
+                                </div>
+                                <div className="business-page-right-container-orders-update-wrapper">
+                                    <div className="">
+                                        Status Pesanan
+                                    </div>
+                                    <div>
+                                        <select value="" className='order-status-dropdown'>
+                                            <option value="Belum Bayar">Belum Bayar</option>
+                                            <option value="Sedang Dikemas">Sedang Dikemas</option>
+                                            <option value="Dikirim">Dikirim</option>
+                                            <option value="Selesai">Selesai</option>
+                                            <option value="Dibatalkan">Dibatalkan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

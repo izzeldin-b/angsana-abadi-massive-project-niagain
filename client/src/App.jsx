@@ -4,6 +4,8 @@ import Checkout from './pages/Checkout'
 import Main from './pages/Main'
 import MyOrders from './pages/MyOrders'
 import MyBusiness from './pages/MyBusiness'
+import MyBusinessCatalog from './pages/MyBusinessCatalog'
+import MyBusinessStatistics from './pages/MyBusinessStatistics'
 import AddProduct from './pages/AddProduct'
 import AddService from './pages/AddService'
 import Review from './pages/Review'
@@ -71,6 +73,8 @@ function App() {
             <Route path='/profile' element={<Profile />} />
             <Route path='/address' element={<Address />} />
             <Route path='/mybusiness' element={<MyBusiness />} />
+            <Route path='/my-business-catalog' element={<MyBusinessCatalog />} />
+            <Route path='/my-business-statistics' element={<MyBusinessStatistics />} />
             <Route path='/recommended-products' element={<Recommended />} />
             <Route path='/recommended-services' element={<RecommendedService />} />
             <Route path='/search-product' element={<Search />} />
