@@ -73,10 +73,6 @@ const AddProduct = () => {
         }
     };
 
-    
-    // --- Commented-Out Code (Preserved) ---
-    // const handleImageUpload = async () => { ... };
-
     console.log(product);
 
     return (

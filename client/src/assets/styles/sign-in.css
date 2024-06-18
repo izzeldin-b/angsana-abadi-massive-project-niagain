@@ -127,11 +127,12 @@ body{
     border: 1px solid #5F2EEB; 
     border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: 0.2s ease-in;
 }
 
 .sign-in-right-side-form-sign-up-button button:hover {
-    background-color: #f7f7f7;
+    background-color: #5F2EEB;
+    color: #FFF;
 }
 
 .sign-in-right-side-form-divider{
@@ -167,7 +168,7 @@ body{
     font-weight: bold;
 }
 
-.sign-in-right-side-form-email input[type="text"] {
+.sign-in-right-side-form-email input[type="email"] {
     max-width: 17.9rem;
     width: 100%;
     height: auto; 
@@ -179,12 +180,13 @@ body{
     background-color: #fff;
     font-family: 'Figtree', sans-serif;
     margin-top: 0.3rem;
+    transition: 0.2s ease-in-out;
 }
 
-.sign-in-right-side-form-email input[type="text"]:focus {
+.sign-in-right-side-form-email input[type="email"]:focus {
     outline: none;       
-    border-color: #aaa;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+    border-color: #5F2EEB;
+    transition: 0.2s ease-in-out;
 }
 
 .sign-in-right-side-form-password{
@@ -213,10 +215,25 @@ body{
     margin-top: 0.3rem;
 }
 
+.sign-in-right-side-form-password input[type="text"] {
+    max-width: 17.9rem;
+    width: 100%;
+    height: auto; 
+    padding: 0.9rem 1rem;
+    border: 1px solid lightgray;
+    border-radius: 12px;    
+    font-size: 0.8rem;   
+    color: black;
+    background-color: #fff;
+    font-family: 'Figtree', sans-serif;
+    margin-top: 0.3rem;
+    transition: 0.2s ease-in-out;
+}
+
 .sign-in-right-side-form-password input[type="password"]:focus {
     outline: none;       
-    border-color: #aaa;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+    border-color: #5F2EEB;
+    transition: 0.2s ease-in-out;
 }
 
 .eye-icon {

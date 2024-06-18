@@ -143,11 +143,12 @@ body{
     border: 1px solid #5F2EEB; 
     border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: 0.2s ease-in-out;
 }
 
 .sign-up-right-side-form-usertype-button button:hover {
     background-color: #4C23CE;
+    transition: 0.2s ease-in-out;
     color: white;
 }
 

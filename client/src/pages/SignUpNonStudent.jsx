@@ -1,19 +1,81 @@
-import React from 'react'
+import React, { useState } from "react";
 import { Link } from 'react-router-dom'
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import '../assets/styles/sign-up-non-student-option.css'
+import { toast } from "react-toastify";
+import { auth, db } from "../components/Firebase";
+import { setDoc, doc } from "firebase/firestore";
 
 function SignUpNonStudent() {
+
+    const [uname, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [fname, setFname] = useState("");
+    const [bdate, setBdate] = useState("");
+    const [pnumber, setPnumber] = useState("");
+    const [gender, setGender] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            const user = auth.currentUser;
+            console.log(user);
+            if (user) {
+                await setDoc(doc(db, "Users", user.uid), {
+                    email: user.email,
+                    username: uname,
+                    fullName: fname,
+                    birthDate: bdate,
+                    phoneNumber: pnumber,
+                    role: "normal",
+                    gender: gender
+                });
+
+                try {
+                    const response = await fetch('http://localhost:5000/register-user', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ uid: user.uid })
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('API request failed');
+                    }
+                } catch (apiError) {
+                    console.error('API error:', apiError);
+                }
+            }
+            console.log("User Registered Successfully!!");
+            toast.success("User Registered Successfully!!", {
+                position: "top-center",
+            });
+            window.location.href = "/";
+            } catch (error) {
+            console.log(error.message);
+            toast.error(error.message, {
+                position: "bottom-center",
+            });
+        }
+    };
+
     return (
         <div>
             <div className="sign-up-non-student-page">
                 <div className="sign-up-non-student-container">
-                    <div className="sign-up-non-student-logo-container">
-                        <Link to="/" >
-                            <img src="src\assets\images\LOGO-PURPLE.png"/>
-                        </Link>
-                    </div>
                     <div className="sign-up-non-student-second-row-container">
                         <div className="sign-up-non-student-left-side-graphic">
+                            <div className="sign-up-non-student-logo-container">
+                                <Link to="/" >
+                                    <img src="src\assets\images\LOGO-PURPLE.png"/>
+                                </Link>
+                            </div>
                             <img src="src\assets\images\sign-up-graphics-2.jpg"/>
                             <div className="sign-up-non-student-left-side-graphic-text">
                                 Jual Beli Mudah Hanya Di Niagain
@@ -25,7 +87,7 @@ function SignUpNonStudent() {
                         <div className="sign-up-non-student-right-side-form">
                             <div className="sign-up-non-student-right-side-form-wrapper">
                                 <div className="sign-up-non-student-right-side-form-header">
-                                    Daftar Non Mahasiswa
+                                    Daftar
                                 </div>
                                 <div className="sign-up-non-student-right-side-form-sign-up-description">
                                     Sudah Punya Akun Niagain? 
@@ -38,27 +100,90 @@ function SignUpNonStudent() {
                                     <span>atau daftar dengan</span>
                                 </div>
 
-                                <div className="sign-up-non-student-right-side-form-email">
-                                    <span>Email </span>*
-                                    <input type="text" placeholder="Masukkan Alamat Email Anda" required/>
-                                </div>
-                                <div className="sign-up-non-student-right-side-form-password">
-                                    <span>Password </span>*
-                                    <input type="password" placeholder="Masukkan Password Anda" required/>
-                                    <span className="eye-icon" id="togglePassword">
-                                        <i className="fa fa-eye"></i>  </span>
-                                </div>
-                                <div className="sign-up-non-student-right-side-form-password">
-                                    <span>Konfirmasi Password </span>*
-                                    <input type="password" placeholder="Masukkan Password Anda" required/>
-                                    <span className="eye-icon" id="togglePassword">
-                                        <i className="fa fa-eye"></i>  </span>
-                                </div>
-                                <div className="sign-up-non-student-right-side-form-sign-up-non-student-button">
-                                    <Link to="/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <button>Daftar Sekarang</button>
-                                    </Link>
-                                </div>
+                                <form onSubmit={handleRegister}>
+                                    <div className="sign-up-non-student-right-side-container">
+                                        <div className="sign-up-non-student-right-side-form-email">
+                                            <span>Username </span>*
+                                            <input 
+                                                type="text" 
+                                                placeholder="Masukkan Username Anda"
+                                                onChange={(e) => setUsername(e.target.value)} 
+                                                required
+                                            />
+                                        </div>
+                                        <div className="sign-up-non-student-right-side-form-email">
+                                            <span>Email </span>*
+                                            <input 
+                                                type="email" 
+                                                placeholder="Masukkan Alamat Email Anda"
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="sign-up-student-right-side-form-password">
+                                            <span>Password </span>*
+                                            <input 
+                                                type={showPassword ? "text" : "password"}  
+                                                placeholder="Masukkan Password Anda" 
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                required
+                                            />
+                                            <span className="eye-icon" id="togglePassword" onClick={togglePasswordVisibility}>
+                                                <i className={`fa ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i> 
+                                            </span>
+                                        </div>
+                                        <div className="sign-up-non-student-right-side-form-email">
+                                            <span>No. Telp </span>*
+                                            <input 
+                                                type="tel" 
+                                                placeholder="Masukkan Nomor Telepon Anda"
+                                                onChange={(e) => setPnumber(e.target.value)} 
+                                                required
+                                            />
+                                        </div>
+
+                                        <div className="sign-up-non-student-right-side-form-email">
+                                            <span>Nama Lengkap </span>*
+                                            <input 
+                                                type="text" 
+                                                placeholder="Masukkan Nama Lengkap Anda"
+                                                onChange={(e) => setFname(e.target.value)} 
+                                                required
+                                            />
+                                        </div>
+
+                                        <div className="sign-up-student-right-side-form-gender">
+                                            <b>Jenis Kelamin</b> <span>*</span>
+                                            <div className="sign-up-student-right-side-form-campus-option">
+                                                <select value={gender} onChange={(e) => setGender(e.target.value)} className='sign-up-student-institution-dropdown'>
+                                                    {gender === '' && (
+                                                        <option value="" disabled>Pilih Jenis Kelamin</option>
+                                                    )}
+                                                    <option value="Pria">Pria</option>
+                                                    <option value="Wanita">Wanita</option>
+                                                    <option value=" ">Pilih untuk tidak menjawab</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="sign-up-non-student-right-side-form-email">
+                                            <span>Tanggal Lahir </span>*
+                                            <input 
+                                                type="date" 
+                                                placeholder="Masukkan Tanggal Lahir Anda"
+                                                onChange={(e) => setBdate(e.target.value)} 
+                                                required
+                                            />
+                                        </div>
+
+                                        <div className="sign-up-non-student-right-side-form-sign-up-non-student-button">
+                                            <button type="submit">Daftar Sekarang</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+
                                 <div className="sign-up-non-student-right-side-side-agreement">
                                     Dengan Mendaftar Saya menyetujui<br/>
                                     <span>Ketentuan Layanan</span> dan <span>Kebijakan</span>

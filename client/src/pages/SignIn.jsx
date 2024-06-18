@@ -1,19 +1,39 @@
 import React, { useState } from 'react'
 import '../assets/styles/sign-in.css'
 import { Link } from 'react-router-dom'
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../components/Firebase";
+import { toast } from "react-toastify";
 
 function SignIn() {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
-    const handleSubmit = (e) => {
-        if (!email || !password) {
-            e.preventDefault();
-            alert('Please fill in all required fields.');
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+                console.log("User logged in Successfully");
+                window.location.href = "/";
+                toast.success("User logged in Successfully", {
+                    position: "top-center",
+                }
+            );
+        } catch (error) {
+            console.log(error.message);
+        
+            toast.error(error.message, {
+                position: "bottom-center",
+            });
         }
     };
-    
+
     return (
         <div>
             <div className="sign-in-page">
@@ -57,29 +77,28 @@ function SignIn() {
                                     <div className="sign-in-right-side-form-email">
                                         <span>Email </span>*
                                         <input
-                                            type="text"
+                                            type="email"
                                             placeholder="Masukkan Alamat Email Anda"
-                                            required
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) => setEmail(e.target.value)} 
+                                            required
                                         />
                                     </div>
                                     <div className="sign-in-right-side-form-password">
                                         <span>Password </span>*
-                                        <input
-                                            type="password"
-                                            placeholder="Masukkan Password Anda"
-                                            required
+                                        <input 
+                                            type={showPassword ? "text" : "password"}  
+                                            placeholder="Masukkan Password Anda" 
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            />
-                                        <span className="eye-icon" id="togglePassword">
-                                            <i className="fa fa-eye"></i>  </span>
+                                            required
+                                        />
+                                        <span className="eye-icon" id="togglePassword" onClick={togglePasswordVisibility}>
+                                            <i className={`fa ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i> 
+                                        </span>
                                     </div>
                                     <div className="sign-in-right-side-form-sign-in-button">
-                                        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                            <button type="submit">Masuk</button>
-                                        </Link>
+                                        <button type="submit">Masuk</button>
                                     </div>
                                 </form>
                             </div>

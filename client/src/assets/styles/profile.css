@@ -453,3 +453,22 @@
     /* background-color: yellow; */
 }
 
+.profile-logout-button{
+    border-top: 1px solid lightgrey;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.profile-logout-button button{
+    border: none;
+    box-sizing: border-box;
+    padding: 1rem 2rem;
+    font-family: 'Figtree', sans-serif;
+    color: #FFF;
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: rgb(224, 66, 66);
+    cursor: pointer;
+}

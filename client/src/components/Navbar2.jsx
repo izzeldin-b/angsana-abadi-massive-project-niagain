@@ -1,8 +1,108 @@
-import React from 'react'
+import React, {useState, useRef, useEffect} from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import '../assets/styles/navbar-not-signed-in.css'
+import { auth, db } from "../components/Firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 function Navbar2() {
+
+    const [userDetails, setUserDetails] = useState(null);
+
+    const fetchUserData = async () => {
+        auth.onAuthStateChanged(async (user) => {
+            // console.log(user); REMOVE LATER, CONTAINS SENSITIVE DATA
+        
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setUserDetails(docSnap.data());
+                // console.log(docSnap.data()); REMOVE LATER, CONTAINS SENSITIVE DATA
+            } else {
+                console.log("User is not logged in");
+            }
+        });
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+    const inputRef = useRef(null);
+
+    const handleSearch = () => {
+        navigate(`/search-product?q=${searchTerm}`);
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch(); 
+        }
+    };
+
     return (
-        <div>Navbar2</div>
+        <div>
+            <header>
+                <nav>
+                    <div className="nav-container">
+                        {/* First Row */}
+                        <div className="nav-element" id="logo">
+                            <Link to="/">
+                                <img src="src\assets\images\LOGO-WHITE.png" alt="LOGO-WHITE" id="logo-image"/>
+                            </Link>
+                        </div>
+
+                        <div className="nav-element" id="searchbar">
+                            <div className="actual-search-bar">
+                                <input 
+                                    type="text" 
+                                    placeholder="Cari Produk Yang Kamu Inginkan"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    ref={inputRef}
+                                />
+                                <button onClick={handleSearch}><i className="fas fa-search"></i></button>
+                            </div>
+                        </div>
+
+                        <div className="nav-element" id="cart">
+                            <Link to="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <i className="fas fa-shopping-cart"></i>
+                            </Link>
+                        </div>
+
+                        <div className="nav-element" id="sign-in-up">
+                        {userDetails ? (
+                                <>
+                                    <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <i className="fa-solid fa-user"/> &nbsp;&nbsp;{userDetails.username}
+                                    </Link>
+                                </>
+                        ) : (
+                            <>
+                                <Link to="/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <button className="sign-in-button"> Masuk </button>
+                                </Link>
+                                <Link to="/signupoption" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <button className="sign-up-button"> Daftar </button>
+                                </Link>
+                            </>
+                        )}
+                        </div>
+                        
+                        {/* Second Row */}
+                        <div className="nav-element" id="empty-section-1"></div>
+                        <div className="nav-element" id="text-below-searchbar">Platform Penyedia Produk dan Jasa</div>
+                        <div className="nav-element" id="notification-below-searchbar"><i className="fas fa-bell"></i><span>&nbsp;&nbsp;Notifikasi</span></div>
+                        <div className="nav-element" id="help-below-searchbar"><i className="fas fa-question-circle"></i><span>&nbsp;&nbsp;Bantuan</span></div>
+                        <div className="nav-element" id="empty-section-2"></div>
+                        <div className="nav-element" id="send-location"><i className="fas fa-map-marker-alt"></i> Dikirim ke <b>Jakarta Selatan</b></div>
+                    </div>
+                </nav>
+            </header>
+        </div>
     )
 }
 

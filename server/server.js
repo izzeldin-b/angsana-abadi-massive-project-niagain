@@ -32,13 +32,20 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
-// Database Connection
-const port = process.env.PORT || 5000; // Default 5000
+// Database Connection 
+const port = process.env.PORT || 5000; 
 const db = mysql.createConnection({
     host: process.env.DB_HOST || "localhost",    
     user: process.env.DB_USER || "root",
     password: process.env.DB_PASSWORD || "",
     database: process.env.DB_DATABASE || "ecommerce",
+});
+db.connect(err => {
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+    } else {
+        console.log('Connected to MySQL database');
+    }
 });
 
 // API Endpoints
@@ -170,27 +177,32 @@ app.post('/add-service', upload.single('image'), async (req, res) => {
     });
 });
 
-// Commented-out Code (Preserved)
+// Register User in MySQL
+app.post('/register-user', async (req, res) => {
+    try {
+        const { uid } = req.body;
 
-// app.post("/add-product", (req, res) => {
-//     const q = "INSERT INTO products (`image_link`, `name`, `price`, `product_description`, `product_condition`, `weight`, `stock`, `product_variation` ) VALUES (?)";
+        if (!uid || typeof uid !== 'string') {
+            return res.status(400).json({ error: 'Invalid UID provided' });
+        }
 
-//     const values = [
-//         req.body.image_link,
-//         req.body.name,
-//         req.body.price,
-//         req.body.product_description,
-//         req.body.product_condition,
-//         req.body.weight,
-//         req.body.stock,
-//         req.body.product_variation,
-//     ];
+        const currentDate = new Date();
 
-//     db.query(q, [values], (err, data) => {
-//     if (err) return res.json(err);
-//     return res.json("New Product Added");
-//     });
-// });
+        const q = "INSERT INTO users (firebase_user_id, date_created) VALUES (?, ?)";
+        const values = [uid, currentDate];
+
+        db.query(q, values, (err, data) => {
+            if (err) {
+                console.error("Error inserting user:", err);
+                return res.status(500).json(err);
+            }
+            return res.json({ message: "User registered in MySQL" });
+        });
+    } catch (error) {
+        console.error('API Error:', error);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+});
 
 // Start the Server
 app.listen(port, () => {

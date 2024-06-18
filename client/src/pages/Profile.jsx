@@ -1,8 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import '../assets/styles/profile.css'
+import { auth, db } from "../components/Firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 function Profile() {
+    const [userDetails, setUserDetails] = useState(null);
+
+    const fetchUserData = async () => {
+        auth.onAuthStateChanged(async (user) => {
+            console.log(user);
+        
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setUserDetails(docSnap.data());
+                console.log(docSnap.data());
+            } else {
+                console.log("User is not logged in");
+            }
+        });
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+    async function handleLogout() {
+        try {
+            await auth.signOut();
+            window.location.href = "/";
+            console.log("User logged out successfully!");
+        } catch (error) {
+            console.error("Error logging out:", error.message);
+        }
+    }
+
     return (
         <div>
             <div className="profile-page">
@@ -40,7 +73,7 @@ function Profile() {
 
                 <div className="profile-page-right-container"> {/* RIGHT CONTAINER */}
                     <div className="profile-page-right-container-wrapper">
-
+                        
                         <div className="myorders-page-right-container-header-wrapper">
                             <div className="myorders-page-right-container-header-parts" id="myorders-page-right-container-header-parts-selected">
                                 <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -64,52 +97,58 @@ function Profile() {
                         </div> */}
 
                         <div className="profile-page-right-container-contents">
-                            <div className="profile-page-right-container-contents-profilepic-container">
-                                <input type="file" id="imageUpload" className="hiddenInput" accept=".jpg, .jpeg, .png" />
-                                <label for="imageUpload">
-                                    <div className="profile-page-right-container-contents-profilepic">
-                                        <img src="src\assets\images\profile-pic.jpg" alt="Profile Picture"/>
+                            {userDetails ? (
+                                <>
+                                <div className="profile-page-right-container-contents-profilepic-container">
+                                    <input type="file" id="imageUpload" className="hiddenInput" accept=".jpg, .jpeg, .png" />
+                                    <label htmlFor="imageUpload">
+                                        <div className="profile-page-right-container-contents-profilepic">
+                                            <img src="src\assets\images\profile-pic.jpg" alt="Profile Picture"/>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profilepic-change">
+                                            <i className="fa-solid fa-camera"></i> Pilih Foto
+                                        </div>
+                                    </label>
+                                </div>
+                                <div className="profile-page-right-container-contents-profile-information-one">
+                                    <div className="profile-page-right-container-contents-profile-information-username">
+                                        Username
+                                        <span>@ {userDetails.username}</span>
                                     </div>
-                                    <div className="profile-page-right-container-contents-profilepic-change">
-                                        <i className="fa-solid fa-camera"></i> Pilih Foto
+                                    <div className="profile-page-right-container-contents-profile-information-name">
+                                        Name
+                                        <span>{userDetails.fullName}</span>
                                     </div>
-                                </label>
-                            </div>
-                            <div className="profile-page-right-container-contents-profile-information-one">
-                                <div className="profile-page-right-container-contents-profile-information-username">
-                                    Username
-                                    <span>@thielem</span>
+                                    <div className="profile-page-right-container-contents-profile-information-dateofbirth">
+                                        Tanggal Lahir
+                                        <span>{userDetails.birthDate}</span>
+                                    </div>
+                                    <div className="profile-page-right-container-contents-profile-information-gender">
+                                        Jenis Kelamin
+                                        <span>{userDetails.gender}</span>
+                                    </div>
                                 </div>
-                                <div className="profile-page-right-container-contents-profile-information-name">
-                                    Name
-                                    <span>Thierry Widyatama Azhari</span>
+                                <div className="profile-page-right-container-contents-profile-information-two">
+                                    <div className="profile-page-right-container-contents-profile-information-university">
+                                        Perguruan Tinggi
+                                        <span>{userDetails.institution}</span>
+                                    </div>
+                                    <div className="profile-page-right-container-contents-profile-information-email">
+                                        Email
+                                        <span>{userDetails.email}</span>
+                                    </div>
+                                    <div className="profile-page-right-container-contents-profile-information-phone">
+                                        No. Telp
+                                        <span>{userDetails.phoneNumber}</span>
+                                    </div>
+                                    <div className="profile-page-right-container-contents-profile-information-space">
+                                        
+                                    </div>
                                 </div>
-                                <div className="profile-page-right-container-contents-profile-information-dateofbirth">
-                                    Tanggal Lahir
-                                    <span>11 April 2009</span>
-                                </div>
-                                <div className="profile-page-right-container-contents-profile-information-gender">
-                                    Jenis Kelamin
-                                    <span>Laki-laki</span>
-                                </div>
-                            </div>
-                            <div className="profile-page-right-container-contents-profile-information-two">
-                                <div className="profile-page-right-container-contents-profile-information-university">
-                                    Perguruan Tinggi
-                                    <span>Universitas Dian Nuswantoro</span>
-                                </div>
-                                <div className="profile-page-right-container-contents-profile-information-email">
-                                    Email
-                                    <span>111047821132@mhs.dinus.ac.id</span>
-                                </div>
-                                <div className="profile-page-right-container-contents-profile-information-phone">
-                                    No. Telp
-                                    <span>088706540719</span>
-                                </div>
-                                <div className="profile-page-right-container-contents-profile-information-space">
-                                    
-                                </div>
-                            </div>
+                                </>
+                            ) : (
+                                <p>Loading...</p>
+                            )}
                         </div>
 
                         <div className="profile-page-right-container-edit-contents">
@@ -162,9 +201,9 @@ function Profile() {
                                 </div>
                             </div>
                         </div>
-
-
-                        
+                        <div className="profile-logout-button">
+                            <button onClick={handleLogout}>Keluar</button>
+                        </div>
                     </div>
                 </div>
             </div>

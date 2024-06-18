@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { db } from "./components/Firebase";
+import { getDoc, doc } from "firebase/firestore";
 import Carts from './pages/Carts'
 import Checkout from './pages/Checkout'
 import Main from './pages/Main'
@@ -25,66 +28,132 @@ import SignUpNonStudent from './pages/SignUpNonStudent'
 import SignUpOption from './pages/SignUpOption'
 import SignUpStudent from './pages/SignUpStudent'
 import Navbar1 from './components/Navbar1'
-import Navbar2 from './components/Navbar2'
+import Navbar2 from './components/Navbar2';
 import Footer from './components/Footer'
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './App.css'
-
-// Layout Components
-const MainLayout = () => (
-  <div>
-    <Navbar1 />
-      <Outlet />  {/* Render the child routes here */}
-    <Footer />
-  </div>
-);
-
-const AuthLayout = () => (
-  <div>
-    <Outlet /> {/* Render the child routes here */}
-  </div>
-);
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+    return unsubscribe;
+  }, []);
+
+// ProtectedRoute Component
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const location = useLocation();
+  const [userRole, setUserRole] = useState(null);
+  const auth = getAuth();
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (auth.currentUser) {
+        const userDocRef = doc(db, "Users", auth.currentUser.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          setUserRole(userDocSnap.data().role || 'normal'); 
+        }
+      }
+    };
+
+    fetchUserRole();
+  }, [auth.currentUser]);
+
+  if (!auth.currentUser) {
+    return <Navigate to="/signin" state={{ from: location }} replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    return <Navigate to="/" replace />; 
+  }
+
+  return children;
+};
+
+  const NavbarConditional = () => {
+    const location = useLocation();
+
+    return (
+      location.pathname.match(/\/(signin|signupnonstudent|signupoption|signupstudent)/) 
+        ? null  
+        : (user ? <Navbar2 /> : <Navbar1 />)  
+    );
+  };
+
+  const FooterConditional = () => {
+    const location = useLocation();
+
+    return (
+      location.pathname.match(/\/(signin|signupnonstudent|signupoption|signupstudent)/) 
+        ? null 
+        : <Footer />
+    );
+  };
+
   return (
     <BrowserRouter>
       <div>
+        <NavbarConditional />
         <Routes>
+          {/* Public Routes */}
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signupnonstudent" element={<SignUpNonStudent />} />
+          <Route path="/signupoption" element={<SignUpOption />} />
+          <Route path="/signupstudent" element={<SignUpStudent />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/productdetails" element={<ProductDetails />} />
+          <Route path="/recommended-products" element={<Recommended />} />
+          <Route path="/recommended-services" element={<RecommendedService />} />
+          <Route path="/search-product" element={<Search />} />
+          <Route path="/search-service" element={<SearchService />} />
 
-          {/* Authentication Routes (No Navbar/Footer) */}
-          <Route element={<AuthLayout />}>
-            <Route path='/signin' element={<SignIn />} />
-            <Route path='/signupnonstudent' element={<SignUpNonStudent />} />
-            <Route path='/signupoption' element={<SignUpOption />} />
-            <Route path='/signupstudent' element={<SignUpStudent />} />
-          </Route>
+          {/* Protected Routes (Normal Users) */}
+          <Route path="/cart" element={<ProtectedRoute><Carts /></ProtectedRoute>} />
+          <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+          <Route path="/myorders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
+          <Route path="/myorders-processing" element={<ProtectedRoute><MyOrdersProcessing /></ProtectedRoute>} />
+          <Route path="/myorders-sent" element={<ProtectedRoute><MyOrdersSent /></ProtectedRoute>} />
+          <Route path="/myorders-complete" element={<ProtectedRoute><MyOrdersComplete /></ProtectedRoute>} />
+          <Route path="/myorders-cancelled" element={<ProtectedRoute><MyOrdersCancelled /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/address" element={<ProtectedRoute><Address /></ProtectedRoute>} />
+          <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
 
-          {/* All Other Routes (With Navbar/Footer) */}
-          <Route element={<MainLayout />}>
-            <Route path='/' element={<Main />} />
-            <Route path='/cart' element={<Carts />} />
-            <Route path='/checkout' element={<Checkout />} />
-            <Route path='/myorders' element={<MyOrders />} />
-            <Route path='/myorders-processing' element={<MyOrdersProcessing />} />
-            <Route path='/myorders-sent' element={<MyOrdersSent />} />
-            <Route path='/myorders-complete' element={<MyOrdersComplete />} />
-            <Route path='/myorders-cancelled' element={<MyOrdersCancelled />} />
-            <Route path='/productdetails' element={<ProductDetails />} />
-            <Route path='/profile' element={<Profile />} />
-            <Route path='/address' element={<Address />} />
-            <Route path='/mybusiness' element={<MyBusiness />} />
-            <Route path='/my-business-catalog' element={<MyBusinessCatalog />} />
-            <Route path='/my-business-statistics' element={<MyBusinessStatistics />} />
-            <Route path='/recommended-products' element={<Recommended />} />
-            <Route path='/recommended-services' element={<RecommendedService />} />
-            <Route path='/search-product' element={<Search />} />
-            <Route path='/search-service' element={<SearchService />} />
-            <Route path='/review' element={<Review />} />
-            <Route path='/addproduct' element={<AddProduct />} />
-            <Route path='/addservice' element={<AddService />} />
-          </Route>
+          {/* Protected Routes (Student Users Only) */}
+          <Route 
+            path="/mybusiness" 
+            element={<ProtectedRoute allowedRoles={['student']}><MyBusiness /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/my-business-catalog" 
+            element={<ProtectedRoute allowedRoles={['student']}><MyBusinessCatalog /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/my-business-statistics" 
+            element={<ProtectedRoute allowedRoles={['student']}><MyBusinessStatistics /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/addproduct" 
+            element={<ProtectedRoute allowedRoles={['student']}><AddProduct /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/addservice" 
+            element={<ProtectedRoute allowedRoles={['student']}><AddService /></ProtectedRoute>} 
+          />
+
+          {/* <Route path="*" element={<Navigate to={isLoggedIn ? '/' : '/signin'} />} /> */}
 
         </Routes>
+        <ToastContainer />
+        <FooterConditional /> 
       </div>
     </BrowserRouter>
   );
