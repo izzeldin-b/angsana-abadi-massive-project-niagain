@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../assets/styles/add-product.css';
 import ScrollToTop from '../components/ScrollToTop';
+import { auth } from "../components/Firebase"
 
 const AddProduct = () => {
 
@@ -60,9 +61,13 @@ const AddProduct = () => {
             formData.append('image', file);
         }
 
+        const idToken = await auth.currentUser.getIdToken();
+
         try {
-            await axios.post('http://localhost:5000/add-product', formData);
-            navigate('/mybusiness');
+            await axios.post('http://localhost:5000/add-product', formData, {
+                headers: { Authorization: idToken },
+            });
+            navigate('/my-business-catalog');
         } catch (err) {
             // Log error details for debugging
             if (err.response) {
@@ -128,13 +133,13 @@ const AddProduct = () => {
                             <div className="addproduct-page-right-container-form-type-buttons">
                                 <Link to="/addproduct" style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <div className="addproduct-page-right-container-product" id='selected-choice-add'>
-                                        <i class="fa-solid fa-box"></i>
+                                        <i className="fa-solid fa-box"></i>
                                         Produk
                                     </div>
                                 </Link>
                                 <Link to="/addservice" style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <div className="addproduct-page-right-container-service">
-                                        <i class="fa-solid fa-wrench"></i>
+                                        <i className="fa-solid fa-wrench"></i>
                                         Jasa
                                     </div>
                                 </Link>
@@ -152,7 +157,7 @@ const AddProduct = () => {
                             <div className="addproduct-page-right-container-form-header">
                                 Deskripsi Produk
                             </div>
-                            <textarea rows="7" placeholder="Berikan Deskripsi Produk" onChange={handleChange} name="product_description" spellcheck="false"/>
+                            <textarea rows="7" placeholder="Berikan Deskripsi Produk" onChange={handleChange} name="product_description" spellCheck="false"/>
                         </div>
 
                         <div className="addproduct-page-right-container-form-variants">

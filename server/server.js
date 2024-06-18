@@ -2,8 +2,42 @@ require('dotenv').config(); // Load environment variables first
 
 const express = require("express");
 const path = require("path");
-const mysql = require("mysql"); // Group core modules together
+const mysql = require("mysql");
 const cors = require("cors");
+const admin = require("firebase-admin");
+
+// Firebase Admin SDK Configuration
+admin.initializeApp({
+    credential: admin.credential.cert({
+        type: process.env.FIREBASE_TYPE,
+        project_id: process.env.FIREBASE_PROJECT_ID,
+        private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+        private_key: process.env.FIREBASE_PRIVATE_KEY,
+        client_email: process.env.FIREBASE_CLIENT_EMAIL,
+        client_id: process.env.FIREBASE_CLIENT_ID,
+        auth_uri: process.env.FIREBASE_AUTH_URI,
+        token_uri: process.env.FIREBASE_TOKEN_URI,
+        auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+        client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL,
+        universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN
+    }),
+});
+
+async function authenticateUser(req, res, next) {
+    const idToken = req.headers.authorization;
+
+    if (!idToken) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    try {
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        req.user = { uid: decodedToken.uid };
+        next();
+    } catch (error) {
+        return res.status(401).json({ error: "Invalid token" });
+    }
+}
 
 // Cloudinary Setup
 const cloudinary = require('cloudinary').v2;
@@ -123,13 +157,13 @@ app.get("/search-products", (req, res) => {
 });
 
 //  Add New Product
-app.post('/add-product', upload.single('image'), async (req, res) => {
+app.post('/add-product', authenticateUser, upload.single('image'), async (req, res) => {
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
     const imageUrl = req.file.path;
 
-    const q = "INSERT INTO products (`image_link`, `name`, `price`, `product_description`, `product_condition`, `weight`, `stock`, `product_variation` ) VALUES (?)";
+    const q = "INSERT INTO products (`image_link`, `name`, `price`, `product_description`, `product_condition`, `weight`, `stock`, `product_variation`, `firebase_user_id` ) VALUES (?)";
     const values = [
         imageUrl,
         req.body.name,
@@ -139,6 +173,7 @@ app.post('/add-product', upload.single('image'), async (req, res) => {
         req.body.weight,
         req.body.stock,
         req.body.product_variation,
+        req.user.uid,
     ];
 
     db.query(q, [values], (err, data) => {
@@ -188,7 +223,7 @@ app.post('/register-user', async (req, res) => {
 
         const currentDate = new Date();
 
-        const q = "INSERT INTO users (firebase_user_id, date_created) VALUES (?, ?)";
+        const q = "INSERT INTO users (firebase_user_id) VALUES (?)";
         const values = [uid, currentDate];
 
         db.query(q, values, (err, data) => {

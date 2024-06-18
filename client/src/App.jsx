@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { db } from "./components/Firebase";
 import { getDoc, doc } from "firebase/firestore";
@@ -35,6 +35,40 @@ import './App.css'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const AuthContext = createContext({
+  user: null,
+  userRole: null,
+  isLoading: true,
+});
+
+// AuthProvider Component
+function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
+      setUser(user);
+      if (user) {
+        const userDocSnap = await getDoc(doc(db, "Users", user.uid));
+        if (userDocSnap.exists()) {
+          setUserRole(userDocSnap.data().role || 'normal');
+        }
+      }
+      setIsLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, userRole, isLoading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -47,36 +81,32 @@ function App() {
   }, []);
 
 // ProtectedRoute Component
-const ProtectedRoute = ({ children, allowedRoles }) => {
+function ProtectedRoute({ children, allowedRoles }) {
+  const { user, userRole, isLoading } = useContext(AuthContext);
   const location = useLocation();
-  const [userRole, setUserRole] = useState(null);
-  const auth = getAuth();
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      if (auth.currentUser) {
-        const userDocRef = doc(db, "Users", auth.currentUser.uid);
-        const userDocSnap = await getDoc(userDocRef);
+  if (isLoading) {
+    return (
+      <div className="spinner-container">
+        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="spinner">
+          <path 
+            d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
+          />
+        </svg>
+      </div>
+    );
+  }
 
-        if (userDocSnap.exists()) {
-          setUserRole(userDocSnap.data().role || 'normal'); 
-        }
-      }
-    };
-
-    fetchUserRole();
-  }, [auth.currentUser]);
-
-  if (!auth.currentUser) {
+  if (!user) {
     return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    return <Navigate to="/" replace />; 
+    return <Navigate to="/" replace />;
   }
 
   return children;
-};
+}
 
   const NavbarConditional = () => {
     const location = useLocation();
@@ -99,6 +129,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   };
 
   return (
+    <AuthProvider>
     <BrowserRouter>
       <div>
         <NavbarConditional />
@@ -156,6 +187,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         <FooterConditional /> 
       </div>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 
