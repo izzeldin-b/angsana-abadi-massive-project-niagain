@@ -17,7 +17,6 @@ function ProductDetails() {
         <div>
             <div className="product-details-page">
                 <div className="product-details-frame-container">
-
                     <div className="product-details-container">
                         <div className="product-details-image-container">
                             <img src="src\assets\images\bag-product.jpg" alt="" />
