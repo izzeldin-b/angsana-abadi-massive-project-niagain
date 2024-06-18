@@ -1,4 +1,4 @@
-HOW TO INITIALIZE AND RUN
+**HOW TO INITIALIZE AND RUN**
 
 1. Run "npm install" on both 'server' and 'client' root directories
 2. Create a .env file inside the root directory of the 'server' directory
