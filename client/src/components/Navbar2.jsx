@@ -49,7 +49,7 @@ function Navbar2() {
                         {/* First Row */}
                         <div className="nav-element" id="logo">
                             <Link to="/">
-                                <img src="src\assets\images\LOGO-WHITE.png" alt="LOGO-WHITE" id="logo-image"/>
+                                <img src="https://res.cloudinary.com/dddmczggg/image/upload/v1718785344/niagain-ecommerce/all-assets/LOGO-WHITE_ao4r68.png" id="logo-image"/>
                             </Link>
                         </div>
 

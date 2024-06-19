@@ -1,10 +1,61 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import '../assets/styles/my-business.css'
 import { Link } from 'react-router-dom'
-import LineChart from '../components/LineChart'
 import ScrollToTop from '../components/ScrollToTop'
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from "../components/Firebase";
+import { doc, getDoc } from "firebase/firestore";
+import axios from 'axios';
 
 function MyBusinessCatalog() {
+    const [products, setProducts] = useState([]);
+    const [firebaseUserId, setFirebaseUserId] = useState(null);
+    const [userDetails, setUserDetails] = useState(null);
+
+    const fetchUserData = async () => {
+        auth.onAuthStateChanged(async (user) => {
+            // console.log(user); REMOVE LATER, CONTAINS SENSITIVE DATA
+        
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setUserDetails(docSnap.data());
+                // console.log(docSnap.data()); REMOVE LATER, CONTAINS SENSITIVE DATA
+            } else {
+                console.log("User is not logged in");
+            }
+        });
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+    const fetchProducts = async (userId) => {
+        try {
+            const response = await axios.get('http://localhost:5000/products-by-user', {
+                params: { firebaseUserId: userId }
+            });
+            setProducts(response.data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userId = user.uid;
+                setFirebaseUserId(userId); 
+                fetchProducts(userId); 
+            } else {
+                setFirebaseUserId(null);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
+
     return (
         <div>
             <ScrollToTop />
@@ -12,7 +63,15 @@ function MyBusinessCatalog() {
                 <div className="business-page-left-container"> {/* <!-- LEFT CONTAINER --> */}
                     <div className="business-page-left-container-wrapper">
                         <div className="business-page-left-container-header">
-                            <span><i className="fas fa-user-circle"></i></span>angsana_abadi
+                            {userDetails ? (
+                                <>
+                                    <span><i className="fas fa-user-circle"></i></span>{userDetails.username}
+                                </>
+                            ) : (
+                                <>
+                                    <span><i className="fas fa-user-circle"></i></span>
+                                </>
+                            )}
                         </div>
                         <div className="business-page-left-container-menus">
                             <i className="fas fa-user-circle"></i>
@@ -59,7 +118,7 @@ function MyBusinessCatalog() {
                         <div className="myorders-page-right-container-header-parts" id="myorders-page-right-container-header-parts-selected">
                             <Link to="/my-business-catalog" style={{ textDecoration: 'none', color: 'inherit' }} >
                                 <div className="myorders-page-right-container-header-parts-wrapper">
-                                    Catalog
+                                    Katalog
                                 </div>
                             </Link>
                         </div>
@@ -79,63 +138,36 @@ function MyBusinessCatalog() {
                         </div>
                         <div className="business-page-right-container-product-list">
 
-                            <div className="business-page-right-container-product-individual"> {/* <!-- COMPONENT --> */}
-                                <div className="business-page-right-container-product-individual-count">
-                                    1
-                                </div>
-                                <div className="business-page-right-container-product-individual-image">
-                                    <img src="src\assets\images\bag-product.png" alt=""/>
-                                </div>
-                                <div className="business-page-right-container-product-individual-desc-container">
-                                    <div className="business-page-right-container-product-individual-name">
-                                        Tas Kulit Buaya Berkepala Tiga - Original BHS Dibuat Langsung Dari Pegunungan Asli
+                            {products.map((product, index) => (
+                                <div className="business-page-right-container-product-individual" key={product.product_id}>
+                                    <div className="business-page-right-container-product-individual-count">
+                                        {index + 1}
                                     </div>
-                                    <div className="business-page-right-container-product-individual-stock">
-                                        Stok: 5
+                                    <div className="business-page-right-container-product-individual-image">
+                                        <img src={product.image_link} alt={product.name}/>
                                     </div>
-                                    <div className="business-page-right-container-product-individual-price">
-                                        Rp 68.799
+                                    <div className="business-page-right-container-product-individual-desc-container">
+                                        <div className="business-page-right-container-product-individual-name">
+                                            {product.name}
+                                        </div>
+                                        <div className="business-page-right-container-product-individual-stock">
+                                            Stok: {product.stock}
+                                        </div>
+                                        <div className="business-page-right-container-product-individual-price">
+                                            Rp {product.price.toLocaleString('id-ID')}
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="business-page-right-container-product-individual-type-and-edit-container">
-                                    <div className="business-page-right-container-product-individual-type">
-                                        <i className="fa-solid fa-box"></i>
-                                        <span>Produk</span>
-                                    </div>
-                                        <button className="business-page-right-container-product-individual-edit">
-                                            Edit
-                                        </button>
-                                </div>
-                            </div> {/* <!-- COMPONENT END --> */}
-
-                            <div className="business-page-right-container-product-individual"> {/* <!-- COMPONENT --> */}
-                                <div className="business-page-right-container-product-individual-count">
-                                    2
-                                </div>
-                                <div className="business-page-right-container-product-individual-image">
-                                    <img src="src\assets\images\ppt-jasa.png" alt=""/>
-                                </div>
-                                <div className="business-page-right-container-product-individual-desc-container">
-                                    <div className="business-page-right-container-product-individual-name">
-                                        PPT - Jasa Pembuatan Power Point Wrap
-                                    </div>
-                                    <div className="business-page-right-container-product-individual-stock">
-                                        Status: Aktif
-                                    </div>
-                                    <div className="business-page-right-container-product-individual-price">
-                                        Rp 68.799
+                                    <div className="business-page-right-container-product-individual-type-and-edit-container">
+                                        <div className="business-page-right-container-product-individual-type">
+                                            <i className="fa-solid fa-box"></i>
+                                            <span>Produk</span>
+                                        </div>
+                                            <button className="business-page-right-container-product-individual-edit">
+                                                Edit
+                                            </button>
                                     </div>
                                 </div>
-                                <div className="business-page-right-container-product-individual-type-and-edit-container">
-                                    <div className="business-page-right-container-product-individual-type">
-                                        <i className="fa-solid fa-wrench"></i>
-                                        <span>Jasa</span>
-                                    </div>
-                                        <button className="business-page-right-container-product-individual-edit">
-                                            Edit
-                                        </button>
-                                </div>
-                            </div> {/* <!-- COMPONENT END --> */}
+                            ))}
 
                         </div>
                         <Link to="/addproduct" style={{ textDecoration: 'none', color: 'inherit' }}>

@@ -84,6 +84,52 @@ db.connect(err => {
 
 // API Endpoints
 
+// Get Single Product by ID
+app.get("/product/:productId", (req, res) => {
+    const productId = req.params.productId;
+
+    // Sanitize input (to prevent SQL injection)
+    const sanitizedProductId = db.escape(productId);
+    
+    const q = `SELECT * FROM products WHERE product_id = ${sanitizedProductId}`;
+
+    db.query(q, (err, data) => {
+        if (err) {
+            console.error("Error fetching product:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        if (data.length === 0) {
+            return res.status(404).json({ error: "Product not found" });
+        }
+
+        return res.json(data[0]);
+    });
+});
+
+// Get all products for a specific user ID
+app.get('/products-by-user', (req, res) => {
+    const firebaseUserId = req.query.firebaseUserId;
+
+    if (!firebaseUserId) {
+        return res.status(400).json({ error: 'Firebase User ID is required.' });
+    }
+
+    const query = `
+        SELECT * FROM products 
+        WHERE firebase_user_id = ?
+        ORDER BY date_added ASC
+    `;
+
+    db.query(query, [firebaseUserId], (err, results) => {
+        if (err) {
+            console.error('Error fetching products:', err);
+            return res.status(500).json({ error: 'Internal server error.' });
+        }
+        res.json(results);
+    });
+});
+
 // Top Products Main Page
 app.get("/top-product-main", (req, res) => {
     const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";

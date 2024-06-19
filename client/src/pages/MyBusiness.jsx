@@ -1,10 +1,34 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import '../assets/styles/my-business.css'
 import { Link } from 'react-router-dom'
-import LineChart from '../components/LineChart'
 import ScrollToTop from '../components/ScrollToTop'
+import { auth, db } from "../components/Firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 function MyBusiness() {
+
+    const [selectedOrderStatus, setSelectedOrderStatus] = useState("");
+    const [userDetails, setUserDetails] = useState(null);
+
+    const fetchUserData = async () => {
+        auth.onAuthStateChanged(async (user) => {
+            // console.log(user); REMOVE LATER, CONTAINS SENSITIVE DATA
+        
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setUserDetails(docSnap.data());
+                // console.log(docSnap.data()); REMOVE LATER, CONTAINS SENSITIVE DATA
+            } else {
+                console.log("User is not logged in");
+            }
+        });
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
     return (
         <div>
             <ScrollToTop />
@@ -12,7 +36,15 @@ function MyBusiness() {
                 <div className="business-page-left-container"> {/* <!-- LEFT CONTAINER --> */}
                     <div className="business-page-left-container-wrapper">
                         <div className="business-page-left-container-header">
-                            <span><i className="fas fa-user-circle"></i></span>angsana_abadi
+                            {userDetails ? (
+                                <>
+                                    <span><i className="fas fa-user-circle"></i></span>{userDetails.username}
+                                </>
+                            ) : (
+                                <>
+                                    <span><i className="fas fa-user-circle"></i></span>
+                                </>
+                            )}
                         </div>
                         <div className="business-page-left-container-menus">
                             <i className="fas fa-user-circle"></i>
@@ -58,7 +90,7 @@ function MyBusiness() {
                         <div className="myorders-page-right-container-header-parts">
                             <Link to="/my-business-catalog" style={{ textDecoration: 'none', color: 'inherit' }}>
                                 <div className="myorders-page-right-container-header-parts-wrapper">
-                                    Catalog
+                                    Katalog
                                 </div>
                             </Link>
                         </div>
@@ -139,7 +171,7 @@ function MyBusiness() {
                                         Status Pesanan
                                     </div>
                                     <div className='order-status-dropdown-wrapper'>
-                                        <select value="" className='order-status-dropdown'>
+                                        <select value={selectedOrderStatus} onChange={(e) => setSelectedOrderStatus(e.target.value)} className="order-status-dropdown"> 
                                             <option value="Belum Bayar">Belum Bayar</option>
                                             <option value="Sedang Dikemas">Sedang Dikemas</option>
                                             <option value="Dikirim">Dikirim</option>

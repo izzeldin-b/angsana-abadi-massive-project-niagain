@@ -60,7 +60,12 @@ function Search() {
                             </div>
                             <div className="search-product-list-wrapper">
                                 {products.map(product => (
-                                    <div className="product-item-container" key={product.id}> {/* ADD NEW PRODUCT */}
+                                    <Link 
+                                        to={`/product-details/${product.product_id}`}
+                                        key={product.product_id}
+                                        className="product-item-container" 
+                                        style={{ textDecoration: 'none', color: 'inherit' }}
+                                    >
                                         <div className="product-item-image">
                                             <img src={product.image_link} alt={product.name} />
                                         </div>
@@ -78,7 +83,7 @@ function Search() {
                                                 <i className="fa fa-star fa-xs"></i> {product.rating} | {product.sold_amount} Terjual
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                         </div> 

@@ -1,35 +1,55 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../assets/styles/product-details.css'
-import { Link } from 'react-router-dom'
-import { initializeCounter, cleanUpCounter } from '../assets/scripts/counter';
+import { useParams } from 'react-router-dom';
+
 
 function ProductDetails() {
 
+    const { productId } = useParams();
+    const [product, setProduct] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
-        initializeCounter();
-    
-        return () => {
-            cleanUpCounter(); 
-        };
-    }, []); 
+        setIsLoading(true);
+        setError(null);
+
+        async function fetchProductDetails() {
+            try {
+                const response = await fetch(`http://localhost:5000/product/${productId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                setProduct(data);
+            } catch (error) {
+                console.error('Error fetching product details:', error);
+                setError(error.message); 
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchProductDetails();
+    }, [productId]);
 
     return (
         <div>
+            {product && (
             <div className="product-details-page">
                 <div className="product-details-frame-container">
                     <div className="product-details-container">
                         <div className="product-details-image-container">
-                            <img src="src\assets\images\bag-product.jpg" alt="" />
+                            <img src={product.image_link} alt={product.name} /> 
                         </div>
                         <div className="product-details-actions-container">
                             <div className="product-details-actions-title">
-                                Tas Kulit Buaya Berkepala Tiga - Original BHS
-                                Dibuat Langsung Dari Pegunungan Asli
+                                {product.name}
                             </div>
 
                             <div className="product-details-actions-statistics-container">
                                 <div className="product-details-actions-statistics-ratings">
-                                    4.6 &nbsp;
+                                    {product.rating} &nbsp;
                                     <span>
                                         <i className="fa-solid fa-star"></i>
                                         <i className="fa-solid fa-star"></i>
@@ -42,20 +62,20 @@ function ProductDetails() {
                                     <span>1.7RB</span> Penilaian
                                 </div>
                                 <div className="product-details-actions-statistics-soldamount">
-                                    <span>2.1RB</span> Terjual
+                                    <span>{product.sold_amount}</span> Terjual
                                 </div>
                             </div>
 
                             <div className="product-details-actions-price">
-                                Rp 66.999
+                                Rp {product.price.toLocaleString('id-ID')}
                             </div>
 
                             <div className="product-details-actions-variants-container">
                                 <div className="product-details-actions-variants-header">
-                                    Pilih Warna:
+                                    Variasi: {product.product_variation}
                                 </div>
                                 <div className="product-details-actions-variants-buttons">
-                                    <button id='variant-selected' value="">Putih</button>
+                                    <button value="">Putih</button>
                                     <button value="">Hitam</button>
                                     <button value="">Abu-Abu</button>
                                     <button value="">Biru</button>
@@ -73,7 +93,7 @@ function ProductDetails() {
                                     <input type="hidden" id="countValue" name="countValue" value="1"/> 
                                 </div>
                                 <div className="product-details-actions-quantity-stock">
-                                    tersisa 1100 buah
+                                    tersisa {product.stock} buah
                                 </div>
                             </div>
 
@@ -98,19 +118,9 @@ function ProductDetails() {
                             Detail
                         </div>
                         <div className="product-description">
-                            Product Highlight<br/>
-                            🎒 Kompartemen utama & saku laptop full lapis busa tebal<br/>
-                            🎒 Air flow padded foam di bagian punggung & tali ransel <br/>
-                            🎒 USB A port <br/>
-                            🎒 Trolley sleeve <br/>
-                            🎒 Penarik ritsleting dari metal dengan double proses <br/>
-                            🎒 List faux leather & rubber <br/>
-                            <br/>
-                            General<br/>
-                            🎒 SKU Utama: 114005905 <br/>
-                            <br/>
-                            Spec<br/>
-                            🎒 Dimensi: 10x15<br/><br/><br/>
+                            {product.product_description}
+                            <br></br>
+                            <br></br>
                             <button>Lihat Selengkapnya</button>
                         </div>
                     </div>
@@ -224,6 +234,7 @@ function ProductDetails() {
                     </div>
                 </div>
             </div>
+            )}
         </div>
     )
 }

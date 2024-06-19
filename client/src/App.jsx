@@ -140,7 +140,8 @@ function ProtectedRoute({ children, allowedRoles }) {
           <Route path="/signupoption" element={<SignUpOption />} />
           <Route path="/signupstudent" element={<SignUpStudent />} />
           <Route path="/" element={<Main />} />
-          <Route path="/productdetails" element={<ProductDetails />} />
+          <Route path="/product-details" element={<ProductDetails />} />
+          <Route path="/product-details/:productId" element={<ProductDetails />} />
           <Route path="/recommended-products" element={<Recommended />} />
           <Route path="/recommended-services" element={<RecommendedService />} />
           <Route path="/search-product" element={<Search />} />
