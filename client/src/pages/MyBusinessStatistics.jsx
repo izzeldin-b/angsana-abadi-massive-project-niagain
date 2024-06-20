@@ -61,7 +61,7 @@ function MyBusinessStatistics() {
                         <div className="business-page-left-container-menus" id="selected">
                             <i className="fa fa-usd"></i>&nbsp;Niaga Saya
                         </div>
-                        <div className="business-page-left-container-menus">
+                        {/* <div className="business-page-left-container-menus">
                             <i className="fa fa-comment"></i> Chat
                         </div>
                         <div className="business-page-left-container-menus">
@@ -69,7 +69,7 @@ function MyBusinessStatistics() {
                         </div>
                         <div className="business-page-left-container-menus">
                             <i className="fa fa-line-chart"></i> Reputasi
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

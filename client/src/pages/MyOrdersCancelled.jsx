@@ -1,15 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import '../assets/styles/my-orders.css'
+import { auth, db } from "../components/Firebase";
+import { doc, getDoc } from "firebase/firestore";
+import ScrollToTop from '../components/ScrollToTop'
 
 function MyOrdersCancelled() {
+
+    const [userDetails, setUserDetails] = useState(null);
+
+    const fetchUserData = async () => {
+        auth.onAuthStateChanged(async (user) => {
+        
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setUserDetails(docSnap.data());
+            } else {
+                console.log("User is not logged in");
+            }
+        });
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
     return (
         <div>
+            <ScrollToTop />
             <div className="myorders-page">
                 <div className="myorders-page-left-container"> {/* LEFT CONTAINER */}
                     <div className="myorders-page-left-container-wrapper">
                         <div className="myorders-page-left-container-header">
-                            <span><i className="fas fa-user-circle"></i></span>angsana_abadi
+                            {userDetails ? (
+                                <>
+                                    <span><i className="fas fa-user-circle"></i></span>{userDetails.username}
+                                </>
+                            ) : (
+                                <>
+                                    <span><i className="fas fa-user-circle"></i></span>
+                                </>
+                            )}
                         </div>
                         <div className="myorders-page-left-container-menus">
                             <i className="fas fa-user-circle"></i>
@@ -26,7 +58,7 @@ function MyOrdersCancelled() {
                                 &nbsp;Niaga Saya
                             </Link>
                         </div>
-                        <div className="myorders-page-left-container-menus">
+                        {/* <div className="myorders-page-left-container-menus">
                             <i className="fa fa-comment"></i> Chat
                         </div>
                         <div className="myorders-page-left-container-menus">
@@ -34,7 +66,7 @@ function MyOrdersCancelled() {
                         </div>
                         <div className="myorders-page-left-container-menus">
                             <i className="fa fa-line-chart"></i> Reputasi
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

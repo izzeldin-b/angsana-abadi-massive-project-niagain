@@ -190,50 +190,26 @@
     display: flex;
 }
 
-#decrement{
-    border: none;
-    min-width: 2rem;
+.product-details-actions-quantity-button input[type="number"]{
+    border: 2px solid lightgrey;
     min-height: 2.2rem;
-    max-width: 2rem;
     max-height: 2.2rem;
+    min-width: 5.2rem;
+    max-width: 5.2rem;
+    border-radius: 10px;
+    padding-left: 0rem;
+    box-sizing: border-box;
+    text-align: center;
     font-family: 'Figtree', sans-serif;
-    background-color: #FFF;
-    border: 1px solid lightgrey;
-    border-right: none;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
     color: #989898;
-    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    font-weight: 500;
 }
 
-#count{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: 1px solid lightgrey;
-    border-bottom: 1px solid lightgrey;
-    color: #989898;
-    min-width: 1.4rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    /* background-color: red; */
-    background-color: #FFF;
-}
-
-#increment{
-    border: none;
-    min-width: 2rem;
-    min-height: 2.2rem;
-    max-width: 2rem;
-    max-height: 2.2rem;
-    font-family: 'Figtree', sans-serif;
-    background-color: #FFF;
-    border: 1px solid lightgrey;
-    border-left: none;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    color: #989898;
-    cursor: pointer;
+.product-details-actions-quantity-button input[type="number"]:focus{
+    outline: none;
+    border-color: #5F2EEB;
+    color: #5f2eeb;
 }
 
 .product-details-actions-quantity-stock{

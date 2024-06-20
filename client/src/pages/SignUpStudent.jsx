@@ -37,7 +37,13 @@ function SignUpStudent() {
                     phoneNumber: pnumber,
                     gender: gender,
                     institution: institution,
-                    role: "student"
+                    role: "student",
+                    address_label:"",
+                    address_phone:"",
+                    address_full:"",
+                    address_notes:"",
+                    address_receiver:"",
+                    image_link: ""
                 });
 
                 try {

@@ -270,3 +270,7 @@ body{
     background-color: #4C23CE; 
 }
 
+.custom-error-toast {
+    font-family: 'Figtree', sans-serif;
+    font-weight: bold;
+}

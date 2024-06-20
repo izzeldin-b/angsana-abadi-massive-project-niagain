@@ -35,7 +35,13 @@ function SignUpNonStudent() {
                     birthDate: bdate,
                     phoneNumber: pnumber,
                     role: "normal",
-                    gender: gender
+                    gender: gender,
+                    address_label:"",
+                    address_phone:"",
+                    address_full:"",
+                    address_notes:"",
+                    address_receiver:"",
+                    image_link: ""
                 });
 
                 try {

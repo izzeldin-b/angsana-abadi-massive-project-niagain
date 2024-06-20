@@ -1,25 +1,79 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
+import { auth } from "../components/Firebase"
 import '../assets/styles/cart.css'
-import CartItem from '../components/CartItem'
-import CartPerStore from '../components/CartPerStore'
+import axios from 'axios';
 
 function Carts() {
+    const [cartItems, setCartItems] = useState([]); 
+    const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+    useEffect(() => {
+        async function fetchCartItems() {
+            try {
+                const idToken = await auth.currentUser.getIdToken();
+
+                const response = await axios.get('http://localhost:5000/get-user-cart', {
+                    headers: { Authorization: idToken } 
+                });
+
+                if (response.status === 200) {
+                    const data = response.data; 
+                    setCartItems(data);
+                } else {
+                    console.error('Error fetching cart data:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching cart data:', error);
+            }
+        }
+
+        fetchCartItems(); 
+    }, []);
+
     return (
         <div>
         <div className="cart-page">
             <div className="cart-page-left-container">
                 <div className="cart-page-left-container-header">
                     <div className="cart-page-left-container-header-name">
-                        <input type="checkbox" className="green-checkbox"/>
-                        Pilih Semua <span>&nbsp;[3]</span>
+                        {/* <input type="checkbox" className="green-checkbox"/> */}
+                        Penjual: <span>Izzeldin</span>
                     </div>
-                    <div className="bold-purple">
+                    <button>
                         Hapus
-                    </div>
+                    </button>
                 </div>
                 <div className="cart-page-left-container-list">
-                    <CartPerStore/>
+                    <div className="cart-page-left-container-list-individual">
+
+                        {cartItems.map((item, index) => (
+                            <div className="cart-page-left-container-list-individual-details-container" key={item.cart_item_id}>
+                                <div className="cart-left-container-list-individual-counter">
+                                    {index + 1}
+                                </div>
+                                <div className="cart-left-container-list-individual-photo">
+                                    <img src={item.image_link} alt={item.name}/>
+                                </div>
+                                <div className="cart-left-container-list-individual-description">
+                                    <div className="cart-left-container-list-individual-description-text">
+                                        {item.name}
+                                        <br/>
+                                        <span>Variasi: {item.product_variation}</span>
+                                    </div>
+                                </div>
+                                <div className="cart-left-container-list-individual-quantity">
+                                    <div className="cart-left-container-list-individual-quantity-price">
+                                        Rp {item.price.toLocaleString('id-ID')}
+                                    </div>
+                                    <div className="quantity-button-container">
+                                        <span><i className="fas fa-trash-alt"></i></span>
+                                        Kuantitas: {item.quantity}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -30,7 +84,7 @@ function Carts() {
                     </div>
                     <div className="cart-page-right-container-totalprice">
                         Total
-                        <span>Rp 200.670</span>
+                        <span>Rp {totalPrice.toLocaleString('id-ID')}</span>
                     </div>
 
                     <Link to="/checkout" style={{ textDecoration: 'none', color: 'inherit' }}>

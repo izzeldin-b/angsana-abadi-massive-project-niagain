@@ -17,6 +17,7 @@
     border: 1px solid #989898;
     /* min-width: 50rem; */
     max-width: 45rem;
+    width: 100%;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
@@ -202,4 +203,8 @@
 .address-page-right-container-address-savebutton button:hover{
     background-color: #5028c0;
     transition: 0.2s ease-in-out;
+}
+
+.batal-button {
+    color: red; 
 }

@@ -88,7 +88,7 @@ function MyBusinessCatalog() {
                         <div className="business-page-left-container-menus" id="selected">
                             <i className="fa fa-usd"></i>&nbsp;Niaga Saya
                         </div>
-                        <div className="business-page-left-container-menus">
+                        {/* <div className="business-page-left-container-menus">
                             <i className="fa fa-comment"></i> Chat
                         </div>
                         <div className="business-page-left-container-menus">
@@ -96,7 +96,7 @@ function MyBusinessCatalog() {
                         </div>
                         <div className="business-page-left-container-menus">
                             <i className="fa fa-line-chart"></i> Reputasi
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -139,7 +139,12 @@ function MyBusinessCatalog() {
                         <div className="business-page-right-container-product-list">
 
                             {products.map((product, index) => (
-                                <div className="business-page-right-container-product-individual" key={product.product_id}>
+                                <Link 
+                                    className="business-page-right-container-product-individual" 
+                                    key={product.product_id}
+                                    to={`/product-details/${product.product_id}`}
+                                    style={{ textDecoration: 'none', color: 'inherit' }}
+                                >
                                     <div className="business-page-right-container-product-individual-count">
                                         {index + 1}
                                     </div>
@@ -166,7 +171,7 @@ function MyBusinessCatalog() {
                                                 Edit
                                             </button>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
 
                         </div>

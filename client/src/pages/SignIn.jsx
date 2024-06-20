@@ -3,7 +3,8 @@ import '../assets/styles/sign-in.css'
 import { Link } from 'react-router-dom'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../components/Firebase";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function SignIn() {
 
@@ -22,14 +23,23 @@ function SignIn() {
                 console.log("User logged in Successfully");
                 window.location.href = "/";
                 toast.success("User logged in Successfully", {
-                    position: "top-center",
+                    position: "bottom-left",
+                    style: {
+                        backgroundColor: '#5f2eeb', 
+                        color: '#fff', 
+                    },
                 }
             );
         } catch (error) {
             console.log(error.message);
         
             toast.error(error.message, {
-                position: "bottom-center",
+                position: "bottom-left",
+                className: 'custom-error-toast',
+                style: {
+                    backgroundColor: '#5F2EEB',
+                    color: '#fff',
+                },
             });
         }
     };

@@ -285,6 +285,132 @@ app.post('/register-user', async (req, res) => {
     }
 });
 
+// Add To Cart
+app.post('/add-to-cart', authenticateUser, async (req, res) => {
+    const { productId, quantity } = req.body;
+
+    // DELETE LATER
+    console.log("Received add-to-cart request:", {
+        productId: productId,
+        quantity: quantity
+    }); 
+
+    try {
+        // 1. Get Firebase UID from the authenticated user
+        const firebaseUserId = req.user.uid;
+
+        // 2. Input Validation
+        if (!productId || !quantity || quantity <= 0) {
+            return res.status(400).json({ error: 'Invalid product ID or quantity' });
+        }
+        const sanitizedProductId = db.escape(productId);
+        
+        // 3. Fetch Product Details (to get seller Firebase User UID)
+        const productQuery = `SELECT firebase_user_id as seller_id FROM products WHERE product_id = ${sanitizedProductId}`;
+        const [productData] = await new Promise((resolve, reject) => {
+            db.query(productQuery, (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+
+        if (!productData) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        const sellerId = productData.seller_id;
+        
+        // 4. Check if the buyer is the seller of the product
+        if (firebaseUserId === sellerId) {
+            return res.status(400).json({ error: 'Cannot add your own product to the cart' });
+        }
+
+        // 5. Check/Create Cart for User
+        const cartQuery = `
+            SELECT cart_id, seller_firebase_user_id 
+            FROM carts 
+            WHERE buyer_firebase_user_id = ?
+        `;
+        const [cartData] = await new Promise((resolve, reject) => {
+            db.query(cartQuery, [firebaseUserId], (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+        
+        let cartId;
+        if (cartData) {
+            // Existing Cart: Check Single-Seller Rule
+            if (cartData.seller_firebase_user_id && cartData.seller_firebase_user_id !== sellerId) {
+                return res.status(400).json({ error: 'Cart already contains items from another seller' });
+            } else {
+                cartId = cartData.cart_id;
+            }
+        } else {
+            // New Cart: Create it with Seller ID
+            const insertCartQuery = 'INSERT INTO carts (buyer_firebase_user_id, seller_firebase_user_id) VALUES (?, ?)';
+            const [insertResult] = await new Promise((resolve, reject) => {
+                db.query(insertCartQuery, [firebaseUserId, sellerId], (err, results) => {
+                    if (err) reject(err);
+                    else resolve(results);
+                });
+            });
+            cartId = insertResult.insertId; 
+        }
+
+        // 5. Add Item to Cart
+        const insertItemQuery = 'INSERT INTO cartItems (cart_id, product_id, quantity) VALUES (?, ?, ?)';
+        await new Promise((resolve, reject) => {
+            db.query(insertItemQuery, [cartId, productId, quantity], (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+
+        res.status(200).json({ message: 'Product added to cart successfully' });
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Get Cart Contents (Specific User)
+app.get('/get-user-cart', authenticateUser, async (req, res) => {
+    try {
+        const firebaseUserId = req.user.uid;
+        // console.log(firebaseUserId);
+
+        // 1. Fetch User's Cart Items
+        const cartItemsQuery = `
+            SELECT
+                ci.cart_item_id,
+                ci.quantity,
+                p.image_link,  
+                p.product_id, 
+                p.name, 
+                p.product_variation, 
+                p.price,
+                p.firebase_user_id
+            FROM carts c
+            JOIN cartItems ci ON c.cart_id = ci.cart_id
+            JOIN products p ON ci.product_id = p.product_id
+            WHERE c.buyer_firebase_user_id = ?
+        `;
+
+        const cartItems = await new Promise((resolve, reject) => {
+            db.query(cartItemsQuery, [firebaseUserId], (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+
+        res.status(200).json(cartItems); 
+
+    } catch (error) {
+        console.error('Error fetching cart contents:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 // Start the Server
 app.listen(port, () => {
     console.log(`listening`); 

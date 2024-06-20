@@ -3,19 +3,18 @@ import { Link } from 'react-router-dom'
 import '../assets/styles/profile.css'
 import { auth, db } from "../components/Firebase";
 import { doc, getDoc } from "firebase/firestore";
+import ScrollToTop from '../components/ScrollToTop'
 
 function Profile() {
     const [userDetails, setUserDetails] = useState(null);
 
     const fetchUserData = async () => {
         auth.onAuthStateChanged(async (user) => {
-            // console.log(user);
         
             const docRef = doc(db, "Users", user.uid);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 setUserDetails(docSnap.data());
-                // console.log(docSnap.data());
             } else {
                 console.log("User is not logged in");
             }
@@ -38,11 +37,20 @@ function Profile() {
 
     return (
         <div>
+            <ScrollToTop />
             <div className="profile-page">
                 <div className="profile-page-left-container"> {/* LEFT CONTAINER */}
                     <div className="profile-page-left-container-wrapper">
                         <div className="profile-page-left-container-header">
-                            <span><i className="fas fa-user-circle"></i></span>angsana_abadi
+                            {userDetails ? (
+                                    <>
+                                        <span><i className="fas fa-user-circle"></i></span>{userDetails.username}
+                                    </>
+                                ) : (
+                                    <>
+                                        <span><i className="fas fa-user-circle"></i></span>
+                                    </>
+                            )}
                         </div>
                         <div className="profile-page-left-container-menus" id="selected">
                             <i className="fas fa-user-circle"></i> Profil
@@ -59,7 +67,7 @@ function Profile() {
                                 &nbsp;Niaga Saya
                             </Link>
                         </div>
-                        <div className="profile-page-left-container-menus">
+                        {/* <div className="profile-page-left-container-menus">
                             <i className="fa fa-comment"></i> Chat
                         </div>
                         <div className="profile-page-left-container-menus">
@@ -67,7 +75,7 @@ function Profile() {
                         </div>
                         <div className="profile-page-left-container-menus">
                             <i className="fa fa-line-chart"></i> Reputasi
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -99,52 +107,52 @@ function Profile() {
                         <div className="profile-page-right-container-contents">
                             {userDetails ? (
                                 <>
-                                <div className="profile-page-right-container-contents-profilepic-container">
-                                    <input type="file" id="imageUpload" className="hiddenInput" accept=".jpg, .jpeg, .png" />
-                                    <label htmlFor="imageUpload">
-                                        <div className="profile-page-right-container-contents-profilepic">
-                                            <img src="src\assets\images\profile-pic.jpg" alt="Profile Picture"/>
+                                    <div className="profile-page-right-container-contents-profilepic-container">
+                                        <input type="file" id="imageUpload" className="hiddenInput" accept=".jpg, .jpeg, .png" />
+                                        <label htmlFor="imageUpload">
+                                            <div className="profile-page-right-container-contents-profilepic">
+                                                <img src="src\assets\images\profile-pic.jpg" alt="Profile Picture"/>
+                                            </div>
+                                            <div className="profile-page-right-container-contents-profilepic-change">
+                                                <i className="fa-solid fa-camera"></i> Pilih Foto
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div className="profile-page-right-container-contents-profile-information-one">
+                                        <div className="profile-page-right-container-contents-profile-information-username">
+                                            Username
+                                            <span>@ {userDetails.username}</span>
                                         </div>
-                                        <div className="profile-page-right-container-contents-profilepic-change">
-                                            <i className="fa-solid fa-camera"></i> Pilih Foto
+                                        <div className="profile-page-right-container-contents-profile-information-name">
+                                            Name
+                                            <span>{userDetails.fullName}</span>
                                         </div>
-                                    </label>
-                                </div>
-                                <div className="profile-page-right-container-contents-profile-information-one">
-                                    <div className="profile-page-right-container-contents-profile-information-username">
-                                        Username
-                                        <span>@ {userDetails.username}</span>
+                                        <div className="profile-page-right-container-contents-profile-information-dateofbirth">
+                                            Tanggal Lahir
+                                            <span>{userDetails.birthDate}</span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-gender">
+                                            Jenis Kelamin
+                                            <span>{userDetails.gender}</span>
+                                        </div>
                                     </div>
-                                    <div className="profile-page-right-container-contents-profile-information-name">
-                                        Name
-                                        <span>{userDetails.fullName}</span>
+                                    <div className="profile-page-right-container-contents-profile-information-two">
+                                        <div className="profile-page-right-container-contents-profile-information-university">
+                                            Perguruan Tinggi
+                                            <span>{userDetails.institution}</span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-email">
+                                            Email
+                                            <span>{userDetails.email}</span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-phone">
+                                            No. Telp
+                                            <span>{userDetails.phoneNumber}</span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-space">
+                                            
+                                        </div>
                                     </div>
-                                    <div className="profile-page-right-container-contents-profile-information-dateofbirth">
-                                        Tanggal Lahir
-                                        <span>{userDetails.birthDate}</span>
-                                    </div>
-                                    <div className="profile-page-right-container-contents-profile-information-gender">
-                                        Jenis Kelamin
-                                        <span>{userDetails.gender}</span>
-                                    </div>
-                                </div>
-                                <div className="profile-page-right-container-contents-profile-information-two">
-                                    <div className="profile-page-right-container-contents-profile-information-university">
-                                        Perguruan Tinggi
-                                        <span>{userDetails.institution}</span>
-                                    </div>
-                                    <div className="profile-page-right-container-contents-profile-information-email">
-                                        Email
-                                        <span>{userDetails.email}</span>
-                                    </div>
-                                    <div className="profile-page-right-container-contents-profile-information-phone">
-                                        No. Telp
-                                        <span>{userDetails.phoneNumber}</span>
-                                    </div>
-                                    <div className="profile-page-right-container-contents-profile-information-space">
-                                        
-                                    </div>
-                                </div>
                                 </>
                             ) : (
                                 <p>Loading...</p>
