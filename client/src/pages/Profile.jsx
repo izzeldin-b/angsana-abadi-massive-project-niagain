@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from 'react-router-dom'
 import '../assets/styles/profile.css'
 import { auth, db } from "../components/Firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import ScrollToTop from '../components/ScrollToTop'
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import White from '/images/white.jpg'
 
 function Profile() {
     const [userDetails, setUserDetails] = useState(null);
@@ -13,7 +15,9 @@ function Profile() {
     const [pnumber, setPnumber] = useState("");
     const [gender, setGender] = useState("");
     const [bdate, setBdate] = useState("");
-    const [imagelink, setImageLink] = useState("");
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
+    const fileInputRef = useRef(null);
 
     const handleUserUpdate = async (e) => {
         e.preventDefault(); 
@@ -49,6 +53,72 @@ function Profile() {
             toast.error("Gagal ubah alamat", { position: "bottom-left" });
         }
     };
+
+    const handleFileChange = (event) => {
+        const selectedFile = event.target.files[0];
+        setSelectedFile(event.target.files[0]);
+
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(selectedFile);
+        } else {
+            setImagePreview(null);
+        }
+    };
+    
+    const handleUpload = async () => {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('upload_preset', 'niagain-image-upload-preset'); // Important!
+        formData.append('folder', 'niagain-ecommerce/all-assets'); // Specify the folder
+
+        try {
+            const response = await axios.post(
+                'https://api.cloudinary.com/v1_1/dddmczggg/image/upload', 
+                formData
+            );
+
+            const generatedImageLink = response.data.secure_url; 
+            
+            await updateImageLinkInFirestore(generatedImageLink); 
+
+            
+        } catch (error) {
+                console.error('Upload error:', error);
+                // Handle errors (display to user, etc.)
+            }
+    };
+
+    async function updateImageLinkInFirestore(imageLink) {
+        const user = auth.currentUser;
+        if (!user) {
+            console.error("User not logged in.");
+            return;
+        }
+    
+        const userDocRef = doc(db, "Users", user.uid);
+    
+        try {
+            await updateDoc(userDocRef, {
+                image_link: imageLink 
+            });
+    
+            console.log("Image link updated in Firestore:", imageLink);
+            toast.success("Profile Picture Berhasil Diubah", {
+                position: "bottom-left",
+                className: 'custom-error-toast',
+                style: {
+                    backgroundColor: '#5f2eeb', 
+                    color: '#fff',
+                },
+            });
+        } catch (error) {
+            console.error("Firestore update error:", error);
+        }
+    }
 
     const toggleEditMode = () => {
         setIsEditing(!isEditing);
@@ -154,22 +224,34 @@ function Profile() {
                             </div>
                         </div>
 
-                        {/* <div className="profile-page-right-container-header">
-                            <span>Profil Saya</span>
-                            Kelola informasi profil Anda untuk mengontrol, melindungi, dan mengamankan akun
-                        </div> */}
-
                         <div className="profile-page-right-container-contents">
                             {userDetails ? (
                                 <>
                                     <div className="profile-page-right-container-contents-profilepic-container">
-                                        <input type="file" id="imageUpload" className="hiddenInput" accept=".jpg, .jpeg, .png" />
+                                        <input 
+                                            type="file" 
+                                            id="imageUpload" 
+                                            className="hiddenInput" 
+                                            accept=".jpg, .jpeg, .png" 
+                                            onChange={handleFileChange} 
+                                            ref={fileInputRef}
+                                        />
                                         <label htmlFor="imageUpload">
                                             <div className="profile-page-right-container-contents-profilepic">
-                                                <img src="src\assets\images\profile-pic.jpg" alt="Profile Picture"/>
+                                                {imagePreview ? ( // If there's a preview, show it
+                                                    <img src={imagePreview} alt="Profile Picture" />
+                                                    ) : ( // Otherwise, show the initial image
+                                                    <img src={userDetails.image_link} alt="Profile Picture" />
+                                                )}
                                             </div>
                                             <div className="profile-page-right-container-contents-profilepic-change">
-                                                <i className="fa-solid fa-camera"></i> Pilih Foto
+                                                <div className="profile-pic-select">
+                                                    Pilih Foto
+                                                </div>
+                                                <button className="profile-pic-upload" onClick={handleUpload}>
+                                                    <i className="fa-solid fa-upload"/>
+                                                    Unggah
+                                                </button>
                                             </div>
                                         </label>
                                     </div>
@@ -217,10 +299,16 @@ function Profile() {
                                         <input type="file" id="imageUpload" className="hiddenInput" accept=".jpg, .jpeg, .png" />
                                         <label htmlFor="imageUpload">
                                             <div className="profile-page-right-container-contents-profilepic">
-                                                <img src="src\assets\images\profile-pic.jpg" alt="Profile Picture"/>
+                                                <img src={White} alt="" />
                                             </div>
                                             <div className="profile-page-right-container-contents-profilepic-change">
-                                                <i className="fa-solid fa-camera"></i> Pilih Foto
+                                                <div className="profile-pic-select">
+                                                    Pilih Foto
+                                                </div>
+                                                <button className="profile-pic-upload" onClick={handleUpload}>
+                                                    <i className="fa-solid fa-upload"/>
+                                                    Unggah
+                                                </button>
                                             </div>
                                         </label>
                                     </div>
@@ -262,12 +350,6 @@ function Profile() {
                                 </>
                             )}
                         </div>
-                        
-                        {/* <div className="toggle-profile-edit-container">
-                            <button onClick={toggleEditMode} className="toggle-profile-edit-button">
-                                {isEditing ? "Batal" : "Ubah"} 
-                            </button>
-                        </div> */}
 
                         <form onSubmit={handleUserUpdate}>
                             <div className="profile-page-right-container-edit-contents">
@@ -286,14 +368,6 @@ function Profile() {
                                             required
                                         />
                                     </div>
-                                    {/* <div className="profile-page-right-container-edit-contents-left-side-forms">
-                                        Nama
-                                        <input type="text" placeholder="Masukkan Nama Anda"/>
-                                    </div> */}
-                                    {/* <div className="profile-page-right-container-edit-contents-left-side-forms">
-                                        Email
-                                        <input type="text" placeholder="Masukkan Alamat Email Anda"/>
-                                    </div> */}
                                     <div className="profile-page-right-container-edit-contents-left-side-forms">
                                         No. Telp
                                         <input 

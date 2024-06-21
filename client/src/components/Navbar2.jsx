@@ -79,8 +79,8 @@ function Navbar2() {
                         <div className="nav-element" id="sign-in-up">
                             {userDetails ? (
                                     <>
-                                        <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                            <i className="fa-solid fa-user"/> &nbsp;&nbsp;{userDetails.username}
+                                        <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }} className='signed-in-profile-container'>
+                                            <img src={userDetails.image_link}/>{userDetails.username}
                                         </Link>
                                     </>
                             ) : (

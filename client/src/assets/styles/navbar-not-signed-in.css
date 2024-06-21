@@ -143,6 +143,20 @@ nav{
     gap: 1rem;
 }
 
+#sign-in-up img{
+    min-height: 1.7rem;
+    min-width: 1.7rem;
+    max-height: 1.7rem;
+    max-width: 1.7rem;
+    border-radius: 50%;
+}
+
+.signed-in-profile-container{
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
 .sign-in-button {
     background-color: transparent; 
     font-family: "Figtree", sans-serif;
