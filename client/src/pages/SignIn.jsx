@@ -5,6 +5,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../components/Firebase";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Logo from '/images/LOGO-PURPLE.png'
+import SignInGraphic from '/images/sign-in-graphic.jpg'
 
 function SignIn() {
 
@@ -50,13 +52,13 @@ function SignIn() {
                 <div className="sign-in-container">
                     <div className="sign-in-logo-container">
                     <Link to="/" >
-                        <img src="src\assets\images\LOGO-PURPLE.png"/>
+                        <img src={Logo}/>
                     </Link>
                     
                     </div>
                     <div className="sign-in-second-row-container">
                         <div className="sign-in-left-side-graphic">
-                            <img src="src\assets\images\sign-in-graphic.jpg"/>
+                            <img src={SignInGraphic}/>
                             <div className="sign-in-left-side-graphic-text">
                                 Jual Beli Mudah Hanya Di Niagain
                                 <span>

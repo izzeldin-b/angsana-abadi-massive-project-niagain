@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import '../assets/styles/navbar-not-signed-in.css'
 import { auth, db } from "../components/Firebase";
 import { doc, getDoc } from "firebase/firestore";
+import NavbarLogo from '/images/LOGO-WHITE.png'
 
 function Navbar2() {
 
@@ -49,7 +50,7 @@ function Navbar2() {
                         {/* First Row */}
                         <div className="nav-element" id="logo">
                             <Link to="/">
-                                <img src="https://res.cloudinary.com/dddmczggg/image/upload/v1718785344/niagain-ecommerce/all-assets/LOGO-WHITE_ao4r68.png" id="logo-image"/>
+                                <img src={NavbarLogo} id="logo-image"/>
                             </Link>
                         </div>
 

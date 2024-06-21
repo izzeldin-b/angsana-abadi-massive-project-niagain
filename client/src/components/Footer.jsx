@@ -1,6 +1,7 @@
 import React from 'react'
 import '../assets/styles/footer.css'
 import { Link } from 'react-router-dom'
+import FooterImage from '/images/LOGO-WHITE.png'
 
 function Footer() {
     return (
@@ -10,7 +11,7 @@ function Footer() {
                     <div className="footer-logo">
                         <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                             <div className="footer-logo-wrapper">
-                                <img src="src\assets\images\LOGO-WHITE.png" alt="Niagain Logo" id="footer-logo-image"/>
+                                <img src={FooterImage} alt="Niagain Logo" id="footer-logo-image"/>
                             </div>
                         </Link>
                     </div>
