@@ -18,6 +18,7 @@ function Profile() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const fileInputRef = useRef(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     const handleUserUpdate = async (e) => {
         e.preventDefault(); 
@@ -70,10 +71,15 @@ function Profile() {
     };
     
     const handleUpload = async () => {
+
+        if (isUploading) return;
+
+        setIsUploading(true);
+
         const formData = new FormData();
         formData.append('file', selectedFile);
-        formData.append('upload_preset', 'niagain-image-upload-preset'); // Important!
-        formData.append('folder', 'niagain-ecommerce/all-assets'); // Specify the folder
+        formData.append('upload_preset', 'niagain-image-upload-preset');
+        formData.append('folder', 'niagain-ecommerce/all-assets'); 
 
         try {
             const response = await axios.post(
@@ -86,9 +92,11 @@ function Profile() {
             await updateImageLinkInFirestore(generatedImageLink); 
 
             
-        } catch (error) {
+        }   catch (error) {
                 console.error('Upload error:', error);
-                // Handle errors (display to user, etc.)
+            }
+            finally {
+                setIsUploading(false); 
             }
     };
 
@@ -248,9 +256,20 @@ function Profile() {
                                                 <div className="profile-pic-select">
                                                     Pilih Foto
                                                 </div>
-                                                <button className="profile-pic-upload" onClick={handleUpload}>
-                                                    <i className="fa-solid fa-upload"/>
-                                                    Unggah
+                                                <button 
+                                                    className="profile-pic-upload" 
+                                                    onClick={handleUpload}
+                                                    disabled={isUploading}
+                                                >
+                                                    {isUploading ? (
+                                                        <>
+                                                            <i className="fa-solid fa-spinner fa-spin" /> Mengunggah... 
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <i className="fa-solid fa-upload" /> Unggah
+                                                        </>
+                                                    )}
                                                 </button>
                                             </div>
                                         </label>
