@@ -1,6 +1,8 @@
 import React from 'react'
 import '../assets/styles/sign-up-option.css'
 import { Link } from 'react-router-dom'
+import Logo from '/images/LOGO-PURPLE.png'
+import SignUpOptionGraphic from '/images/sign-up-graphic.jpg'
 
 function SignUpOption() {
     return (
@@ -9,12 +11,12 @@ function SignUpOption() {
                 <div className="sign-up-container">
                     <div className="sign-up-logo-container">
                     <Link to="/" >
-                        <img src="src\assets\images\LOGO-PURPLE.png"/>
+                        <img src={Logo}/>
                     </Link>
                     </div>
                     <div className="sign-up-second-row-container">
                         <div className="sign-up-left-side-graphic">
-                            <img src="src\assets\images\sign-up-graphic.jpg" />
+                            <img src={SignUpOptionGraphic} />
                             <div className="sign-up-left-side-graphic-text">
                                 Jual Beli Mudah Hanya Di Niagain
                                 <span>

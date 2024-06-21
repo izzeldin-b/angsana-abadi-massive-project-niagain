@@ -5,6 +5,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth, db } from "../components/Firebase";
 import { setDoc, doc } from "firebase/firestore";
+import Logo from '/images/LOGO-PURPLE.png'
+import SignUpOptionGraphic1 from '/images/sign-up-graphics-2.jpg'
 
 function SignUpStudent() {
 
@@ -81,10 +83,10 @@ function SignUpStudent() {
                     <div className="sign-up-student-left-side-graphic">
                         <div className="sign-up-student-logo-container">
                             <Link to="/" >
-                                <img src="src\assets\images\LOGO-PURPLE.png" />
+                                <img src={Logo} />
                             </Link>
                         </div>
-                        <img src="src\assets\images\sign-up-graphics-2.jpg" />
+                        <img src={SignUpOptionGraphic1} />
                         <div className="sign-up-student-left-side-graphic-text">
                             Jual Beli Mudah Hanya Di Niagain
                             <span>
