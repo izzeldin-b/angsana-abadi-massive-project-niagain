@@ -4,6 +4,7 @@ import ScrollToTop from '../components/ScrollToTop'
 import TopServiceMain from '../components/TopServiceMain'
 import PromoCarousel from '../components/PromoCarousel'
 import TopProductsMain from '../components/TopProductsMain'
+import '../assets/styles/main-page.css'
 
 function Main() {
 
