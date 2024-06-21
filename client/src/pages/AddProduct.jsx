@@ -1,14 +1,36 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../assets/styles/add-product.css';
 import ScrollToTop from '../components/ScrollToTop';
-import { auth } from "../components/Firebase"
+import { auth, db } from "../components/Firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const AddProduct = () => {
 
+    const [selectedOrderStatus, setSelectedOrderStatus] = useState("");
+    const [userDetails, setUserDetails] = useState(null);
     const [imagePreview, setImagePreview] = useState(null); // Add state for preview
     const fileInputRef = useRef(null);
+
+    const fetchUserData = async () => {
+        auth.onAuthStateChanged(async (user) => {
+            // console.log(user); REMOVE LATER, CONTAINS SENSITIVE DATA
+        
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setUserDetails(docSnap.data());
+                // console.log(docSnap.data()); REMOVE LATER, CONTAINS SENSITIVE DATA
+            } else {
+                console.log("User is not logged in");
+            }
+        });
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
     // State Management
     const [product, setProduct] = useState({
@@ -87,7 +109,15 @@ const AddProduct = () => {
                 <div className="addproduct-page-left-container"> {/* <!-- LEFT CONTAINER --> */}
                     <div className="addproduct-page-left-container-wrapper">
                         <div className="addproduct-page-left-container-header">
-                            <span><i className="fas fa-user-circle"></i></span>angsana_abadi
+                            {userDetails ? (
+                                <>
+                                    <img src={userDetails.image_link} alt=""/>{userDetails.username}
+                                </>
+                            ) : (
+                                <>
+                                    <span><i className="fas fa-user-circle"></i></span>
+                                </>
+                            )}
                         </div>
                         <div className="addproduct-page-left-container-menus">
                             <i className="fas fa-user-circle"></i> 
@@ -107,7 +137,7 @@ const AddProduct = () => {
                                 &nbsp;Niaga Saya
                             </Link>
                         </div>
-                        <div className="addproduct-page-left-container-menus">
+                        {/* <div className="addproduct-page-left-container-menus">
                             <i className="fa fa-comment"></i> Chat
                         </div>
                         <div className="addproduct-page-left-container-menus">
@@ -115,7 +145,7 @@ const AddProduct = () => {
                         </div>
                         <div className="addproduct-page-left-container-menus">
                             <i className="fa fa-line-chart"></i> Reputasi
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

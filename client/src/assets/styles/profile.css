@@ -43,6 +43,14 @@
     border-bottom: 1px solid lightgray;
 }
 
+.profile-page-left-container-header img{
+    max-width: 2rem;
+    min-width: 2rem;
+    max-height: 2rem;
+    min-height: 2rem;
+    border-radius: 50%;
+}
+
 .profile-page-left-container-header span{
     font-size: 1.7rem;
     color: #989898;

@@ -95,7 +95,7 @@ function Address() {
                         <div className="profile-page-left-container-header">
                             {userDetails ? (
                                     <>
-                                        <span><i className="fas fa-user-circle"></i></span>{userDetails.username}
+                                        <img src={userDetails.image_link} alt=""/>{userDetails.username}
                                     </>
                                 ) : (
                                     <>

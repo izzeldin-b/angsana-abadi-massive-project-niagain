@@ -1,15 +1,50 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react';
 import '../assets/styles/review.css'
+import ScrollToTop from '../components/ScrollToTop';
 import { Link } from 'react-router-dom'
+import { auth, db } from "../components/Firebase";
+import { doc, getDoc } from "firebase/firestore";
+import axios from 'axios';
 
 function Review() {
+
+    const [userDetails, setUserDetails] = useState(null);
+
+    const fetchUserData = async () => {
+        auth.onAuthStateChanged(async (user) => {
+            // console.log(user); REMOVE LATER, CONTAINS SENSITIVE DATA
+        
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setUserDetails(docSnap.data());
+                // console.log(docSnap.data()); REMOVE LATER, CONTAINS SENSITIVE DATA
+            } else {
+                console.log("User is not logged in");
+            }
+        });
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
     return (
         <div>
+            <ScrollToTop />
             <div className="review-page">
                 <div className="review-page-left-container"> {/* <!-- LEFT CONTAINER --> */}
                     <div className="review-page-left-container-wrapper">
                         <div className="review-page-left-container-header">
-                            <span><i className="fas fa-user-circle"></i></span>angsana_abadi
+                            {userDetails ? (
+                                <>
+                                    <img src={userDetails.image_link} alt=""/>{userDetails.username}
+                                </>
+                            ) : (
+                                <>
+                                    <span><i className="fas fa-user-circle"></i></span>
+                                </>
+                            )}
                         </div>
                         <div className="review-page-left-container-menus">
                             <i className="fas fa-user-circle"></i> 
@@ -29,7 +64,7 @@ function Review() {
                                 &nbsp;Niaga Saya
                             </Link>
                         </div>
-                        <div className="review-page-left-container-menus">
+                        {/* <div className="review-page-left-container-menus">
                             <i className="fa fa-comment"></i> Chat
                         </div>
                         <div className="review-page-left-container-menus">
@@ -37,7 +72,7 @@ function Review() {
                         </div>
                         <div className="review-page-left-container-menus">
                             <i className="fa fa-line-chart"></i> Reputasi
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -47,7 +82,7 @@ function Review() {
                             <div>
                                 Penjual: <span id="purple-bold">Yahai Heshender</span>
                             </div>
-                            <span id="light-grey">Pesanan ditermia: 20 April 2024, 10:09 WIB</span>
+                            <span id="light-grey">Pesanan diterima: 20 April 2024, 10:09 WIB</span>
                         </div>
                         <div className="review-page-right-container-contents">
                             <div className="review-page-right-container-contents-image">

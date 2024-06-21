@@ -169,7 +169,7 @@ function Profile() {
                         <div className="profile-page-left-container-header">
                             {userDetails ? (
                                     <>
-                                        <span><i className="fas fa-user-circle"></i></span>{userDetails.username}
+                                        <img src={userDetails.image_link} alt=""/>{userDetails.username}
                                     </>
                                 ) : (
                                     <>
@@ -241,7 +241,7 @@ function Profile() {
                                                 {imagePreview ? ( // If there's a preview, show it
                                                     <img src={imagePreview} alt="Profile Picture" />
                                                     ) : ( // Otherwise, show the initial image
-                                                    <img src={userDetails.image_link} alt="Profile Picture" />
+                                                    <img src={userDetails.image_link || White} alt="Profile Picture" />
                                                 )}
                                             </div>
                                             <div className="profile-page-right-container-contents-profilepic-change">

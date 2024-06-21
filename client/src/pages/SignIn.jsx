@@ -30,8 +30,7 @@ function SignIn() {
                         backgroundColor: '#5f2eeb', 
                         color: '#fff', 
                     },
-                }
-            );
+                });
         } catch (error) {
             console.log(error.message);
         
