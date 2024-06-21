@@ -4,9 +4,64 @@ import '../assets/styles/profile.css'
 import { auth, db } from "../components/Firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import ScrollToTop from '../components/ScrollToTop'
+import { toast } from 'react-toastify';
 
 function Profile() {
     const [userDetails, setUserDetails] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [uname, setUsername] = useState("");
+    const [pnumber, setPnumber] = useState("");
+    const [gender, setGender] = useState("");
+    const [bdate, setBdate] = useState("");
+    const [imagelink, setImageLink] = useState("");
+
+    const handleUserUpdate = async (e) => {
+        e.preventDefault(); 
+        try {
+        // 1. Get the User's UID:
+        const user = auth.currentUser; 
+
+        if (!user) {
+            // Handle the case where the user is not logged in
+            console.error("User not logged in.");
+            return;
+        }
+        const userDocRef = doc(db, "Users", user.uid);
+    
+        // 2. Gather Data from Form
+        const updatedAddressData = {
+            username: uname,
+            phoneNumber: pnumber,
+            gender: gender,
+            birthDate: bdate,
+        };
+    
+        // 3. Update in Firestore
+        await updateDoc(userDocRef, updatedAddressData);
+
+        console.log("User's Prpfile Updated Successfully.");
+        sessionStorage.setItem("addressUpdateToast", "Detail Profil Berhasil Diubah");
+
+        window.location.reload();
+
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Gagal ubah alamat", { position: "bottom-left" });
+        }
+    };
+
+    const toggleEditMode = () => {
+        setIsEditing(!isEditing);
+    };
+
+    useEffect(() => {
+        // Check for toast message in session storage on initial render
+        const toastMessage = sessionStorage.getItem("addressUpdateToast");
+        if (toastMessage) {
+            toast.success(toastMessage, { position: "bottom-left" });
+            sessionStorage.removeItem("addressUpdateToast"); 
+        }
+    }, []);
 
     const fetchUserData = async () => {
         auth.onAuthStateChanged(async (user) => {
@@ -150,7 +205,9 @@ function Profile() {
                                             <span>{userDetails.phoneNumber}</span>
                                         </div>
                                         <div className="profile-page-right-container-contents-profile-information-space">
-                                            
+                                            <button onClick={toggleEditMode} className="toggle-profile-edit-button">
+                                                {isEditing ? "Batal" : "Ubah"} 
+                                            </button>
                                         </div>
                                     </div>
                                 </>
@@ -205,57 +262,106 @@ function Profile() {
                                 </>
                             )}
                         </div>
+                        
+                        {/* <div className="toggle-profile-edit-container">
+                            <button onClick={toggleEditMode} className="toggle-profile-edit-button">
+                                {isEditing ? "Batal" : "Ubah"} 
+                            </button>
+                        </div> */}
 
-                        <div className="profile-page-right-container-edit-contents">
-                            <div className="profile-page-right-container-edit-contents-left-side">
-                                <div className="profile-page-right-container-edit-contents-left-side-forms">
-                                    Username
-                                    <input type="text" placeholder="Masukkan Username Anda"/>
+                        <form onSubmit={handleUserUpdate}>
+                            <div className="profile-page-right-container-edit-contents">
+                                <div className="profile-page-right-container-edit-contents-left-side">
+                                    <div className="profile-page-right-container-edit-contents-left-side-forms">
+                                        Username
+                                        <input 
+                                            type="text" 
+                                            placeholder="Masukkan Username Anda"
+                                            onChange={(e) => setUsername(e.target.value)}
+                                            style={{ 
+                                                color: isEditing ? "black" : "gray", 
+                                                backgroundColor: isEditing ? "white" : "rgba(239, 239, 239, 0.3)" // Background change
+                                            }} 
+                                            disabled={!isEditing}
+                                            required
+                                        />
+                                    </div>
+                                    {/* <div className="profile-page-right-container-edit-contents-left-side-forms">
+                                        Nama
+                                        <input type="text" placeholder="Masukkan Nama Anda"/>
+                                    </div> */}
+                                    {/* <div className="profile-page-right-container-edit-contents-left-side-forms">
+                                        Email
+                                        <input type="text" placeholder="Masukkan Alamat Email Anda"/>
+                                    </div> */}
+                                    <div className="profile-page-right-container-edit-contents-left-side-forms">
+                                        No. Telp
+                                        <input 
+                                            type="tel" 
+                                            placeholder="Masukkan No. Telp Anda"
+                                            onChange={(e) => setPnumber(e.target.value)}
+                                            style={{ 
+                                                color: isEditing ? "black" : "gray", 
+                                                backgroundColor: isEditing ? "white" : "rgba(239, 239, 239, 0.3)" // Background change
+                                            }}
+                                            disabled={!isEditing}
+                                            required
+                                        />
+                                    </div>
+                                    
                                 </div>
-                                <div className="profile-page-right-container-edit-contents-left-side-forms">
-                                    Nama
-                                    <input type="text" placeholder="Masukkan Nama Anda"/>
-                                </div>
-                                <div className="profile-page-right-container-edit-contents-left-side-forms">
-                                    Email
-                                    <input type="text" placeholder="Masukkan Alamat Email Anda"/>
-                                </div>
-                                <div className="profile-page-right-container-edit-contents-left-side-forms">
-                                    No. Telp
-                                    <input type="text" placeholder="Masukkan No. Telp Anda"/>
-                                </div>
-                                
-                            </div>
 
-                            <div className="profile-page-right-container-edit-contents-right-side">
-                                <div className="profile-page-right-container-edit-contents-right-side-wrapper">
-                                    <div className="profile-page-right-container-edit-contents-right-side-forms-wrapper">
-                                        <div className="profile-page-right-container-edit-contents-right-side-forms">
-                                            Jenis Kel
-                                        </div>
-                                        <div className="profile-page-right-container-edit-contents-right-side-forms-input">
-                                            <label>
-                                                <input type="radio" name="gender" value="laki-laki" className="purple-radio-button"/> Laki-Laki
-                                                &nbsp;
-                                                <input type="radio" name="gender" value="perempuan" className="purple-radio-button"/> Perempuan
-                                            </label>
-                                        </div>
-                                        <div className="profile-page-right-container-edit-contents-right-side-forms">
-                                            Tanggal Lahir
-                                        </div>
-                                        <div className="profile-page-right-container-edit-contents-right-side-forms-input">
-                                            <input type="date" placeholder="Masukkan Tanggal Lahir Anda"/>
-                                        </div>
+                                <div className="profile-page-right-container-edit-contents-right-side">
+                                    <div className="profile-page-right-container-edit-contents-left-side-forms">
+                                        Jenis Kelamin
+                                        <select 
+                                            value={gender} 
+                                            onChange={(e) => setGender(e.target.value)} 
+                                            className="profile-page-right-container-edit-contents-gender"
+                                            style={{ 
+                                                color: isEditing ? "black" : "gray", 
+                                                backgroundColor: isEditing ? "white" : "rgba(239, 239, 239, 0.3)" // Background change
+                                            }}
+                                            disabled={!isEditing}
+                                            required
+                                        >
+                                        {gender === '' && (
+                                            <option value="" disabled>Pilih Jenis Kelamin</option>
+                                            )}
+                                            <option value="Pria">Pria</option>
+                                            <option value="Wanita">Wanita</option>
+                                            <option value=" ">Pilih untuk tidak menjawab</option>
+                                        </select>
                                     </div>
-                                    <div className="profile-page-right-container-edit-contents-right-side-button">
-                                        <button>Simpan Perubahan</button>
-                                        <div className="profile-page-right-container-edit-contents-right-side-agreement">
-                                            Dengan menyimpan perubahan, pastikan data yang semua anda masukkan valid.
-                                        </div>
+                                    <div className="profile-page-right-container-edit-contents-left-side-forms">
+                                        Tanggal Lahir
+                                        <input 
+                                            type="date"
+                                            onChange={(e) => setBdate(e.target.value)}
+                                            style={{ 
+                                                color: isEditing ? "black" : "gray", 
+                                                backgroundColor: isEditing ? "white" : "rgba(239, 239, 239, 0.3)" 
+                                            }}
+                                            disabled={!isEditing}
+                                            required
+                                        />
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div className="profile-page-right-container-edit-contents-button">
+                                <button 
+                                    type="submit"
+                                    style={{ 
+                                        backgroundColor: isEditing ? "#5F2EEB" : "lightgray",
+                                    }} 
+                                    disabled={!isEditing}
+                                >
+                                Simpan Perubahan</button>
+                                <div className="profile-page-right-container-edit-contents-agreement">
+                                    Dengan menyimpan perubahan, pastikan data yang semua anda masukkan valid.
+                                </div>
+                            </div>
+                        </form>
                         <div className="profile-logout-button">
                             <button onClick={handleLogout}>Keluar</button>
                         </div>

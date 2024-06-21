@@ -268,7 +268,7 @@
     /* background-color: rgb(118, 157, 170); */
     min-height: 25%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -283,13 +283,15 @@
     padding-top: 1.5rem;
     /* background-color: orange; */
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     border-top: 1px solid lightgray;
+    gap: 1rem;
 }
 
 .profile-page-right-container-edit-contents-left-side{
     /* background-color: aquamarine; */
-    width: 48%;
+    max-width: 50%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -321,78 +323,11 @@
     color: black;
     background-color: #fff;
     font-family: 'Figtree', sans-serif;
+    transition: 0.2s ease-in-out;
 }
 
-.profile-page-right-container-edit-contents-left-side-forms input[type="text"]:focus {
-    outline: none;       
-    border-color: #aaa;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
-}
-
-.profile-page-right-container-edit-contents-right-side{
-    /* background-color: rgb(225, 199, 255); */
-    width: 48%;
-    display: flex;
-    flex-direction: column;
-}
-
-.profile-page-right-container-edit-contents-right-side-wrapper{
-    /* background-color: yellow; */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* padding: 1rem; */
-    height: 100%;
-}
-
-.profile-page-right-container-edit-contents-right-side-forms-wrapper{
-    /* background-color: red; */
-    display: flex;
-    flex-wrap: wrap;
-    height: 50%;
-}
-
-.profile-page-right-container-edit-contents-right-side-forms{
-    /* background-color: turquoise; */
-    height: 50%;
-    width: 30%;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    color: #989898;
-    font-weight: 500;
-}
-
-.profile-page-right-container-edit-contents-right-side-forms-input{
-    width: 70%;
-    height: 50%;
-    /* background-color: #932132; */
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    color: #989898;
-}
-
-.purple-radio-button{
-    accent-color: #5F2EEB;
-}
-
-.profile-page-right-container-edit-contents-right-side-button{
-    /* background-color: antiquewhite; */
-    height: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    color: #989898;
-    font-weight: 500;
-    gap: 0.7rem;
-}
-
-.profile-page-right-container-edit-contents-right-side-forms-input input[type="text"] {
-    max-width: 16rem;
+.profile-page-right-container-edit-contents-left-side-forms input[type="tel"] {
+    max-width: 17rem;
     width: 100%;
     height: auto; 
     padding: 0.9rem 1rem;
@@ -402,34 +337,45 @@
     color: black;
     background-color: #fff;
     font-family: 'Figtree', sans-serif;
+    transition: 0.2s ease-in-out;
 }
 
-.profile-page-right-container-edit-contents-right-side-forms-input input[type="date"] {
-    max-width: 16rem;
+.profile-page-right-container-edit-contents-left-side-forms input[type="text"]:focus {
+    outline: none;
+    border-color: #5F2EEB;
+}
+
+.profile-page-right-container-edit-contents-left-side-forms input[type="date"]:focus {
+    outline: none;
+    border-color: #5F2EEB;
+}
+
+.profile-page-right-container-edit-contents-left-side-forms input[type="tel"]:focus {
+    outline: none;
+    border-color: #5F2EEB;
+}
+
+.profile-page-right-container-edit-contents-right-side{
+    /* background-color: rgb(225, 199, 255); */
+    max-width: 50%;
     width: 100%;
-    height: auto; 
-    padding: 0.9rem 1rem;
-    border: 1px solid lightgray;
-    border-radius: 12px;    
-    font-size: 0.9rem;   
-    color: #989898;
-    background-color: #fff;
-    font-family: 'Figtree', sans-serif;
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    gap: 1rem;
 }
 
-.profile-page-right-container-edit-contents-right-side-forms-input input[type="text"]:focus {
-    outline: none;       
-    border-color: #aaa;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+.profile-page-right-container-edit-contents-button{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 2rem;
 }
 
-.profile-page-right-container-edit-contents-right-side-forms-input input[type="date"]:focus {
-    outline: none;       
-    border-color: #aaa;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
-}
-
-.profile-page-right-container-edit-contents-right-side-button button{
+.profile-page-right-container-edit-contents-button button{
+    max-width: 25rem;
     width: 100%;
     background-color: #5F2EEB;
     color: white;
@@ -442,14 +388,15 @@
     border: none; 
     border-radius: 12px;
     cursor: pointer;
+    transition: 0.2s ease-in-out;
 }
 
-.profile-page-right-container-edit-contents-right-side-agreement{
-    width: 80%;
+.profile-page-right-container-edit-contents-agreement{
     font-size: 0.8rem;
     color: #989898;
-    text-align: center;
     display: flex;
+    max-width: 20rem;
+    text-align: center;
     /* background-color: yellow; */
 }
 
@@ -470,5 +417,51 @@
     font-weight: bold;
     border-radius: 10px;
     background-color: rgb(224, 66, 66);
+    cursor: pointer;
+}
+
+.profile-page-right-container-edit-contents-gender{
+    max-width: 17rem;
+    width: 100%;
+    height: auto; 
+    padding: 0.9rem 1rem;
+    border: 1px solid lightgray;
+    border-radius: 12px;    
+    font-size: 0.9rem;   
+    color: black;
+    background-color: #fff;
+    font-family: 'Figtree', sans-serif;
+}
+
+.profile-page-right-container-edit-contents-left-side-forms input[type="date"] {
+    max-width: 17rem;
+    width: 100%;
+    height: auto; 
+    padding: 0.9rem 1rem;
+    border: 1px solid lightgray;
+    border-radius: 12px;    
+    font-size: 0.9rem;   
+    color: black;
+    background-color: #fff;
+    font-family: 'Figtree', sans-serif;
+    transition: 0.2s ease-in-out;
+    box-sizing: border-box;
+    transition: 0.2s ease-in-out;
+}
+
+
+.toggle-profile-edit-container{
+    display: flex;
+    justify-content: center;
+    /* background-color: red; */
+}
+
+.toggle-profile-edit-button{
+    border: none;
+    background: none;
+    font-family: 'Figtree', sans-serif;
+    font-weight: bold;
+    color: #5F2EEB;
+    font-size: 1rem;
     cursor: pointer;
 }
