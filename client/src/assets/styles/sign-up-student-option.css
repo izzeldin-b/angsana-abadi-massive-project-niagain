@@ -460,9 +460,9 @@ body{
 
 @media (max-width: 1359px) {
     .sign-up-student-left-side-graphic {
-      display: none; 
+        display: none; 
     }
     .sign-up-student-right-side-form-input-fields{
         justify-content: center;
     }
-  }
+}

@@ -152,3 +152,11 @@ body{
     color: white;
 }
 
+@media (max-width: 831px) {
+    .sign-up-left-side-graphic {
+        display: none; 
+    }
+    .sign-up-second-row-container{
+        justify-content: center;
+    }
+}

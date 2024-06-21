@@ -361,3 +361,13 @@ body{
     /* background-color: red; */
     justify-content: space-between;
 }
+
+@media (max-width: 831px) {
+    .sign-up-non-student-left-side-graphic {
+        display: none; 
+    }
+    .sign-up-non-student-second-row-container{
+        justify-content: center;
+        margin-top: 2rem;
+    }
+}

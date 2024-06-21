@@ -47,6 +47,8 @@ body{
 .sign-in-second-row-container{
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    /* background-color: red; */
 }
 
 .sign-in-left-side-graphic{
@@ -273,4 +275,13 @@ body{
 .custom-error-toast {
     font-family: 'Figtree', sans-serif;
     font-weight: bold;
+}
+
+@media (max-width: 831px) {
+    .sign-in-left-side-graphic {
+        display: none; 
+    }
+    .sign-in-second-row-container{
+        justify-content: center;
+    }
 }
