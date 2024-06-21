@@ -65,7 +65,7 @@ function Navbar1() {
                         <div className="nav-element" id="notification-below-searchbar"><i className="fas fa-bell"></i><span>&nbsp;&nbsp;Notifikasi</span></div>
                         <div className="nav-element" id="help-below-searchbar"><i className="fas fa-question-circle"></i><span>&nbsp;&nbsp;Bantuan</span></div>
                         <div className="nav-element" id="empty-section-2"></div>
-                        <div className="nav-element" id="send-location"><i className="fas fa-map-marker-alt"></i> Dikirim ke <b>Jakarta Selatan</b></div>
+                        <div className="nav-element" id="send-location"></div>
                     </div>
                 </nav>
             </header>

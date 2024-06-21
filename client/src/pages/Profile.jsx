@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import '../assets/styles/profile.css'
 import { auth, db } from "../components/Firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import ScrollToTop from '../components/ScrollToTop'
 
 function Profile() {
@@ -155,7 +155,54 @@ function Profile() {
                                     </div>
                                 </>
                             ) : (
-                                <p>Loading...</p>
+                                <>
+                                    <div className="profile-page-right-container-contents-profilepic-container">
+                                        <input type="file" id="imageUpload" className="hiddenInput" accept=".jpg, .jpeg, .png" />
+                                        <label htmlFor="imageUpload">
+                                            <div className="profile-page-right-container-contents-profilepic">
+                                                <img src="src\assets\images\profile-pic.jpg" alt="Profile Picture"/>
+                                            </div>
+                                            <div className="profile-page-right-container-contents-profilepic-change">
+                                                <i className="fa-solid fa-camera"></i> Pilih Foto
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div className="profile-page-right-container-contents-profile-information-one">
+                                        <div className="profile-page-right-container-contents-profile-information-username">
+                                            Username
+                                            <span> </span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-name">
+                                            Name
+                                            <span> </span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-dateofbirth">
+                                            Tanggal Lahir
+                                            <span> </span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-gender">
+                                            Jenis Kelamin
+                                            <span> </span>
+                                        </div>
+                                    </div>
+                                    <div className="profile-page-right-container-contents-profile-information-two">
+                                        <div className="profile-page-right-container-contents-profile-information-university">
+                                            Perguruan Tinggi
+                                            <span> </span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-email">
+                                            Email
+                                            <span> </span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-phone">
+                                            No. Telp
+                                            <span> </span>
+                                        </div>
+                                        <div className="profile-page-right-container-contents-profile-information-space">
+                                            
+                                        </div>
+                                    </div>
+                                </>
                             )}
                         </div>
 

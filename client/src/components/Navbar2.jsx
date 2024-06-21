@@ -56,15 +56,17 @@ function Navbar2() {
 
                         <div className="nav-element" id="searchbar">
                             <div className="actual-search-bar">
-                                <input 
-                                    type="text" 
-                                    placeholder="Cari Produk Yang Kamu Inginkan"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    onKeyDown={handleKeyDown}
-                                    ref={inputRef}
-                                />
-                                <button onClick={handleSearch}><i className="fas fa-search"></i></button>
+                                {/* <div className="search-bar-container"> */}
+                                    <input 
+                                        type="text" 
+                                        placeholder="Cari Produk Yang Kamu Inginkan"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onKeyDown={handleKeyDown}
+                                        ref={inputRef}
+                                    />
+                                    <button onClick={handleSearch}><i className="fas fa-search"></i></button>
+                                {/* </div> */}
                             </div>
                         </div>
 
@@ -75,22 +77,22 @@ function Navbar2() {
                         </div>
 
                         <div className="nav-element" id="sign-in-up">
-                        {userDetails ? (
+                            {userDetails ? (
+                                    <>
+                                        <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            <i className="fa-solid fa-user"/> &nbsp;&nbsp;{userDetails.username}
+                                        </Link>
+                                    </>
+                            ) : (
                                 <>
-                                    <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <i className="fa-solid fa-user"/> &nbsp;&nbsp;{userDetails.username}
+                                    <Link to="/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <button className="sign-in-button"> Masuk </button>
+                                    </Link>
+                                    <Link to="/signupoption" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <button className="sign-up-button"> Daftar </button>
                                     </Link>
                                 </>
-                        ) : (
-                            <>
-                                <Link to="/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <button className="sign-in-button"> Masuk </button>
-                                </Link>
-                                <Link to="/signupoption" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <button className="sign-up-button"> Daftar </button>
-                                </Link>
-                            </>
-                        )}
+                            )}
                         </div>
                         
                         {/* Second Row */}
