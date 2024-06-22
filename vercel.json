@@ -2,7 +2,6 @@
     "builds": [
         {
             "src": "client/vite.config.js",
-            "use": "@vercel/vite",
             "config": {
                 "distDir": "dist"
             }
