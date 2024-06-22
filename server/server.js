@@ -67,9 +67,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
 // Database Connection 
-const port = process.env.PORT || 5000; 
+const port = process.env.PORT || 3306; 
 const db = mysql.createConnection({
-    host: process.env.DB_HOST || "localhost",    
+    host: process.env.DB_HOST,    
     user: process.env.DB_USER || "root",
     password: process.env.DB_PASSWORD || "",
     database: process.env.DB_DATABASE || "ecommerce",

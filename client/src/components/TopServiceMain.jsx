@@ -9,7 +9,7 @@ const TopServiceMain = () => {
     useEffect(() =>{
         const fetchTopServices = async ()=>{
             try{
-                const res = await axios.get("http://localhost:5000/top-service-main")
+                const res = await axios.get("/top-service-main")
                 setServices(res.data);
                 // console.log(res)
             }catch(err){
