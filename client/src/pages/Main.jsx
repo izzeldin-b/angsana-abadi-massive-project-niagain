@@ -45,7 +45,6 @@ function Main() {
                         <div className="product-list-container">
                             {/* <TopServiceMain/> */}
 
-
                             <div className="view-more-container">
                                 <Link to="/recommended-services" style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <div className="view-more-container-wrapper">
