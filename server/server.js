@@ -60,66 +60,27 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage });
 
-// Express App Setup 
+// Express App Setup
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
-const port = process.env.PORT || 3306; 
-
-let db; // Declare db outside the connection logic
-
-async function connectToDatabase() { 
-    db = mysql.createConnection({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER || "root",
-        password: process.env.DB_PASSWORD || "",
-        database: process.env.DB_DATABASE || "ecommerce",
-    });
-
-    try {
-        await new Promise((resolve, reject) => {
-            db.connect((err) => {
-                if (err) reject(err);
-                else resolve();
-            });
-        });
-        console.log('Connected to MySQL database');
-    } catch (err) {
-        console.error('Error connecting to MySQL:', err);
-        if (process.env.NODE_ENV === "production") {
-            throw err; // Fail the build if connection fails in production
-        }
-    }
-}
-
-if (process.env.NODE_ENV === "production") {
-    connectToDatabase(); // Connect to the real database
-} else {
-    // Create a mock database object for development
-    db = {
-        query: (q, values, callback) => {
-            console.log("Mock database query:", q, values);
-            callback(null, []); // Example: Return empty results for now
-        }
-    };
-}
-
 // Database Connection 
-// const db = mysql.createConnection({
-//     host: process.env.DB_HOST,    
-//     user: process.env.DB_USER || "root",
-//     password: process.env.DB_PASSWORD || "",
-//     database: process.env.DB_DATABASE || "ecommerce",
-// });
-// db.connect(err => {
-//     if (err) {
-//         console.error('Error connecting to MySQL:', err);
-//     } else {
-//         console.log('Connected to MySQL database');
-//     }
-// });
+const port = process.env.PORT || 3306; 
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,    
+    user: process.env.DB_USER || "root",
+    password: process.env.DB_PASSWORD || "",
+    database: process.env.DB_DATABASE || "ecommerce",
+});
+db.connect(err => {
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+    } else {
+        console.log('Connected to MySQL database');
+    }
+});
 
 // API Endpoints
 
@@ -170,11 +131,10 @@ app.get('/products-by-user', (req, res) => {
 });
 
 // Top Products Main Page
-app.get("/api/top-product-main", (req, res) => {
+app.get("/top-product-main", (req, res) => {
     const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
     db.query(q, (err, data) => {
         if (err) return res.json(err);
-        console.log(data);
         return res.json(data);
     });
 });
@@ -452,11 +412,6 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
 });
 
 // Start the Server
-app.listen(port, async () => { // Use async here
-        if (process.env.NODE_ENV === "production") {
-            await connectToDatabase(); // Ensure database is connected before starting the server
-        }
-        console.log(`Server listening on port ${port}`);
-    });
-    
-    module.exports = app;
+app.listen(port, () => {
+    console.log(`listening`); 
+});
