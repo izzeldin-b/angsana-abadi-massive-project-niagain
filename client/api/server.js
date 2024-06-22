@@ -2,7 +2,9 @@ require('dotenv').config(); // Load environment variables first
 
 const express = require("express");
 const path = require("path");
-const mysql = require("mysql");
+// const mysql = require("mysql");
+const mysql = require("mysql2/promise");
+
 const cors = require("cors");
 const admin = require("firebase-admin");
 
@@ -68,17 +70,29 @@ app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
 // Database Connection 
 const port = process.env.PORT || 3306; 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,    
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_DATABASE || "ecommerce",
-});
-db.connect(err => {
-    if (err) {
-        console.error('Error connecting to MySQL:', err);
-    } else {
-        console.log('Connected to MySQL database');
+// const db = mysql.createConnection({
+//     host: process.env.DB_HOST,    
+//     user: process.env.DB_USER || "root",
+//     password: process.env.DB_PASSWORD || "",
+//     database: process.env.DB_DATABASE || "ecommerce",
+// });
+// db.connect(err => {
+//     if (err) {
+//         console.error('Error connecting to MySQL:', err);
+//     } else {
+//         console.log('Connected to MySQL database');
+//     }
+// });
+
+// Middleware to get a connection from the pool for each request
+app.use(async (req, res, next) => {
+    try {
+        req.db = await pool.getConnection();
+        await req.db.query('SET time_zone = "+07:00"'); // Set timezone
+        next(); 
+    } catch (err) {
+        console.error('Error getting connection:', err);
+        res.status(500).json({ error: 'Database connection error' });
     }
 });
 
@@ -131,13 +145,16 @@ app.get('/products-by-user', (req, res) => {
 });
 
 // Top Products Main Page
-app.get("/api/top-product-main", (req, res) => {
-    const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
-    db.query(q, (err, data) => {
-        if (err) return res.json(err);
-        console.log(data);
-        return res.json(data);
-    });
+app.get("/api/top-product-main", async (req, res) => {
+    try {
+      const [data] = await req.db.execute("SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11"); 
+      res.json(data); // Send the results as JSON
+    } catch (err) {
+        console.error('Error fetching top products:', err);
+        res.status(500).json({ error: 'Internal server error' }); // Send an error response
+    } finally {
+      req.db.release(); // Release the connection back to the pool
+    }
 });
 
 // Top Services Main Page
@@ -412,7 +429,13 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
     }
 });
 
-// Start the Server
+// Error handler middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack); // Log the error for debugging
+    res.status(500).send('Something broke!');
+});
+
+// Start the Server 
 app.listen(port, () => {
-    console.log(`listening`); 
+    console.log(`listening on port ${port}`); 
 });
