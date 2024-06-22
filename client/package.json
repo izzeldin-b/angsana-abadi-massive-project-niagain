@@ -8,8 +8,8 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "build:client": "cd client && npm install && npm run build",
-    "build:server": "cd server && npm install && node server.js",
+    "build:client": "npm install && npm run build",
+    "build:server": "cd api && npm install",
     "vercel-build": "npm run build:client && npm run build:server"
   },
   "dependencies": {
