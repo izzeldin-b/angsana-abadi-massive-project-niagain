@@ -285,18 +285,25 @@ app.post('/register-user', async (req, res) => {
     }
 });
 
+// const waitForDbConnection = async () => {
+//     while (!db.isConnected) {
+//       await new Promise(resolve => setTimeout(resolve, 100)); // Wait 100ms
+//     }
+//   };
+
 // Add To Cart
 app.post('/add-to-cart', authenticateUser, async (req, res) => {
     const { productId, quantity } = req.body;
 
     // DELETE LATER
-    console.log("Received add-to-cart request:", {
-        productId: productId,
-        quantity: quantity
-    }); 
+    // console.log("Received add-to-cart request:", {
+    //     productId: productId,
+    //     quantity: quantity
+    // }); 
 
     try {
         // 1. Get Firebase UID from the authenticated user
+        
         const firebaseUserId = req.user.uid;
 
         // 2. Input Validation
@@ -358,7 +365,7 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
         }
 
         // 5. Add Item to Cart
-        const insertItemQuery = 'INSERT INTO cartItems (cart_id, product_id, quantity) VALUES (?, ?, ?)';
+        const insertItemQuery = 'INSERT INTO cartitems (cart_id, product_id, quantity) VALUES (?, ?, ?)';
         await new Promise((resolve, reject) => {
             db.query(insertItemQuery, [cartId, productId, quantity], (err, results) => {
                 if (err) reject(err);
@@ -375,8 +382,10 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
 
 // Get Cart Contents (Specific User)
 app.get('/get-user-cart', authenticateUser, async (req, res) => {
+    console.log('Cart request received');
     try {
         const firebaseUserId = req.user.uid;
+        console.log('User ID:', firebaseUserId);
         // console.log(firebaseUserId);
 
         // 1. Fetch User's Cart Items
@@ -391,18 +400,21 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
                 p.price,
                 p.firebase_user_id
             FROM carts c
-            JOIN cartItems ci ON c.cart_id = ci.cart_id
+            JOIN cartitems ci ON c.cart_id = ci.cart_id
             JOIN products p ON ci.product_id = p.product_id
             WHERE c.buyer_firebase_user_id = ?
         `;
 
+        console.time('Cart query');
         const cartItems = await new Promise((resolve, reject) => {
             db.query(cartItemsQuery, [firebaseUserId], (err, results) => {
                 if (err) reject(err);
                 else resolve(results);
             });
         });
+        console.timeEnd('Cart query');
 
+        console.log('Cart items fetched:', cartItems.length);
         res.status(200).json(cartItems); 
 
     } catch (error) {
