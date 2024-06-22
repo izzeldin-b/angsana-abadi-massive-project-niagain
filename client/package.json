@@ -1,6 +1,7 @@
 {
   "name": "niagain-ecommerce",
   "private": true,
+  "proxy": "https://angsana-abadi-massive-project-niagain.vercel.app",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
