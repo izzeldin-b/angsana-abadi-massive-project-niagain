@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "build:client": "npm install && npm run build",
-    "build:server": "cd api && npm install",
+    "build:server": "cd api && npm install && node server.js",
     "vercel-build": "npm run build:client && npm run build:server"
   },
   "dependencies": {
