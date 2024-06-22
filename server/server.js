@@ -64,7 +64,6 @@ const upload = multer({ storage });
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
 // Database Connection 
 const port = process.env.PORT || 3306; 
@@ -410,6 +409,8 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
 // Start the Server
 app.listen(port, () => {
