@@ -131,7 +131,7 @@ app.get('/products-by-user', (req, res) => {
 });
 
 // Top Products Main Page
-app.get("api/top-product-main", (req, res) => {
+app.get("/api/top-product-main", (req, res) => {
     const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
     db.query(q, (err, data) => {
         if (err) return res.json(err);
