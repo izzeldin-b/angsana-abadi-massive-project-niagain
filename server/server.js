@@ -411,6 +411,10 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
     }
 });
 
+app.use("/", (req, res) => {
+    res.send("Server is running.");
+});
+
 // Start the Server
 app.listen(port, () => {
     console.log(`listening`); 
