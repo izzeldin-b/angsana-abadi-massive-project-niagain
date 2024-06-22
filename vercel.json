@@ -2,9 +2,10 @@
     "version": 2,
     "builds": [
       {
-        "src": "client/vite.config.js",  
-        "use": "@vercel/vite",
+        "src": "client/vite.config.js",
+        "use": "@vercel/builders",  
         "config": {
+          "framework": "vite",
           "build": {
             "outDir": "client/dist"
           }
