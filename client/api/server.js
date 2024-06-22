@@ -3,7 +3,7 @@ require('dotenv').config(); // Load environment variables first
 const express = require("express");
 const path = require("path");
 // const mysql = require("mysql");
-const mysql = require("mysql2/promise");
+const mysql = require("mysql2");
 
 const cors = require("cors");
 const admin = require("firebase-admin");
@@ -70,19 +70,27 @@ app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
 // Database Connection 
 const port = process.env.PORT || 3306; 
-// const db = mysql.createConnection({
-//     host: process.env.DB_HOST,    
-//     user: process.env.DB_USER || "root",
-//     password: process.env.DB_PASSWORD || "",
-//     database: process.env.DB_DATABASE || "ecommerce",
-// });
-// db.connect(err => {
-//     if (err) {
-//         console.error('Error connecting to MySQL:', err);
-//     } else {
-//         console.log('Connected to MySQL database');
-//     }
-// });
+const pool = mysql.createPool({ // Create a connection pool
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
+
+// Middleware to get a connection from the pool for each request
+app.use(async (req, res, next) => {
+try {
+    req.db = await pool.getConnection();
+    await req.db.query('SET time_zone = "+07:00"'); // Set timezone
+    next(); 
+} catch (err) {
+    console.error('Error getting connection:', err);
+    res.status(500).json({ error: 'Database connection error' });
+}
+});
 
 // Middleware to get a connection from the pool for each request
 app.use(async (req, res, next) => {
@@ -439,3 +447,5 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log(`listening on port ${port}`); 
 });
+
+module.exports = pool.promise()
