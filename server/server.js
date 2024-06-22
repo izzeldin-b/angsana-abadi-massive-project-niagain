@@ -135,6 +135,7 @@ app.get("/top-product-main", (req, res) => {
     const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
     db.query(q, (err, data) => {
         if (err) return res.json(err);
+        console.log(data);
         return res.json(data);
     });
 });
