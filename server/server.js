@@ -64,6 +64,7 @@ const upload = multer({ storage });
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
 // Database Connection 
 const port = process.env.PORT || 3306; 
@@ -130,13 +131,13 @@ app.get('/products-by-user', (req, res) => {
 });
 
 // Top Products Main Page
-app.get("/top-product-main", (req, res) => {
-    const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
-    db.query(q, (err, data) => {
-        if (err) return res.json(err);
-        return res.json(data);
-    });
-});
+// app.get("/top-product-main", (req, res) => {
+//     const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
+//     db.query(q, (err, data) => {
+//         if (err) return res.json(err);
+//         return res.json(data);
+//     });
+// });
 
 // Top Services Main Page
 app.get("/top-service-main", (req, res) => {
@@ -409,8 +410,6 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
-app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
 // Start the Server
 app.listen(port, () => {

@@ -7,7 +7,7 @@ const TopProductsMain = () => {
 
     const [products, setProducts] = useState([])
 
-    const apiEndpoint = "/top-product-main";
+    const apiEndpoint = "https://angsana-abadi-massive-project-niagain.vercel.app/top-product-main";
 
     useEffect(() =>{
         const fetchAllProducts = async ()=>{
