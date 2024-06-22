@@ -68,7 +68,7 @@ app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
 let db; // Declare db outside the connection logic
 
-if (process.env.NODE_ENV === "test") { // Connect only in production
+if (process.env.NODE_ENV === "production") { // Connect only in production
     db = mysql.createConnection({
         host: process.env.DB_HOST,    
         user: process.env.DB_USER || "root",
