@@ -7,10 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "build:client": "npm install && npm run build",
-    "build:server": "cd api && npm install && node server.js",
-    "vercel-build": "npm run build:client && npm run build:server"
+    "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^1.7.2",

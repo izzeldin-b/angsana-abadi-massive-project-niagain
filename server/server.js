@@ -66,21 +66,50 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
+let db; // Declare db outside the connection logic
+
+if (process.env.NODE_ENV === "test") { // Connect only in production
+    db = mysql.createConnection({
+        host: process.env.DB_HOST,    
+        user: process.env.DB_USER || "root",
+        password: process.env.DB_PASSWORD || "",
+        database: process.env.DB_DATABASE || "ecommerce",
+    });
+    
+    db.connect(err => {
+        if (err) {
+            console.error('Error connecting to MySQL in production:', err);
+            throw err; // Fail the build if connection fails in production
+        } else {
+            console.log('Connected to MySQL database in production');
+        }
+    });
+} else {
+    // For development, you can provide a mock database object or handle it differently
+    db = { 
+        query: (q, values, callback) => {
+            // Implement mock behavior or logging for development
+            console.log("Mock database query:", q, values);
+            callback(null, []); // Example: Return empty results for now
+        }
+    };
+}
+
 // Database Connection 
 const port = process.env.PORT || 3306; 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,    
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_DATABASE || "ecommerce",
-});
-db.connect(err => {
-    if (err) {
-        console.error('Error connecting to MySQL:', err);
-    } else {
-        console.log('Connected to MySQL database');
-    }
-});
+// const db = mysql.createConnection({
+//     host: process.env.DB_HOST,    
+//     user: process.env.DB_USER || "root",
+//     password: process.env.DB_PASSWORD || "",
+//     database: process.env.DB_DATABASE || "ecommerce",
+// });
+// db.connect(err => {
+//     if (err) {
+//         console.error('Error connecting to MySQL:', err);
+//     } else {
+//         console.log('Connected to MySQL database');
+//     }
+// });
 
 // API Endpoints
 
@@ -414,5 +443,7 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
 
 // Start the Server
 app.listen(port, () => {
-    console.log(`listening`); 
+    console.log(`Server listening on port ${port}`); 
 });
+
+module.exports = app;
