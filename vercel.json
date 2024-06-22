@@ -4,7 +4,7 @@
         { "src": "client/package.json", "use": "@vercel/static-build", "config": { "distDir": "client/build" } }
     ],
     "routes": [
-        { "src": "/top-service-main", "dest": "server/server.js" },
+        { "src": "/top-product-main", "dest": "server/server.js" },
         { "src": "/api/(.*)", "dest": "server/server.js" },
         { "src": "/(.*)", "dest": "client/build/$1" }
     ]

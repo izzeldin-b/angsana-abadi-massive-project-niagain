@@ -131,13 +131,13 @@ app.get('/products-by-user', (req, res) => {
 });
 
 // Top Products Main Page
-// app.get("/top-product-main", (req, res) => {
-//     const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
-//     db.query(q, (err, data) => {
-//         if (err) return res.json(err);
-//         return res.json(data);
-//     });
-// });
+app.get("/top-product-main", (req, res) => {
+    const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
+    db.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    });
+});
 
 // Top Services Main Page
 app.get("/top-service-main", (req, res) => {

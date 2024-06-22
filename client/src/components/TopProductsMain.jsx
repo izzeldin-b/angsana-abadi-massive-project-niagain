@@ -7,12 +7,10 @@ const TopProductsMain = () => {
 
     const [products, setProducts] = useState([])
 
-    const apiEndpoint = "https://angsana-abadi-massive-project-niagain.vercel.app/top-product-main";
-
     useEffect(() =>{
         const fetchAllProducts = async ()=>{
             try{
-                const res = await axios.get(apiEndpoint)
+                const res = await axios.get('/top-product-main')
                 setProducts(res.data);
             }catch(err){
                 console.log(err);
