@@ -66,29 +66,40 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
+const port = process.env.PORT || 3306; 
+
 let db; // Declare db outside the connection logic
 
-if (process.env.NODE_ENV === "production") { // Connect only in production
+async function connectToDatabase() { 
     db = mysql.createConnection({
-        host: process.env.DB_HOST,    
+        host: process.env.DB_HOST,
         user: process.env.DB_USER || "root",
         password: process.env.DB_PASSWORD || "",
         database: process.env.DB_DATABASE || "ecommerce",
     });
-    
-    db.connect(err => {
-        if (err) {
-            console.error('Error connecting to MySQL in production:', err);
+
+    try {
+        await new Promise((resolve, reject) => {
+            db.connect((err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+        console.log('Connected to MySQL database');
+    } catch (err) {
+        console.error('Error connecting to MySQL:', err);
+        if (process.env.NODE_ENV === "production") {
             throw err; // Fail the build if connection fails in production
-        } else {
-            console.log('Connected to MySQL database in production');
         }
-    });
+    }
+}
+
+if (process.env.NODE_ENV === "production") {
+    connectToDatabase(); // Connect to the real database
 } else {
-    // For development, you can provide a mock database object or handle it differently
-    db = { 
+    // Create a mock database object for development
+    db = {
         query: (q, values, callback) => {
-            // Implement mock behavior or logging for development
             console.log("Mock database query:", q, values);
             callback(null, []); // Example: Return empty results for now
         }
@@ -96,7 +107,6 @@ if (process.env.NODE_ENV === "production") { // Connect only in production
 }
 
 // Database Connection 
-const port = process.env.PORT || 3306; 
 // const db = mysql.createConnection({
 //     host: process.env.DB_HOST,    
 //     user: process.env.DB_USER || "root",
@@ -442,8 +452,11 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
 });
 
 // Start the Server
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`); 
-});
-
-module.exports = app;
+app.listen(port, async () => { // Use async here
+        if (process.env.NODE_ENV === "production") {
+            await connectToDatabase(); // Ensure database is connected before starting the server
+        }
+        console.log(`Server listening on port ${port}`);
+    });
+    
+    module.exports = app;
