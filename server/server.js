@@ -112,9 +112,9 @@ app.get("/service/:serviceId", (req, res) => {
     const serviceId = req.params.serviceId;
 
     // Sanitize input (to prevent SQL injection)
-    const sanitizedProductId = db.escape(serviceId);
+    const sanitizedServiceId = db.escape(serviceId);
     
-    const q = `SELECT * FROM products WHERE id = ${sanitizedProductId}`;
+    const q = `SELECT * FROM services WHERE id = ${sanitizedServiceId}`;
 
     db.query(q, (err, data) => {
         if (err) {
