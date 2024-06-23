@@ -375,7 +375,7 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
         
         // 4. Check if the buyer is the seller of the product
         if (firebaseUserId === sellerId) {
-            return res.status(400).json({ error: 'Cannot add your own product to the cart' });
+            return res.status(400).json({ error: 'Tidak bisa memasukan produk sendiri ke Cart' });
         }
 
         // 5. Check/Create Cart for User
@@ -415,6 +415,95 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
         const insertItemQuery = 'INSERT INTO cartitems (cart_id, product_id, quantity) VALUES (?, ?, ?)';
         await new Promise((resolve, reject) => {
             db.query(insertItemQuery, [cartId, productId, quantity], (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+
+        res.status(200).json({ message: 'Produk berhasil ditambah' });
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Add To Cart
+app.post('/add-to-cart-service', authenticateUser, async (req, res) => {
+    const { serviceId } = req.body;
+
+    // DELETE LATER
+    // console.log("Received add-to-cart request:", {
+    //     productId: productId,
+    //     quantity: quantity
+    // }); 
+
+    try {
+        // 1. Get Firebase UID from the authenticated user
+        
+        const firebaseUserId = req.user.uid;
+
+        // 2. Input Validation
+        if (!serviceId || !quantity || quantity <= 0) {
+            return res.status(400).json({ error: 'Invalid service ID or quantity' });
+        }
+        const sanitizedServiceId = db.escape(serviceId);
+        
+        // 3. Fetch Product Details (to get seller Firebase User UID)
+        const serviceQuery = `SELECT firebase_user_id as seller_id FROM services WHERE id = ${sanitizedServiceId}`;
+        const [serviceData] = await new Promise((resolve, reject) => {
+            db.query(serviceQuery, (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+
+        if (!serviceData) {
+            return res.status(404).json({ error: 'Service not found' });
+        }
+        const sellerId = serviceData.seller_id;
+        
+        // 4. Check if the buyer is the seller of the product
+        if (firebaseUserId === sellerId) {
+            return res.status(400).json({ error: 'Cannot add your own service to the cart' });
+        }
+
+        // 5. Check/Create Cart for User
+        const cartQuery = `
+            SELECT cart_id, seller_firebase_user_id 
+            FROM carts 
+            WHERE buyer_firebase_user_id = ?
+        `;
+        const [cartData] = await new Promise((resolve, reject) => {
+            db.query(cartQuery, [firebaseUserId], (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+        
+        let cartId;
+        if (cartData) {
+            // Existing Cart: Check Single-Seller Rule
+            if (cartData.seller_firebase_user_id && cartData.seller_firebase_user_id !== sellerId) {
+                return res.status(400).json({ error: 'Cart hanya boleh berisi jasa dari satu penjual. Kosongkan cart untuk menambah produk ini' });
+            } else {
+                cartId = cartData.cart_id;
+            }
+        } else {
+            // New Cart: Create it with Seller ID
+            const insertCartQuery = 'INSERT INTO carts (buyer_firebase_user_id, seller_firebase_user_id) VALUES (?, ?)';
+            const [insertResult] = await new Promise((resolve, reject) => {
+                db.query(insertCartQuery, [firebaseUserId, sellerId], (err, results) => {
+                    if (err) reject(err);
+                    else resolve(results);
+                });
+            });
+            cartId = insertResult.insertId; 
+        }
+
+        // 5. Add Item to Cart
+        const insertItemQuery = 'INSERT INTO cartitems (cart_id, id) VALUES (?, ?, ?)';
+        await new Promise((resolve, reject) => {
+            db.query(insertItemQuery, [cartId, serviceId, quantity], (err, results) => {
                 if (err) reject(err);
                 else resolve(results);
             });
