@@ -130,6 +130,29 @@ app.get('/products-by-user', (req, res) => {
     });
 });
 
+// Get all services for a specific user ID
+app.get('/services-by-user', (req, res) => {
+    const firebaseUserId = req.query.firebaseUserId;
+
+    if (!firebaseUserId) {
+        return res.status(400).json({ error: 'Firebase User ID is required.' });
+    }
+
+    const query = `
+        SELECT * FROM services 
+        WHERE firebase_user_id = ?
+        ORDER BY date_added ASC
+    `;
+
+    db.query(query, [firebaseUserId], (err, results) => {
+        if (err) {
+            console.error('Error fetching services:', err);
+            return res.status(500).json({ error: 'Internal server error.' });
+        }
+        res.json(results);
+    });
+});
+
 // Top Products Main Page
 app.get("/top-product-main", (req, res) => {
     const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
@@ -348,7 +371,7 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
         if (cartData) {
             // Existing Cart: Check Single-Seller Rule
             if (cartData.seller_firebase_user_id && cartData.seller_firebase_user_id !== sellerId) {
-                return res.status(400).json({ error: 'Cart already contains items from another seller' });
+                return res.status(400).json({ error: 'Cart hanya boleh berisi produk dari satu penjual. Kosongkan cart untuk menambah produk ini' });
             } else {
                 cartId = cartData.cart_id;
             }
@@ -373,7 +396,7 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
             });
         });
 
-        res.status(200).json({ message: 'Product added to cart successfully' });
+        res.status(200).json({ message: 'Produk berhasil ditambah' });
     } catch (error) {
         console.error('Error adding to cart:', error);
         res.status(500).json({ error: 'Internal Server Error' });
