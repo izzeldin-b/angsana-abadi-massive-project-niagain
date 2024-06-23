@@ -429,7 +429,7 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
 
 // Add To Cart
 app.post('/add-to-cart-service', authenticateUser, async (req, res) => {
-    const { serviceId } = req.body;
+    const { serviceId, quantity } = req.body;
 
     // DELETE LATER
     // console.log("Received add-to-cart request:", {
