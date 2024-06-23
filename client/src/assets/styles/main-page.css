@@ -11,6 +11,7 @@ body{
     display: flex;
     justify-content: center;
     padding-top: 8.7rem;
+    padding-bottom: 6rem;
 }
 
 .main-page-container{

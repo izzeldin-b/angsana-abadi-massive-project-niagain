@@ -11,6 +11,7 @@ const AddService = () => {
     const [imagePreview, setImagePreview] = useState(null); 
     const fileInputRef = useRef(null);
     const [userDetails, setUserDetails] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     const fetchUserData = async () => {
         auth.onAuthStateChanged(async (user) => {
@@ -36,7 +37,7 @@ const AddService = () => {
         name: "",
         price: "",
         service_description: "",
-        status: "Active",        
+        status: "Aktif",        
         service_variation: "",
         // image_link:""
     });
@@ -70,6 +71,8 @@ const AddService = () => {
     // API Interaction
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (isUploading) return;
+        setIsUploading(true);
         const formData = new FormData();
 
         // Append all product data (including the image file)
@@ -81,9 +84,14 @@ const AddService = () => {
             formData.append('image', file);
         }
 
+        const idToken = await auth.currentUser.getIdToken();
+
         try {
-            await axios.post('http://localhost:5000/add-service', formData);
-            navigate('/mybusiness');
+            await axios.post(`${import.meta.env.VITE_API_URL}/add-service`, formData, {
+                headers: { Authorization: idToken },
+            });
+            setIsUploading(false);
+            navigate('/my-business-catalog-services');
         } catch (err) {
             // Log error details for debugging
             if (err.response) {
@@ -93,23 +101,6 @@ const AddService = () => {
             }
         }
     };
-
-    // const handleImageUpload = async () => {
-    //     const formData = new FormData();
-    //     formData.append('image', file);
-
-    //     try {
-    //         const response = await axios.post('http://localhost:5000/add-product', formData, {
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //         });
-    //         return response.data.imageUrl; // Return Cloudinary URL
-    //     } catch (error) {
-    //         console.error('Error uploading the file', error);
-    //         return null;
-    //     }
-    // };
 
     console.log(serviceData);
 
@@ -162,7 +153,7 @@ const AddService = () => {
 
                 <div className="addproduct-page-right-container"> {/* <!-- RIGHT CONTAINER --> */}
                     <div className="addproduct-page-right-container-header">
-                        <span>Tambah Service</span>
+                        <span>Tambah Jasa</span>
                         Daftar produk atau jasa baru yang akan anda jual
                     </div>
                     <div className="addproduct-page-right-container-form">
@@ -173,13 +164,13 @@ const AddService = () => {
                             <div className="addproduct-page-right-container-form-type-buttons">
                                 <Link to="/addproduct" style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <div className="addproduct-page-right-container-product">
-                                        <i class="fa-solid fa-box"></i>
+                                        <i className="fa-solid fa-box"></i>
                                         Produk
                                     </div>
                                 </Link>
                                 <Link to="/addservice" style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <div className="addproduct-page-right-container-service"  id='selected-choice-add'>
-                                        <i class="fa-solid fa-wrench"></i>
+                                        <i className="fa-solid fa-wrench"></i>
                                         Jasa
                                     </div>
                                 </Link>
@@ -197,7 +188,7 @@ const AddService = () => {
                             <div className="addproduct-page-right-container-form-header">
                                 Deskripsi Jasa
                             </div>
-                            <textarea rows="7" placeholder="Berikan Deskripsi Jasa"  spellCheck="false" onChange={handleChange} name="service_description" spellcheck="false"/>
+                            <textarea rows="7" placeholder="Berikan Deskripsi Jasa"  spellCheck="false" onChange={handleChange} name="service_description"/>
                         </div>
 
                         <div className="addproduct-page-right-container-form-variants">
@@ -246,7 +237,22 @@ const AddService = () => {
                         </div>
 
                         <div className="addproduct-page-right-container-form-buttons">
-                            <button onClick={handleSubmit}>Simpan</button>
+                            <button 
+                                onClick={handleSubmit}
+                                disabled={isUploading}
+                            >
+
+                                {isUploading ? (
+                                        <>
+                                            <i className="fa-solid fa-spinner fa-spin" /> Menyimpan... 
+                                        </>
+                                    ) : (
+                                        <>
+                                            <i className="fa-solid fa-floppy-disk"/> &nbsp;Simpan
+                                        </>
+                                    )}
+
+                            </button>
                         </div>
                     </div>
                 </div>

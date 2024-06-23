@@ -141,6 +141,8 @@ nav{
     justify-content: flex-start;
     align-items: center;
     gap: 1rem;
+    max-height: 3rem;
+    min-height: 3rem;
 }
 
 #sign-in-up img{
@@ -164,7 +166,8 @@ nav{
     border-radius: 7px;
     display: flex;
     min-width: 4.5rem;
-    min-height: 2.8rem;
+    min-height: 3rem;
+    max-height: 3rem;
     justify-content: center;
     align-items: center;
     border: 1px solid #fff; 
@@ -192,7 +195,8 @@ nav{
     cursor: pointer; 
     display: flex;
     min-width: 4.5rem;
-    min-height: 2.8rem;
+    min-height: 3rem;
+    max-height: 3rem;
     justify-content: center;
     align-items: center;
     transition: 0.2s ease-in-out;

@@ -7,18 +7,20 @@ import { auth, db } from "../components/Firebase";
 import { doc, getDoc } from "firebase/firestore";
 import axios from 'axios';
 
-function MyBusinessCatalog() {
-    const [products, setProducts] = useState([]);
+function MyBusinessCatalogService() {
+    const [services, setServices] = useState([]);
     const [firebaseUserId, setFirebaseUserId] = useState(null);
     const [userDetails, setUserDetails] = useState(null);
 
     const fetchUserData = async () => {
         auth.onAuthStateChanged(async (user) => {
+            // console.log(user); REMOVE LATER, CONTAINS SENSITIVE DATA
         
             const docRef = doc(db, "Users", user.uid);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 setUserDetails(docSnap.data());
+                // console.log(docSnap.data()); REMOVE LATER, CONTAINS SENSITIVE DATA
             } else {
                 console.log("User is not logged in");
             }
@@ -31,10 +33,10 @@ function MyBusinessCatalog() {
 
     const fetchProducts = async (userId) => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/products-by-user`, {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/services-by-user`, {
                 params: { firebaseUserId: userId }
             });
-            setProducts(response.data);
+            setServices(response.data);
         } catch (error) {
             console.error('Error fetching products:', error);
         }
@@ -132,49 +134,50 @@ function MyBusinessCatalog() {
                     <div className="business-page-right-container-product-list-container">
                         <div className="business-page-right-container-product-list-header-container">
                             <div className="business-page-right-container-product-list-header">
-                                <span>Daftar Produk</span>
-                                Produk dan Jasa aktif kamu saat ini
+                                <span>Daftar Jasa</span>
+                                Jasa aktif kamu saat ini
                             </div>
                             <div className="business-page-right-container-product-list-header-buttons">
                                 <Link to="/my-business-catalog" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <button id='list-type-selected'><i className="fa-solid fa-box"/>Produk</button>
+                                    <button><i className="fa-solid fa-box"/>Produk</button>
                                 </Link>
                                 <Link to="/my-business-catalog-services" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <button><i className="fa-solid fa-wrench"/>Jasa</button>
+                                    <button id='list-type-selected'><i className="fa-solid fa-wrench"/>Jasa</button>
                                 </Link>
                             </div>
                         </div>
                         <div className="business-page-right-container-product-list">
 
-                            {products.map((product, index) => (
+                            {services.map((service, index) => (
                                 <Link 
                                     className="business-page-right-container-product-individual" 
-                                    key={product.product_id}
-                                    to={`/product-details/${product.product_id}`}
+                                    key={service.id}
+                                    to={`/`}
                                     style={{ textDecoration: 'none', color: 'inherit' }}
                                 >
                                     <div className="business-page-right-container-product-individual-count">
                                         {index + 1}
                                     </div>
                                     <div className="business-page-right-container-product-individual-image">
-                                        <img src={product.image_link} alt={product.name}/>
+                                        <img src={service.image_link} alt={service.name}/>
+                                        
                                     </div>
                                     <div className="business-page-right-container-product-individual-desc-container">
                                         <div className="business-page-right-container-product-individual-name">
-                                            {product.name}
+                                            {service.name}
                                         </div>
                                         <div className="business-page-right-container-product-individual-stock">
-                                            Stok: {product.stock}
+                                            Stok:
                                         </div>
                                         <div className="business-page-right-container-product-individual-price">
-                                            Rp {product.price.toLocaleString('id-ID')}
+                                            Rp {service.price.toLocaleString('id-ID')}
                                         </div>
                                     </div>
                                     <div className="business-page-right-container-product-individual-type-and-edit-container">
-                                        {/* <div className="business-page-right-container-product-individual-type">
-                                            <i className="fa-solid fa-box"></i>
-                                            <span>Produk</span>
-                                        </div> */}
+                                        <div className="business-page-right-container-product-individual-type">
+                                            <i className="fa-solid fa-wrench"/>
+                                            <span>Jasa</span>
+                                        </div>
                                             <button className="business-page-right-container-product-individual-edit">
                                                 Edit
                                             </button>
@@ -183,7 +186,7 @@ function MyBusinessCatalog() {
                             ))}
 
                         </div>
-                        <Link to="/addproduct" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <Link to="/addservice" style={{ textDecoration: 'none', color: 'inherit' }}>
                             <div className="business-page-right-container-product-add">
                                 +
                                 <span>Tambah</span>
@@ -196,4 +199,4 @@ function MyBusinessCatalog() {
     )
 }
 
-export default MyBusinessCatalog
+export default MyBusinessCatalogService

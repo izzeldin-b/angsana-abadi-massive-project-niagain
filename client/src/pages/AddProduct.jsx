@@ -12,6 +12,7 @@ const AddProduct = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [imagePreview, setImagePreview] = useState(null); // Add state for preview
     const fileInputRef = useRef(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     const fetchUserData = async () => {
         auth.onAuthStateChanged(async (user) => {
@@ -72,6 +73,8 @@ const AddProduct = () => {
     // API Interaction
     const handleClick = async (e) => {
         e.preventDefault();
+        if (isUploading) return;
+        setIsUploading(true);
         const formData = new FormData();
 
         // Append all product data (including the image file)
@@ -86,9 +89,10 @@ const AddProduct = () => {
         const idToken = await auth.currentUser.getIdToken();
 
         try {
-            await axios.post('http://localhost:5000/add-product', formData, {
+            await axios.post(`${import.meta.env.VITE_API_URL}/add-product`, formData, {
                 headers: { Authorization: idToken },
             });
+            setIsUploading(false);
             navigate('/my-business-catalog');
         } catch (err) {
             // Log error details for debugging
@@ -270,7 +274,22 @@ const AddProduct = () => {
                             <input type="number" id="points" onChange={handleChange} name="stock" step="1" placeholder="Masukkan Jumlah Stok" min="0"/>
                         </div>
                         <div className="addproduct-page-right-container-form-buttons">
-                            <button onClick={handleClick}>Simpan</button>
+                            <button 
+                                onClick={handleClick}
+                                disabled={isUploading}
+                            >
+                            
+                            {isUploading ? (
+                                <>
+                                    <i className="fa-solid fa-spinner fa-spin" /> Menyimpan... 
+                                </>
+                            ) : (
+                                <>
+                                    <i className="fa-solid fa-floppy-disk"/> &nbsp;Simpan
+                                </>
+                            )}
+
+                            </button>
                         </div>
                     </div>
                     </form>

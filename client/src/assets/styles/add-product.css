@@ -494,7 +494,7 @@
 }
 
 .addproduct-page-right-container-form-buttons button{
-    max-width: 6.5rem;
+    max-width: 8.5rem;
     width: 100%;
     min-height: 3rem;
     height: 100%;
@@ -502,7 +502,7 @@
     color: white;
     text-align: center; 
     text-decoration: none;  
-    font-size: 1rem; 
+    font-size: 0.9rem; 
     font-family: 'Figtree', sans-serif;
     font-weight: 500;
     border: none; 

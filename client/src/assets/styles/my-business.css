@@ -140,6 +140,13 @@
     box-sizing: border-box;
 }
 
+.business-page-right-container-product-list-header-container{
+    /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .business-page-right-container-product-list-header{
     /* background-color: lightcoral; */
     display: flex;
@@ -150,6 +157,44 @@
 .business-page-right-container-product-list-header span{
     font-size: 1.1rem;
     font-weight: 600;
+}
+
+.business-page-right-container-product-list-header-buttons{
+    display: flex;
+    gap: 1rem;
+}
+
+.business-page-right-container-product-list-header-buttons button{
+    box-sizing: border-box;
+    min-width: 6rem;
+    max-width: 6rem;
+    min-height: 2.5rem;
+    max-height: 2.5rem;
+    border: none;
+    background-color: #FFF;
+    font-family: 'Figtree', sans-serif;
+    border: 1px solid #989898;
+    color: #202020;
+    font-weight: 600;
+    border-radius: 10px;
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#list-type-selected{
+    color: #5F2EEB;
+    border-color: #5F2EEB;
+    font-weight: bold;
+}
+
+.business-page-right-container-product-list-header-buttons button:hover{
+    border-color: #5F2EEB;
+    color: #5F2EEB;
+    font-weight: bold;
 }
 
 .business-page-right-container-product-list{

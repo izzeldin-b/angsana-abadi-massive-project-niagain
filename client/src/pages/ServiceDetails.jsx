@@ -7,10 +7,10 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 
 
-function ProductDetails() {
+function ServiceDetails() {
 
-    const { productId } = useParams();
-    const [product, setProduct] = useState(null);
+    const { serviceId } = useParams();
+    const [service, setService] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -19,29 +19,29 @@ function ProductDetails() {
     const handleAddToCart = async (e) => {
         e.preventDefault();
 
-        if (!productId || !quantity) {
-            console.error('Product ID or quantity missing.');
+        if (!serviceId) {
+            console.error('Service ID is missing.');
             return;
         }
 
         const formData = new FormData();
-        formData.append('productId', productId);
+        formData.append('serviceId', serviceId);
         formData.append('quantity', quantity);
 
         const idToken = await auth.currentUser.getIdToken();
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/add-to-cart`, formData, {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/add-to-cart-service`, formData, {
                 headers: { Authorization: idToken, 'Content-Type': 'application/json'},
             });
 
             if (response.status === 200) { 
-                console.log('Item added to cart successfully');
+                console.log('Service added to cart successfully');
                 toast.success("Berhasil Masuk Ke Cart", {
                     position: "bottom-left",
                 });
             } else {
-                console.error('Failed to add item to cart:', response.data);
+                console.error('Failed to add service to cart:', response.data);
                 toast.error("Gagal Masuk Ke Cart", {
                     position: "bottom-left",
                 });
@@ -55,7 +55,12 @@ function ProductDetails() {
                     toast.error(errorMessage, {
                         position: "bottom-left",
                     });
+                } else if (err.response.status === 500) {
+                    toast.error("Jasa belum terimplementasi", { position: "bottom-left" }); // Specific message for 500
+                } else {
+                    toast.error("Gagal Masuk Ke Cart: Error tidak diketahui", { position: "bottom-left" }); // General error
                 }
+    
 
             } else {
                 console.error("Error:", err.message);
@@ -70,16 +75,16 @@ function ProductDetails() {
         setIsLoading(true);
         setError(null);
 
-        async function fetchProductDetails() {
+        async function fetchServiceDetails() {
             // const idToken = await auth.currentUser.getIdToken();
             // console.log(idToken);
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/product/${productId}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/service/${serviceId}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
-                setProduct(data);
+                setService(data);
             } catch (error) {
                 console.error('Error fetching product details:', error);
                 setError(error.message); 
@@ -88,26 +93,26 @@ function ProductDetails() {
             }
         }
 
-        fetchProductDetails();
-    }, [productId]);
+        fetchServiceDetails();
+    }, [serviceId]);
 
     return (
         <div>
-            {product && (
+            {service && (
                 <div className="product-details-page">
                     <div className="product-details-frame-container">
                         <div className="product-details-container">
                             <div className="product-details-image-container">
-                                <img src={product.image_link} alt={product.name} /> 
+                                <img src={service.image_link} alt={service.name} /> 
                             </div>
                             <div className="product-details-actions-container">
                                 <div className="product-details-actions-title">
-                                    {product.name}
+                                    {service.name}
                                 </div>
 
                                 <div className="product-details-actions-statistics-container">
                                     <div className="product-details-actions-statistics-ratings">
-                                        {product.rating} &nbsp;
+                                        {service.rating} &nbsp;
                                         <span>
                                             <i className="fa-solid fa-star"></i>
                                             <i className="fa-solid fa-star"></i>
@@ -120,40 +125,46 @@ function ProductDetails() {
                                         <span>1.7RB</span> Penilaian
                                     </div>
                                     <div className="product-details-actions-statistics-soldamount">
-                                        <span>{product.sold_amount}</span> Terjual
+                                        <span>{service.sold_amount}</span> Terjual
                                     </div>
                                 </div>
 
                                 <div className="product-details-actions-price">
-                                    Rp {product.price.toLocaleString('id-ID')}
+                                    Rp {service.price.toLocaleString('id-ID')}
                                 </div>
 
                                 <div className="product-details-actions-variants-container">
                                     <div className="product-details-actions-variants-header">
-                                        Variasi: {product.product_variation}
+                                        Variasi: {service.service_variation}
                                     </div>
+                                    {/* <div className="product-details-actions-variants-buttons">
+                                        <button value="">Putih</button>
+                                        <button value="">Hitam</button>
+                                        <button value="">Abu-Abu</button>
+                                        <button value="">Biru</button>
+                                    </div> */}
                                 </div>
                                 
                                 <div className="product-details-actions-quantity-container">
                                     <div className="product-details-actions-quantity-header">
-                                        Kuantitas:
+                                        Status:
                                     </div>
-                                    <div className="product-details-actions-quantity-button">
-                                    <input 
-                                        type="number"
-                                        placeholder="1"
-                                        min="1"
-                                        max={product.stock.toString()}
-                                        value={quantity} 
-                                        onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
-                                        onInput={(e) => {
-                                        const value = parseInt(e.target.value, 10);
-                                            e.target.value = Math.max(1, Math.min(value, product.stock)); 
-                                        }}
-                                    />
-                                    </div>
+                                    {/* <div className="product-details-actions-quantity-button">
+                                        <input 
+                                            type="number"
+                                            placeholder="1"
+                                            min="1"
+                                            max={product.stock.toString()}
+                                            value={quantity} 
+                                            onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
+                                            onInput={(e) => {
+                                            const value = parseInt(e.target.value, 10);
+                                                e.target.value = Math.max(1, Math.min(value, product.stock)); 
+                                            }}
+                                        />
+                                    </div> */}
                                     <div className="product-details-actions-quantity-stock">
-                                        Stok: {product.stock}
+                                        {service.status}
                                     </div>
                                 </div>
 
@@ -163,8 +174,11 @@ function ProductDetails() {
                                             Masukkan Keranjang
                                         </button>
                                     </div>
-                                        <div className="product-details-actions-buttons-buynow">
-                                    </div>
+                                    {/* <div className="product-details-actions-buttons-buynow">
+                                        <button>
+                                            Beli Sekarang
+                                        </button>
+                                    </div> */}
                                 </div>
 
                             </div>
@@ -175,7 +189,7 @@ function ProductDetails() {
                                 Detail
                             </div>
                             <div className="product-description">
-                                {product.product_description}
+                                {service.service_description}
                                 <br></br>
                                 <br></br>
                                 <button>Lihat Selengkapnya</button>
@@ -296,4 +310,4 @@ function ProductDetails() {
     )
 }
 
-export default ProductDetails
+export default ServiceDetails

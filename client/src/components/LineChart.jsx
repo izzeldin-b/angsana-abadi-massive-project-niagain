@@ -4,7 +4,7 @@ import 'chart.js/auto';
 
 const LineChart = () => {
     const data = {
-        labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei'],
+        labels: ['Februari', 'Maret', 'April', 'Mei', 'Juni'],
         datasets: [{
             label: 'Penjualan Per Bulan',
             data: [12, 19, 7, 9, 6],

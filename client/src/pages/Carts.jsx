@@ -3,22 +3,78 @@ import { Link } from 'react-router-dom'
 import { auth } from "../components/Firebase"
 import '../assets/styles/cart.css'
 import axios from 'axios';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 function Carts() {
     const [cartItems, setCartItems] = useState([]); 
+    const [sellerName, setSellerName] = useState('');
     const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handleDeleteCart = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const idToken = await auth.currentUser.getIdToken();
+
+            const response = await axios.delete(`${import.meta.env.VITE_API_URL}/delete-cart`, {
+                headers: { Authorization: idToken },
+            });
+
+            if (response.status !== 200) {
+                throw new Error(response.data.error || 'Failed to delete cart'); 
+            }
+
+            console.log('Cart deleted');
+            window.location.reload();
+
+        } catch (err) {
+            // Log error details for debugging
+            if (err.response) {
+                console.error("Error response:", err.response.data);
+            } else {
+                console.error("Error:", err.message);
+            }
+
+            setError(err.message || 'An error occurred'); 
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
+    async function getSellerName(firebaseUserId) {
+        const db = getFirestore();
+        const userRef = doc(db, "Users", firebaseUserId);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+            return userSnap.data().fullName;
+        } else {
+            return "Unknown Seller";
+        }
+    }
 
     useEffect(() => {
         async function fetchCartItems() {
             try {
                 const idToken = await auth.currentUser.getIdToken();
-
-                const response = await axios.get('http://localhost:5000/get-user-cart', {
+    
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/get-user-cart`, {
                     headers: { Authorization: idToken } 
                 });
-
+    
                 if (response.status === 200) {
-                    const data = response.data; 
+                    const data = response.data;
+                    
+                    // Fetch seller names for each item
+                    if (data.length > 0) {
+                        const sellerName = await getSellerName(data[0].firebase_user_id);
+                        setSellerName(sellerName);
+                    }
+                    
                     setCartItems(data);
                 } else {
                     console.error('Error fetching cart data:', response.statusText);
@@ -27,7 +83,7 @@ function Carts() {
                 console.error('Error fetching cart data:', error);
             }
         }
-
+    
         fetchCartItems(); 
     }, []);
 
@@ -37,11 +93,12 @@ function Carts() {
             <div className="cart-page-left-container">
                 <div className="cart-page-left-container-header">
                     <div className="cart-page-left-container-header-name">
-                        {/* <input type="checkbox" className="green-checkbox"/> */}
-                        Penjual: <span>Izzeldin</span>
+                            <div>
+                                Penjual: <span>{sellerName}</span>
+                            </div>
                     </div>
-                    <button>
-                        Hapus
+                    <button onClick={handleDeleteCart} disabled={isLoading}>
+                        {isLoading ? 'Menghapus...' : 'Hapus'}
                     </button>
                 </div>
                 <div className="cart-page-left-container-list">
@@ -67,7 +124,6 @@ function Carts() {
                                         Rp {item.price.toLocaleString('id-ID')}
                                     </div>
                                     <div className="quantity-button-container">
-                                        <span><i className="fas fa-trash-alt"></i></span>
                                         Kuantitas: {item.quantity}
                                     </div>
                                 </div>

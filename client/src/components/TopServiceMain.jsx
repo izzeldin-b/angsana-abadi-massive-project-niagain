@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 const TopServiceMain = () => {
 
@@ -9,7 +10,7 @@ const TopServiceMain = () => {
     useEffect(() =>{
         const fetchTopServices = async ()=>{
             try{
-                const res = await axios.get("http://localhost:5000/top-service-main")
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/top-service-main`)
                 setServices(res.data);
                 // console.log(res)
             }catch(err){
@@ -22,7 +23,12 @@ const TopServiceMain = () => {
     return (
         <>
             {services.map(service => (
-                <div className="product-item-container" key={service.id}>
+                <Link 
+                    to={`/service-details/${service.id}`}
+                    key={service.id}
+                    className="product-item-container" 
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                >
                     <div className="product-item-image">
                         <img src={service.image_link} alt={service.name} /> 
                     </div>
@@ -40,7 +46,7 @@ const TopServiceMain = () => {
                             <i className="fa fa-star fa-xs"></i>{service.rating} | {service.sold_amount} Terjual
                         </div>
                     </div>
-                </div>
+                </Link>
             ))}
         </>
     )

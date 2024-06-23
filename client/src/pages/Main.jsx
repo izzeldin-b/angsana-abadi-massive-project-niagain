@@ -43,7 +43,7 @@ function Main() {
                         </div>
 
                         <div className="product-list-container">
-                            {/* <TopServiceMain/> */}
+                            <TopServiceMain/>
 
                             <div className="view-more-container">
                                 <Link to="/recommended-services" style={{ textDecoration: 'none', color: 'inherit' }}>

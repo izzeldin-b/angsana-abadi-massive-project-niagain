@@ -11,13 +11,11 @@ function Navbar2() {
 
     const fetchUserData = async () => {
         auth.onAuthStateChanged(async (user) => {
-            // console.log(user); REMOVE LATER, CONTAINS SENSITIVE DATA
         
             const docRef = doc(db, "Users", user.uid);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 setUserDetails(docSnap.data());
-                // console.log(docSnap.data()); REMOVE LATER, CONTAINS SENSITIVE DATA
             } else {
                 console.log("User is not logged in");
             }
@@ -85,12 +83,7 @@ function Navbar2() {
                                     </>
                             ) : (
                                 <>
-                                    <Link to="/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <button className="sign-in-button"> Masuk </button>
-                                    </Link>
-                                    <Link to="/signupoption" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <button className="sign-up-button"> Daftar </button>
-                                    </Link>
+                                    <i className="fa-solid fa-user"/>
                                 </>
                             )}
                         </div>
@@ -98,10 +91,27 @@ function Navbar2() {
                         {/* Second Row */}
                         <div className="nav-element" id="empty-section-1"></div>
                         <div className="nav-element" id="text-below-searchbar">Platform Penyedia Produk dan Jasa</div>
-                        <div className="nav-element" id="notification-below-searchbar"><i className="fas fa-bell"></i><span>&nbsp;&nbsp;Notifikasi</span></div>
+                        <Link className="nav-element" style={{ textDecoration: 'none', color: '#FFF' }} id="notification-below-searchbar" to="/myorders">
+                            <i className="fas fa-bell"></i><span>&nbsp;&nbsp;Notifikasi</span>
+                        </Link>
                         <div className="nav-element" id="help-below-searchbar"><i className="fas fa-question-circle"></i><span>&nbsp;&nbsp;Bantuan</span></div>
                         <div className="nav-element" id="empty-section-2"></div>
-                        <div className="nav-element" id="send-location"><i className="fas fa-map-marker-alt"></i> Dikirim ke <b>Jakarta Selatan</b></div>
+                        <div className="nav-element" id="send-location">
+                            <i className="fas fa-map-marker-alt"></i> Dikirim ke 
+                            <b> 
+                                {userDetails ? (
+                                    <>
+                                        <Link to="/address" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            &nbsp;{userDetails.address_label}
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <>
+                                        &nbsp;
+                                    </>
+                                )}
+                            </b>
+                        </div>
                     </div>
                 </nav>
             </header>

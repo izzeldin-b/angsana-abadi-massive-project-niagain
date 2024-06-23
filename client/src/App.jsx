@@ -34,6 +34,8 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import './App.css'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MyBusinessCatalogService from './pages/MyBusinessCatalogService';
+import ServiceDetails from './pages/ServiceDetails';
 
 const AuthContext = createContext({
   user: null,
@@ -140,8 +142,10 @@ function ProtectedRoute({ children, allowedRoles }) {
           <Route path="/signupoption" element={<SignUpOption />} />
           <Route path="/signupstudent" element={<SignUpStudent />} />
           <Route path="/" element={<Main />} />
-          <Route path="/product-details" element={<ProductDetails />} />
+          {/* <Route path="/product-details" element={<ProductDetails />} /> */}
           <Route path="/product-details/:productId" element={<ProductDetails />} />
+          {/* <Route path="/service-details" element={<ServiceDetails />} /> */}
+          <Route path="/service-details/:serviceId" element={<ServiceDetails />} />
           <Route path="/recommended-products" element={<Recommended />} />
           <Route path="/recommended-services" element={<RecommendedService />} />
           <Route path="/search-product" element={<Search />} />
@@ -167,6 +171,10 @@ function ProtectedRoute({ children, allowedRoles }) {
           <Route 
             path="/my-business-catalog" 
             element={<ProtectedRoute allowedRoles={['student']}><MyBusinessCatalog /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/my-business-catalog-services" 
+            element={<ProtectedRoute allowedRoles={['student']}><MyBusinessCatalogService /></ProtectedRoute>} 
           />
           <Route 
             path="/my-business-statistics" 

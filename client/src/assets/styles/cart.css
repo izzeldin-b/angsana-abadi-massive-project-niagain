@@ -166,7 +166,7 @@
 
 .cart-left-container-list-individual-quantity{
     /* background-color: #a394ce; */
-    width: 7.4rem;
+    min-width: 7.4rem;
     display: flex;
     flex-direction: column;
     justify-content: center;

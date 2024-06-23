@@ -23,6 +23,7 @@ admin.initializeApp({
     }),
 });
 
+// Firebase Authentication
 async function authenticateUser(req, res, next) {
     const idToken = req.headers.authorization;
 
@@ -64,7 +65,7 @@ const upload = multer({ storage });
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public"))); // Serve static files
+app.use(express.static(path.join(__dirname, "public")));
 
 // Database Connection 
 const port = process.env.PORT || 5000; 
@@ -88,7 +89,7 @@ db.connect(err => {
 app.get("/product/:productId", (req, res) => {
     const productId = req.params.productId;
 
-    // Sanitize input (to prevent SQL injection)
+    // Sanitize input
     const sanitizedProductId = db.escape(productId);
     
     const q = `SELECT * FROM products WHERE product_id = ${sanitizedProductId}`;
@@ -111,7 +112,7 @@ app.get("/product/:productId", (req, res) => {
 app.get("/service/:serviceId", (req, res) => {
     const serviceId = req.params.serviceId;
 
-    // Sanitize input (to prevent SQL injection)
+    // Sanitize input
     const sanitizedServiceId = db.escape(serviceId);
     
     const q = `SELECT * FROM services WHERE id = ${sanitizedServiceId}`;
@@ -176,7 +177,7 @@ app.get('/services-by-user', (req, res) => {
     });
 });
 
-// Top Products Main Page
+// Top Products Main Page (MAX 11)
 app.get("/top-product-main", (req, res) => {
     const q = "SELECT * FROM products ORDER BY sold_amount DESC LIMIT 11";
     db.query(q, (err, data) => {
@@ -185,7 +186,7 @@ app.get("/top-product-main", (req, res) => {
     });
 });
 
-// Top Services Main Page
+// Top Services Main Page (MAX 11)
 app.get("/top-service-main", (req, res) => {
     const q = "SELECT * FROM services ORDER BY sold_amount DESC LIMIT 11";
     db.query(q, (err, data) => {
@@ -232,9 +233,10 @@ app.get("/all-service", (req, res) => {
 
 // Search Product
 app.get("/search-products", (req, res) => {
-    const searchTerm = req.query.q; // Get search term from query parameter
+    // Get search term from query parameter
+    const searchTerm = req.query.q; 
 
-    // Basic input validation (you'll want to do more thorough validation)
+    // Input validation
     if (!searchTerm) {
         return res.status(400).json({ error: "Missing search term" });
     }
@@ -332,21 +334,9 @@ app.post('/register-user', async (req, res) => {
     }
 });
 
-// const waitForDbConnection = async () => {
-//     while (!db.isConnected) {
-//       await new Promise(resolve => setTimeout(resolve, 100)); // Wait 100ms
-//     }
-//   };
-
 // Add To Cart
 app.post('/add-to-cart', authenticateUser, async (req, res) => {
     const { productId, quantity } = req.body;
-
-    // DELETE LATER
-    // console.log("Received add-to-cart request:", {
-    //     productId: productId,
-    //     quantity: quantity
-    // }); 
 
     try {
         // 1. Get Firebase UID from the authenticated user
@@ -431,15 +421,8 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
 app.post('/add-to-cart-service', authenticateUser, async (req, res) => {
     const { serviceId, quantity } = req.body;
 
-    // DELETE LATER
-    // console.log("Received add-to-cart request:", {
-    //     productId: productId,
-    //     quantity: quantity
-    // }); 
-
     try {
         // 1. Get Firebase UID from the authenticated user
-        
         const firebaseUserId = req.user.uid;
 
         // 2. Input Validation
@@ -521,7 +504,7 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
     console.log('Cart request received');
     try {
         const firebaseUserId = req.user.uid;
-        console.log('User ID:', firebaseUserId);
+        // console.log('User ID:', firebaseUserId);
         // console.log(firebaseUserId);
 
         // 1. Fetch User's Cart Items
@@ -559,7 +542,7 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
     }
 });
 
-// DELETE /api/user/cart (Delete User Cart)
+// Delete User Cart
 app.delete('/delete-cart', authenticateUser, (req, res) => {
     const firebaseUserId = req.user.uid;
 

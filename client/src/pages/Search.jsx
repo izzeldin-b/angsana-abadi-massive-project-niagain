@@ -13,7 +13,7 @@ function Search() {
     
     useEffect(() => {
         const fetchProducts = async () => {
-            const response = await fetch(`http://localhost:5000/search-products?q=${searchTerm}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/search-products?q=${searchTerm}`);
             const data = await response.json();
             setProducts(data);
         };

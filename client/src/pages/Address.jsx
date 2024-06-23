@@ -25,7 +25,6 @@ function Address() {
         const user = auth.currentUser; 
 
         if (!user) {
-            // Handle the case where the user is not logged in
             console.error("User not logged in.");
             return;
         }
@@ -69,13 +68,11 @@ function Address() {
 
     const fetchUserData = async () => {
         auth.onAuthStateChanged(async (user) => {
-            // console.log(user); REMOVE LATER, CONTAINS SENSITIVE DATA
-        
+    
             const docRef = doc(db, "Users", user.uid);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 setUserDetails(docSnap.data());
-                // console.log(docSnap.data()); REMOVE LATER, CONTAINS SENSITIVE DATA
             } else {
                 console.log("User is not logged in");
             }

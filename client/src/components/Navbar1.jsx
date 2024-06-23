@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../assets/styles/navbar-not-signed-in.css'
+import NavbarLogo from '/images/LOGO-WHITE.png'
 
 function Navbar1() {
 
@@ -9,7 +10,7 @@ function Navbar1() {
     const inputRef = useRef(null);
 
     const handleSearch = () => {
-      navigate(`/search-product?q=${searchTerm}`); // Redirect with query parameter
+        navigate(`/search-product?q=${searchTerm}`);
     };
 
     const handleKeyDown = (e) => {
@@ -26,7 +27,7 @@ function Navbar1() {
                         {/* First Row */}
                         <div className="nav-element" id="logo">
                             <Link to="/">
-                                <img src="https://res.cloudinary.com/dddmczggg/image/upload/v1718785344/niagain-ecommerce/all-assets/LOGO-WHITE_ao4r68.png" alt="LOGO-WHITE" id="logo-image"/>
+                                <img src={NavbarLogo} alt="LOGO-WHITE" id="logo-image"/>
                             </Link>
                         </div>
 

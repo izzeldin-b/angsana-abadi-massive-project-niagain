@@ -10,7 +10,7 @@ const TopProducts = () => {
     useEffect(() =>{
         const fetchAllProducts = async ()=>{
             try{
-                const res = await axios.get("http://localhost:5000/top-product")
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/top-product`)
                 setProducts(res.data);
             }catch(err){
                 console.log(err);
