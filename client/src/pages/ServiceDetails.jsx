@@ -39,11 +39,21 @@ function ServiceDetails() {
                 console.log('Service added to cart successfully');
                 toast.success("Berhasil Masuk Ke Cart", {
                     position: "bottom-left",
+                    className: 'custom-error-toast',
+                    style: {
+                        backgroundColor: '#5F2EEB',
+                        color: '#fff',
+                    },
                 });
             } else {
                 console.error('Failed to add service to cart:', response.data);
                 toast.error("Gagal Masuk Ke Cart", {
                     position: "bottom-left",
+                    className: 'custom-error-toast',
+                    style: {
+                        backgroundColor: '#5F2EEB',
+                        color: '#fff',
+                    },
                 });
             }
         } catch (err) {
@@ -54,11 +64,30 @@ function ServiceDetails() {
                     const errorMessage = err.response.data.error || 'Bad Request'; // Use the server's error message if available
                     toast.error(errorMessage, {
                         position: "bottom-left",
+                        className: 'custom-error-toast',
+                        style: {
+                            backgroundColor: '#5F2EEB',
+                            color: '#fff',
+                        },
                     });
                 } else if (err.response.status === 500) {
-                    toast.error("Jasa belum terimplementasi", { position: "bottom-left" }); // Specific message for 500
+                    toast.error("Jasa belum terimplementasi", { 
+                        position: "bottom-left",
+                        className: 'custom-error-toast',
+                        style: {
+                            backgroundColor: '#5F2EEB',
+                            color: '#fff',
+                        },
+                    }); // Specific message for 500
                 } else {
-                    toast.error("Gagal Masuk Ke Cart: Error tidak diketahui", { position: "bottom-left" }); // General error
+                    toast.error("Gagal Masuk Ke Cart: Error tidak diketahui", {
+                        position: "bottom-left",
+                        className: 'custom-error-toast',
+                        style: {
+                            backgroundColor: '#5F2EEB',
+                            color: '#fff',
+                        },
+                    }); // General error
                 }
     
 
@@ -66,6 +95,11 @@ function ServiceDetails() {
                 console.error("Error:", err.message);
                 toast.error('An error occurred. Please try again later.', {
                     position: "bottom-left",
+                    className: 'custom-error-toast',
+                    style: {
+                        backgroundColor: '#5F2EEB',
+                        color: '#fff',
+                    },
                 }); 
             }
         }

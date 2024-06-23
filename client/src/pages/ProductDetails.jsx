@@ -39,6 +39,11 @@ function ProductDetails() {
                 console.log('Item added to cart successfully');
                 toast.success("Berhasil Masuk Ke Cart", {
                     position: "bottom-left",
+                    className: 'custom-error-toast',
+                    style: {
+                        backgroundColor: '#5F2EEB',
+                        color: '#fff',
+                    },
                 });
             } else {
                 console.error('Failed to add item to cart:', response.data);
@@ -54,6 +59,11 @@ function ProductDetails() {
                     const errorMessage = err.response.data.error || 'Bad Request'; // Use the server's error message if available
                     toast.error(errorMessage, {
                         position: "bottom-left",
+                        className: 'custom-error-toast',
+                        style: {
+                            backgroundColor: '#5F2EEB',
+                            color: '#fff',
+                        },
                     });
                 }
 
@@ -61,6 +71,11 @@ function ProductDetails() {
                 console.error("Error:", err.message);
                 toast.error('An error occurred. Please try again later.', {
                     position: "bottom-left",
+                    className: 'custom-error-toast',
+                    style: {
+                        backgroundColor: '#5F2EEB',
+                        color: '#fff',
+                    },
                 }); 
             }
         }
@@ -144,7 +159,7 @@ function ProductDetails() {
                                         placeholder="1"
                                         min="1"
                                         max={product.stock.toString()}
-                                        value={quantity} 
+                                        value={quantity}
                                         onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
                                         onInput={(e) => {
                                         const value = parseInt(e.target.value, 10);

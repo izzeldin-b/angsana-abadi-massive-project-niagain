@@ -22,6 +22,8 @@ function Profile() {
 
     const handleUserUpdate = async (e) => {
         e.preventDefault(); 
+        if (isUploading) return;
+        setIsUploading(true);
         try {
         // 1. Get the User's UID:
         const user = auth.currentUser; 
@@ -47,6 +49,7 @@ function Profile() {
         console.log("User's Prpfile Updated Successfully.");
         sessionStorage.setItem("addressUpdateToast", "Detail Profil Berhasil Diubah");
 
+        setIsUploading(false);
         window.location.reload();
 
         } catch (error) {
@@ -136,7 +139,14 @@ function Profile() {
         // Check for toast message in session storage on initial render
         const toastMessage = sessionStorage.getItem("addressUpdateToast");
         if (toastMessage) {
-            toast.success(toastMessage, { position: "bottom-left" });
+            toast.success(toastMessage, {
+                position: "bottom-left",
+                className: 'custom-error-toast',
+                style: {
+                    backgroundColor: '#5F2EEB',
+                    color: '#fff',
+                },
+            });
             sessionStorage.removeItem("addressUpdateToast"); 
         }
     }, []);
@@ -449,7 +459,18 @@ function Profile() {
                                     }} 
                                     disabled={!isEditing}
                                 >
-                                Simpan Perubahan</button>
+
+                                    {isUploading ? (
+                                        <>
+                                            <i className="fa-solid fa-spinner fa-spin" /> Menyimpan... 
+                                        </>
+                                    ) : (
+                                        <>
+                                            Simpan Perubahan
+                                        </>
+                                    )}
+
+                                </button>
                                 <div className="profile-page-right-container-edit-contents-agreement">
                                     Dengan menyimpan perubahan, pastikan data yang semua anda masukkan valid.
                                 </div>

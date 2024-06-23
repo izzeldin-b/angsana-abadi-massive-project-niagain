@@ -105,7 +105,7 @@
     padding: 1rem 1rem;
     font-family: 'Figtree', sans-serif;
     width: 16rem;
-    transition: 0.1s ease-in-out;
+    transition: 0.2s ease-in-out;
     font-size: 0.9rem; 
 }
 
@@ -113,7 +113,7 @@
     outline: none;
     border-color: #5F2EEB;
     transform: scale(1.03) translateZ(0);
-    transition: 0.1s ease-in-out;
+    transition: 0.2s ease-in-out;
 }
 
 .address-page-textarea-input{
@@ -125,7 +125,7 @@
     box-sizing: border-box;
     padding: 1rem;
     font-family: 'Figtree', sans-serif;
-    transition: 0.1s ease-in-out;
+    transition: 0.2s ease-in-out;
     font-size: 0.9rem;
 }
 
@@ -133,7 +133,7 @@
     outline: none;
     border-color: #5F2EEB;
     transform: scale(1.03) translateZ(0);
-    transition: 0.1s ease-in-out;
+    transition: 0.2s ease-in-out;
 }
 
 .address-page-right-container-address-label{

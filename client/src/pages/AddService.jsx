@@ -75,7 +75,7 @@ const AddService = () => {
         setIsUploading(true);
         const formData = new FormData();
 
-        // Append all product data (including the image file)
+        // Append all service data
         for (let key in serviceData) {
             formData.append(key, serviceData[key]);
         }
@@ -93,7 +93,6 @@ const AddService = () => {
             setIsUploading(false);
             navigate('/my-business-catalog-services');
         } catch (err) {
-            // Log error details for debugging
             if (err.response) {
                 console.error("Error response:", err.response.data);
             } else {

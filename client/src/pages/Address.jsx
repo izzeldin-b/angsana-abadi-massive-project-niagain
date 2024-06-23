@@ -17,9 +17,12 @@ function Address() {
     const [address_full, setAddressFull] = useState("");
     const [address_notes, setAddressNotes] = useState("");
     const [address_receiver, setAddressReceiver] = useState("");
+    const [isUploading, setIsUploading] = useState(false);
 
     const handleAddressUpdate = async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
+        if (isUploading) return;
+        setIsUploading(true); 
         try {
         // 1. Get the User's UID:
         const user = auth.currentUser; 
@@ -45,11 +48,19 @@ function Address() {
         console.log("User's Address Updated Successfully.");
         sessionStorage.setItem("addressUpdateToast", "Alamat Berhasil Diubah");
 
+        setIsUploading(false);
         window.location.reload();
 
         } catch (error) {
             console.error(error.message);
-            toast.error("Gagal ubah alamat", { position: "bottom-left" });
+            toast.error("Gagal ubah alamat", { 
+                position: "bottom-left",
+                className: 'custom-error-toast',
+                style: {
+                    backgroundColor: '#5F2EEB',
+                    color: '#fff',
+                },
+            });
         }
     };
 
@@ -57,7 +68,14 @@ function Address() {
         // Check for toast message in session storage on initial render
         const toastMessage = sessionStorage.getItem("addressUpdateToast");
         if (toastMessage) {
-            toast.success(toastMessage, { position: "bottom-left" });
+            toast.success(toastMessage, {
+                position: "bottom-left",
+                className: 'custom-error-toast',
+                style: {
+                    backgroundColor: '#5F2EEB',
+                    color: '#fff',
+                },
+            });
             sessionStorage.removeItem("addressUpdateToast"); 
         }
     }, []);
@@ -269,7 +287,25 @@ function Address() {
                                     </div>
                                 </div>
                                 <div className="address-page-right-container-address-savebutton">
-                                    <button type="submit" disabled={!isEditing}>Simpan Perubahan</button> 
+                                    <button 
+                                        type="submit" 
+                                        disabled={!isEditing}
+                                        style={{ 
+                                            backgroundColor: isEditing ? "#5F2EEB" : "lightgray",
+                                        }} 
+                                    >
+
+                                        {isUploading ? (
+                                            <>
+                                                <i className="fa-solid fa-spinner fa-spin" /> Menyimpan... 
+                                            </>
+                                        ) : (
+                                            <>
+                                                Simpan Perubahan
+                                            </>
+                                        )}
+
+                                    </button> 
                                 </div>
                             </form>
                             ) : (
