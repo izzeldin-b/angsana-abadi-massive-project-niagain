@@ -560,33 +560,42 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
 });
 
 // DELETE /api/user/cart (Delete User Cart)
-app.delete('/delete-cart', authenticateUser, async (req, res) => {
+app.delete('/delete-cart', authenticateUser, (req, res) => {
     const firebaseUserId = req.user.uid;
 
-    try {
-        // 1. Get cart ID
-        const cartQuery = 'SELECT cart_id FROM carts WHERE buyer_firebase_user_id = ?';
-        const [cartData] = await db.promise().query(cartQuery, [firebaseUserId]); 
+    // 1. Get cart ID associated with the user
+    const cartQuery = 'SELECT cart_id FROM carts WHERE buyer_firebase_user_id = ?';
+    db.query(cartQuery, [firebaseUserId], (cartError, cartData) => {
+        if (cartError) {
+            console.error('Error fetching cart:', cartError);
+            return res.status(500).json({ error: 'Failed to fetch cart' });
+        }
 
         if (cartData.length === 0) {
             return res.status(404).json({ error: 'Cart not found' });
         }
         const cartId = cartData[0].cart_id;
 
-        // 2. Delete cart items
+        // 2. Delete cart items in the cart
         const deleteItemsQuery = 'DELETE FROM cartitems WHERE cart_id = ?';
-        await db.promise().query(deleteItemsQuery, [cartId]);
+        db.query(deleteItemsQuery, [cartId], (deleteItemsError) => {
+            if (deleteItemsError) {
+                console.error('Error deleting cart items:', deleteItemsError);
+                return res.status(500).json({ error: 'Failed to delete cart items' });
+            }
 
-        // 3. Delete the cart
-        const deleteCartQuery = 'DELETE FROM carts WHERE cart_id = ?';
-        await db.promise().query(deleteCartQuery, [cartId]);
+            // 3. Delete the cart itself
+            const deleteCartQuery = 'DELETE FROM carts WHERE cart_id = ?';
+            db.query(deleteCartQuery, [cartId], (deleteCartError) => {
+                if (deleteCartError) {
+                    console.error('Error deleting cart:', deleteCartError);
+                    return res.status(500).json({ error: 'Failed to delete cart' });
+                }
 
-        res.json({ message: 'Cart and items deleted successfully' });
-
-    } catch (error) {
-        console.error('Error deleting cart:', error);
-        res.status(500).json({ error: 'Failed to delete cart' });
-    }
+                res.json({ message: 'Cart and items deleted successfully' });
+            });
+        });
+    });
 });
 
 // Start the Server
