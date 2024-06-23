@@ -559,6 +559,36 @@ app.get('/get-user-cart', authenticateUser, async (req, res) => {
     }
 });
 
+// DELETE /api/user/cart (Delete User Cart)
+app.delete('/delete-cart', authenticateUser, async (req, res) => {
+    const firebaseUserId = req.user.uid;
+
+    try {
+        // 1. Get cart ID
+        const cartQuery = 'SELECT cart_id FROM carts WHERE buyer_firebase_user_id = ?';
+        const [cartData] = await db.promise().query(cartQuery, [firebaseUserId]); 
+
+        if (cartData.length === 0) {
+            return res.status(404).json({ error: 'Cart not found' });
+        }
+        const cartId = cartData[0].cart_id;
+
+        // 2. Delete cart items
+        const deleteItemsQuery = 'DELETE FROM cartitems WHERE cart_id = ?';
+        await db.promise().query(deleteItemsQuery, [cartId]);
+
+        // 3. Delete the cart
+        const deleteCartQuery = 'DELETE FROM carts WHERE cart_id = ?';
+        await db.promise().query(deleteCartQuery, [cartId]);
+
+        res.json({ message: 'Cart and items deleted successfully' });
+
+    } catch (error) {
+        console.error('Error deleting cart:', error);
+        res.status(500).json({ error: 'Failed to delete cart' });
+    }
+});
+
 // Start the Server
 app.listen(port, () => {
     console.log(`listening`); 
