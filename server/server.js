@@ -107,6 +107,29 @@ app.get("/product/:productId", (req, res) => {
     });
 });
 
+// Get Single Service by ID
+app.get("/service/:serviceId", (req, res) => {
+    const serviceId = req.params.serviceId;
+
+    // Sanitize input (to prevent SQL injection)
+    const sanitizedProductId = db.escape(serviceId);
+    
+    const q = `SELECT * FROM products WHERE id = ${sanitizedProductId}`;
+
+    db.query(q, (err, data) => {
+        if (err) {
+            console.error("Error fetching service:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        if (data.length === 0) {
+            return res.status(404).json({ error: "Service not found" });
+        }
+
+        return res.json(data[0]);
+    });
+});
+
 // Get all products for a specific user ID
 app.get('/products-by-user', (req, res) => {
     const firebaseUserId = req.query.firebaseUserId;
