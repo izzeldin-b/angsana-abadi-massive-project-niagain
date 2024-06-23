@@ -261,7 +261,7 @@ app.post('/add-service', upload.single('image'), async (req, res) => {
     }
     const imageUrl = req.file.path;
 
-    const q = "INSERT INTO services (`image_link`, `name`, `price`, `service_description`, `status`, `service_variation`) VALUES (?)"; // Updated column names
+    const q = "INSERT INTO services (`image_link`, `name`, `price`, `service_description`, `status`, `service_variation`, `firebase_user_id`) VALUES (?)"; // Updated column names
 
     const values = [
         imageUrl,
@@ -269,7 +269,8 @@ app.post('/add-service', upload.single('image'), async (req, res) => {
         req.body.price,
         req.body.service_description, 
         req.body.status,           
-        req.body.service_variation 
+        req.body.service_variation,
+        req.user.uid, 
     ];
 
     db.query(q, [values], (err, data) => {
