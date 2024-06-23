@@ -255,7 +255,7 @@ app.post('/add-product', authenticateUser, upload.single('image'), async (req, r
 });
 
 //  Add New Service
-app.post('/add-service', upload.single('image'), async (req, res) => {
+app.post('/add-service', authenticateUser, upload.single('image'), async (req, res) => {
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
@@ -278,7 +278,7 @@ app.post('/add-service', upload.single('image'), async (req, res) => {
             console.error("Error inserting product:", err);
             return res.status(500).json(err);
         }
-        return res.json("New Product Added");
+        return res.json("New Service Added");
     });
 });
 
