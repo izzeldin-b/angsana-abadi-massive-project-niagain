@@ -36,6 +36,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MyBusinessCatalogService from './pages/MyBusinessCatalogService';
 import ServiceDetails from './pages/ServiceDetails';
+import Payment from './pages/Payment';
 
 const AuthContext = createContext({
   user: null,
@@ -187,6 +188,10 @@ function ProtectedRoute({ children, allowedRoles }) {
           <Route 
             path="/addservice" 
             element={<ProtectedRoute allowedRoles={['student']}><AddService /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/payment" 
+            element={<ProtectedRoute allowedRoles={['student']}><Payment/></ProtectedRoute>} 
           />
 
           {/* <Route path="*" element={<Navigate to={isLoggedIn ? '/' : '/signin'} />} /> */}

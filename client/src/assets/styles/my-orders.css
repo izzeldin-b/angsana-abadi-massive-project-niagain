@@ -153,17 +153,28 @@
 .myorders-page-right-container-contents-individual-container{
     border: 1px solid lightgray;
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .myorders-page-right-container-contents-individual-header{
     /* background-color: orange; */
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     /* gap: 2.5rem; */
+}
+
+.myorders-page-right-container-contents-individual-header-wrapper{
+    display: flex;
+    gap: 2rem;
+}
+
+.myorders-page-right-container-contents-individual-header-wrapper-2{
+    display: flex;
+    gap: 2rem;
 }
 
 .myorders-page-right-container-contents-individual-header-contents{
@@ -171,11 +182,11 @@
     /* background-color: yellow; */
     align-items: center;
     font-size: 0.9rem;
-    margin-right: 2rem;
+    /* margin-right: 2rem; */
 }
 
 .myorders-page-right-container-contents-individual-description{
-    /* background-color: wheat; */
+    background-color: wheat;
     /* gap: 1rem; */
     display: flex;
     flex-wrap: wrap;
@@ -220,6 +231,8 @@
     border-left: 1px solid lightgray;
     color: black;
     font-size: 0.8rem;
+    box-sizing: border-box;
+    padding-left: 2rem;
 }
 
 .myorders-page-right-container-contents-individual-description-total span{
@@ -248,6 +261,54 @@
     border: none; 
     border-radius: 12px;
     cursor: pointer;
+}
+
+.no-orders-message{
+    text-align: center;
+    font-size: 0.9rem;
+    color: #989898;
+}
+
+.myorders-paid-indicator{
+    background-color: rgb(214, 255, 222);
+    box-sizing: border-box;
+    padding: 0.5rem;
+    color: rgb(3, 172, 14);
+    border-radius: 10px;
+    font-weight: bold;
+    min-width: 7rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.myorders-sending-indicator{
+    background-color: #fdb42c;    /* Orange background */
+    box-sizing: border-box;
+    padding: 0.5rem;
+    color: white;                  /* White text for contrast */
+    border-radius: 10px;
+    font-weight: bold;
+    min-width: 7rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.myorders-cancelled-indicator{
+    background-color: #f53c3c;    /* Orange background */
+    box-sizing: border-box;
+    padding: 0.5rem;
+    color: rgb(255, 250, 250);                  /* White text for contrast */
+    border-radius: 10px;
+    font-weight: bold;
+    min-width: 7rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width: 1021px) {

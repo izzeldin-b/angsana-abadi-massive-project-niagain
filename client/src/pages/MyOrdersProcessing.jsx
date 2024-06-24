@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import '../assets/styles/my-orders.css'
 import { auth, db } from "../components/Firebase";
 import { doc, getDoc } from "firebase/firestore";
 import ScrollToTop from '../components/ScrollToTop'
+import axios from 'axios';
 
 function MyOrdersProcessing() {
 
     const [userDetails, setUserDetails] = useState(null);
+    const [orders, setOrders] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const fetchUserData = async () => {
         auth.onAuthStateChanged(async (user) => {
@@ -25,6 +29,36 @@ function MyOrdersProcessing() {
     useEffect(() => {
         fetchUserData();
     }, []);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+            const idToken = await auth.currentUser.getIdToken(); 
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/get-user-orders-all-details-sedang-dikemas`, { 
+                headers: { Authorization: idToken },
+            });
+
+            if (response.status === 200) {
+                // Ensure response.data is an array
+                if (Array.isArray(response.data)) {
+                setOrders(response.data);
+                } else {
+                // Handle non-array response data appropriately (e.g., setOrders([]))
+                setOrders([]); 
+                }
+            } else {
+                throw new Error(response.data.error || 'Failed to fetch orders');
+            }
+            } catch (err) {
+            console.error('Error fetching orders:', err);
+            setError(err.message || 'An error occurred while fetching orders');
+            } finally {
+            setIsLoading(false);
+            }
+        };
+
+        fetchOrders();
+    }, []); 
 
     return (
         <div>
@@ -58,15 +92,6 @@ function MyOrdersProcessing() {
                                 &nbsp;Niaga Saya
                             </Link>
                         </div>
-                        {/* <div className="myorders-page-left-container-menus">
-                            <i className="fa fa-comment"></i> Chat
-                        </div>
-                        <div className="myorders-page-left-container-menus">
-                            <i className="fa fa-bell"></i> Notifikasi
-                        </div>
-                        <div className="myorders-page-left-container-menus">
-                            <i className="fa fa-line-chart"></i> Reputasi
-                        </div> */}
                     </div>
                 </div>
 
@@ -111,7 +136,49 @@ function MyOrdersProcessing() {
                         </div>
 
                         <div className="myorders-page-right-container-contents-wrapper">
+                        {isLoading ? (
+                        <p>Loading...</p> 
+                        ) : error ? (
+                        <p className="error-message">{error}</p>
+                        ) : (
+                            <div className="orders-container">
+                                {orders && orders.length > 0 ? ( 
+                                orders.map(order => (
 
+                                    <div className="myorders-page-right-container-contents-individual-container" key={order.order_id}>
+                                    <div className="myorders-page-right-container-contents-individual-header">
+                                        <div className="myorders-page-right-container-contents-individual-header-wrapper">
+                                        <div className="myorders-page-right-container-contents-individual-header-contents" id="order-type">
+                                            <i className="fa-solid fa-box"></i>&nbsp;&nbsp;<b>Produk</b>
+                                        </div>
+                                        <div className="myorders-page-right-container-contents-individual-header-contents">
+                                            {new Date(order.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                        </div>
+                                        <div className="myorders-page-right-container-contents-individual-header-contents">
+                                            <b>ID:</b>&nbsp;&nbsp;{order.order_id}
+                                        </div>
+                                        </div>
+                                        <div className="myorders-page-right-container-contents-individual-header-wrapper-2">
+                                        <div className="myorders-page-right-container-contents-individual-description-total">
+                                            Total Belanja
+                                            <span>Rp {order.total_price.toLocaleString('id-ID')}</span>
+                                        </div>
+                                        {/* <Link to="/payment" style={{ textDecoration: 'none', color: 'inherit' }} className="myorders-page-right-container-contents-individual-description-paybutton">
+                                            <button>Bayar</button>
+                                        </Link> */}
+                                        <div className="myorders-paid-indicator">
+                                            Sudah Bayar
+                                        </div>
+                                        </div>
+                                    </div> 
+                                    </div> 
+
+                                ))
+                                ) : ( 
+                                <p className="no-orders-message">Tidak ada</p>
+                                )}
+                            </div>
+                        )}
                         </div>
                     </div>
                 </div>

@@ -610,7 +610,7 @@ app.post('/create-order', authenticateUser, (req, res) => {
             return res.status(400).json({ error: 'Cart is empty' });
         }
 
-        const sellerId = cartItems[0].seller_id; // Assuming single seller per cart
+        const sellerId = cartItems[0].seller_id;
         const calculatedTotalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
         // Verify the totalPrice matches the calculated one
@@ -635,11 +635,11 @@ app.post('/create-order', authenticateUser, (req, res) => {
 
                 db.query(orderInsertQuery, orderValues, (err, result) => {
                     if (err) {
-                        throw err; // Let the catch block handle errors
+                        throw err;
                     }
                     const newOrderId = result.insertId;
 
-                    // 3. Insert Order Items (using a loop for the standard mysql library)
+                    // 3. Insert Order Items
                     let orderItemsInserted = 0; 
                     for (const item of cartItems) {
                         const itemInsertQuery = `
@@ -662,7 +662,7 @@ app.post('/create-order', authenticateUser, (req, res) => {
                 });
 
             } catch (error) {
-                // Rollback if any error occurs
+                // Cancel if any error occurs
                 db.rollback(() => {
                     console.error('Error creating order:', error);
                     res.status(500).json({ error: 'Error creating order' });
@@ -700,14 +700,14 @@ function deleteCartAndItems(firebaseUserId, db, res, newOrderId) {
                     console.error('Error committing transaction:', err);
                     res.status(500).json({ error: 'Error creating order' });
                 } else {
-                    res.json({ message: 'Order created successfully', order_id: newOrderId }); // Assuming newOrderId is accessible here
+                    res.json({ message: 'Order created successfully', order_id: newOrderId });
                 }
             });
         });
     });
 }
 
-// Get All Order Details with 'Belum Bayar' Status for the Authenticated User
+// Get All Order Details with 'Belum Bayar'
 app.get('/get-user-orders-all-details-belum-bayar', authenticateUser, (req, res) => {
     const firebaseUserId = req.user.uid;
 
@@ -725,16 +725,15 @@ app.get('/get-user-orders-all-details-belum-bayar', authenticateUser, (req, res)
             return res.status(500).json({ error: 'Failed to fetch user orders' });
         }
         
-        // Check if results are empty, and return "Tidak ada" if so
         if (results.length === 0) {
-            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+            return res.json("Tidak ada");
         } else {
-            res.json(results); // Send filtered order details as JSON if not empty
+            res.json(results); 
         }
     });
 });
 
-// Get All Order Details with 'Sedang Dikemas' Status for the Authenticated User
+// Get All Order Details with 'Sedang Dikemas'
 app.get('/get-user-orders-all-details-sedang-dikemas', authenticateUser, (req, res) => {
     const firebaseUserId = req.user.uid;
 
@@ -752,16 +751,15 @@ app.get('/get-user-orders-all-details-sedang-dikemas', authenticateUser, (req, r
             return res.status(500).json({ error: 'Failed to fetch user orders' });
         }
         
-        // Check if results are empty, and return "Tidak ada" if so
         if (results.length === 0) {
-            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+            return res.json("Tidak ada"); 
         } else {
-            res.json(results); // Send filtered order details as JSON if not empty
+            res.json(results);
         }
     });
 });
 
-// Get All Order Details with 'Dikirim' Status for the Authenticated User
+// Get All Order Details with 'Dikirim'
 app.get('/get-user-orders-all-details-dikirim', authenticateUser, (req, res) => {
     const firebaseUserId = req.user.uid;
 
@@ -779,16 +777,15 @@ app.get('/get-user-orders-all-details-dikirim', authenticateUser, (req, res) => 
             return res.status(500).json({ error: 'Failed to fetch user orders' });
         }
         
-        // Check if results are empty, and return "Tidak ada" if so
         if (results.length === 0) {
-            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+            return res.json("Tidak ada");
         } else {
-            res.json(results); // Send filtered order details as JSON if not empty
+            res.json(results);
         }
     });
 });
 
-// Get All Order Details with 'Belum Bayar' Status for the Authenticated User
+// Get All Order Details with 'Belum Bayar'
 app.get('/get-user-orders-all-details-selesai', authenticateUser, (req, res) => {
     const firebaseUserId = req.user.uid;
 
@@ -806,16 +803,15 @@ app.get('/get-user-orders-all-details-selesai', authenticateUser, (req, res) => 
             return res.status(500).json({ error: 'Failed to fetch user orders' });
         }
         
-        // Check if results are empty, and return "Tidak ada" if so
         if (results.length === 0) {
-            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+            return res.json("Tidak ada"); 
         } else {
-            res.json(results); // Send filtered order details as JSON if not empty
+            res.json(results); 
         }
     });
 });
 
-// Get All Order Details with 'Dibatalkan' Status for the Authenticated User
+// Get All Order Details with 'Dibatalkan'
 app.get('/get-user-orders-all-details-dibatalkan', authenticateUser, (req, res) => {
     const firebaseUserId = req.user.uid;
 
@@ -833,11 +829,10 @@ app.get('/get-user-orders-all-details-dibatalkan', authenticateUser, (req, res) 
             return res.status(500).json({ error: 'Failed to fetch user orders' });
         }
         
-        // Check if results are empty, and return "Tidak ada" if so
         if (results.length === 0) {
-            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+            return res.json("Tidak ada"); 
         } else {
-            res.json(results); // Send filtered order details as JSON if not empty
+            res.json(results); 
         }
     });
 });
