@@ -369,6 +369,7 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
         }
 
         // 5. Check/Create Cart for User
+        let cartId;
         const cartQuery = `
             SELECT cart_id, seller_firebase_user_id 
             FROM carts 
@@ -381,7 +382,6 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
             });
         });
         
-        let cartId;
         if (cartData) {
             // Existing Cart: Check Single-Seller Rule
             if (cartData.seller_firebase_user_id && cartData.seller_firebase_user_id !== sellerId) {
@@ -417,7 +417,7 @@ app.post('/add-to-cart', authenticateUser, async (req, res) => {
     }
 });
 
-// Add To Cart
+// Add To Cart Service
 app.post('/add-to-cart-service', authenticateUser, async (req, res) => {
     const { serviceId, quantity } = req.body;
 
@@ -581,7 +581,268 @@ app.delete('/delete-cart', authenticateUser, (req, res) => {
     });
 });
 
+// Create New Order
+app.post('/create-order', authenticateUser, (req, res) => {
+    const firebaseUserId = req.user.uid;
+    const { logistic_type, totalPrice } = req.body;
+
+    // Input Validation
+    if (!logistic_type || !totalPrice || isNaN(totalPrice) || totalPrice <= 0) {
+        return res.status(400).json({ error: 'Invalid order data. Please check logistic type and total price.' });
+    }
+
+    // 1. Fetch Cart Items and Seller ID
+    const cartItemsQuery = `
+        SELECT ci.cart_item_id, ci.quantity, p.product_id, p.price, p.firebase_user_id as seller_id
+        FROM carts c
+        JOIN cartitems ci ON c.cart_id = ci.cart_id
+        JOIN products p ON ci.product_id = p.product_id
+        WHERE c.buyer_firebase_user_id = ?
+    `;
+
+    db.query(cartItemsQuery, [firebaseUserId], (err, cartItems) => {
+        if (err) {
+            console.error('Error fetching cart items:', err);
+            return res.status(500).json({ error: 'Failed to fetch cart items' });
+        }
+
+        if (cartItems.length === 0) {
+            return res.status(400).json({ error: 'Cart is empty' });
+        }
+
+        const sellerId = cartItems[0].seller_id; // Assuming single seller per cart
+        const calculatedTotalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+        // Verify the totalPrice matches the calculated one
+        if (totalPrice !== calculatedTotalPrice) {
+            return res.status(400).json({ error: 'Total price mismatch' });
+        }
+
+        // Start a transaction
+        db.beginTransaction((err) => {
+            if (err) {
+                console.error('Error starting transaction:', err);
+                return res.status(500).json({ error: 'Error creating order' });
+            }
+
+            try {
+                // 2. Insert Order
+                const orderInsertQuery = `
+                    INSERT INTO orders (buyer_firebase_user_id, seller_firebase_user_id, logistic_type, total_price)
+                    VALUES (?, ?, ?, ?)
+                `;
+                const orderValues = [firebaseUserId, sellerId, logistic_type, totalPrice];
+
+                db.query(orderInsertQuery, orderValues, (err, result) => {
+                    if (err) {
+                        throw err; // Let the catch block handle errors
+                    }
+                    const newOrderId = result.insertId;
+
+                    // 3. Insert Order Items (using a loop for the standard mysql library)
+                    let orderItemsInserted = 0; 
+                    for (const item of cartItems) {
+                        const itemInsertQuery = `
+                            INSERT INTO order_items (order_id, product_id, quantity)
+                            VALUES (?, ?, ?)
+                        `;
+                        const itemValues = [newOrderId, item.product_id, item.quantity];
+
+                        db.query(itemInsertQuery, itemValues, (err) => {
+                            if (err) {
+                                throw err; // Let the catch block handle errors
+                            }
+                            orderItemsInserted++;
+                            if (orderItemsInserted === cartItems.length) {
+                                // All order items inserted
+                                deleteCartAndItems(firebaseUserId, db, res);
+                            }
+                        });
+                    }
+                });
+
+            } catch (error) {
+                // Rollback if any error occurs
+                db.rollback(() => {
+                    console.error('Error creating order:', error);
+                    res.status(500).json({ error: 'Error creating order' });
+                });
+            }
+        });
+    });
+});
+
+// Separate function to delete cart and items
+function deleteCartAndItems(firebaseUserId, db, res, newOrderId) {
+    const deleteCartItemsQuery = 'DELETE FROM cartitems WHERE cart_id IN (SELECT cart_id FROM carts WHERE buyer_firebase_user_id = ?)';
+    db.query(deleteCartItemsQuery, [firebaseUserId], (err) => {
+        if (err) {
+            db.rollback(() => {
+                console.error('Error deleting cart items:', err);
+                res.status(500).json({ error: 'Error creating order (cart item deletion)' });
+            });
+            return;
+        }
+
+        const deleteCartQuery = 'DELETE FROM carts WHERE buyer_firebase_user_id = ?';
+        db.query(deleteCartQuery, [firebaseUserId], (err) => {
+            if (err) {
+                db.rollback(() => {
+                    console.error('Error deleting cart:', err);
+                    res.status(500).json({ error: 'Error creating order (cart deletion)' });
+                });
+                return;
+            }
+
+            // Commit the transaction
+            db.commit((err) => {
+                if (err) {
+                    console.error('Error committing transaction:', err);
+                    res.status(500).json({ error: 'Error creating order' });
+                } else {
+                    res.json({ message: 'Order created successfully', order_id: newOrderId }); // Assuming newOrderId is accessible here
+                }
+            });
+        });
+    });
+}
+
+// Get All Order Details with 'Belum Bayar' Status for the Authenticated User
+app.get('/get-user-orders-all-details-belum-bayar', authenticateUser, (req, res) => {
+    const firebaseUserId = req.user.uid;
+
+    const userOrdersQuery = `
+        SELECT *
+        FROM orders o
+        WHERE (o.buyer_firebase_user_id = ? OR o.seller_firebase_user_id = ?)
+        AND o.order_status = 'Belum Bayar'
+        ORDER BY o.created_at DESC;
+    `;
+
+    db.query(userOrdersQuery, [firebaseUserId, firebaseUserId], (err, results) => {
+        if (err) {
+            console.error('Error fetching user orders:', err);
+            return res.status(500).json({ error: 'Failed to fetch user orders' });
+        }
+        
+        // Check if results are empty, and return "Tidak ada" if so
+        if (results.length === 0) {
+            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+        } else {
+            res.json(results); // Send filtered order details as JSON if not empty
+        }
+    });
+});
+
+// Get All Order Details with 'Sedang Dikemas' Status for the Authenticated User
+app.get('/get-user-orders-all-details-sedang-dikemas', authenticateUser, (req, res) => {
+    const firebaseUserId = req.user.uid;
+
+    const userOrdersQuery = `
+        SELECT *
+        FROM orders o
+        WHERE (o.buyer_firebase_user_id = ? OR o.seller_firebase_user_id = ?)
+        AND o.order_status = 'Sedang Dikemas'
+        ORDER BY o.created_at DESC;
+    `;
+
+    db.query(userOrdersQuery, [firebaseUserId, firebaseUserId], (err, results) => {
+        if (err) {
+            console.error('Error fetching user orders:', err);
+            return res.status(500).json({ error: 'Failed to fetch user orders' });
+        }
+        
+        // Check if results are empty, and return "Tidak ada" if so
+        if (results.length === 0) {
+            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+        } else {
+            res.json(results); // Send filtered order details as JSON if not empty
+        }
+    });
+});
+
+// Get All Order Details with 'Dikirim' Status for the Authenticated User
+app.get('/get-user-orders-all-details-dikirim', authenticateUser, (req, res) => {
+    const firebaseUserId = req.user.uid;
+
+    const userOrdersQuery = `
+        SELECT *
+        FROM orders o
+        WHERE (o.buyer_firebase_user_id = ? OR o.seller_firebase_user_id = ?)
+        AND o.order_status = 'Dikirim'
+        ORDER BY o.created_at DESC;
+    `;
+
+    db.query(userOrdersQuery, [firebaseUserId, firebaseUserId], (err, results) => {
+        if (err) {
+            console.error('Error fetching user orders:', err);
+            return res.status(500).json({ error: 'Failed to fetch user orders' });
+        }
+        
+        // Check if results are empty, and return "Tidak ada" if so
+        if (results.length === 0) {
+            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+        } else {
+            res.json(results); // Send filtered order details as JSON if not empty
+        }
+    });
+});
+
+// Get All Order Details with 'Belum Bayar' Status for the Authenticated User
+app.get('/get-user-orders-all-details-selesai', authenticateUser, (req, res) => {
+    const firebaseUserId = req.user.uid;
+
+    const userOrdersQuery = `
+        SELECT *
+        FROM orders o
+        WHERE (o.buyer_firebase_user_id = ? OR o.seller_firebase_user_id = ?)
+        AND o.order_status = 'Selesai'
+        ORDER BY o.created_at DESC;
+    `;
+
+    db.query(userOrdersQuery, [firebaseUserId, firebaseUserId], (err, results) => {
+        if (err) {
+            console.error('Error fetching user orders:', err);
+            return res.status(500).json({ error: 'Failed to fetch user orders' });
+        }
+        
+        // Check if results are empty, and return "Tidak ada" if so
+        if (results.length === 0) {
+            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+        } else {
+            res.json(results); // Send filtered order details as JSON if not empty
+        }
+    });
+});
+
+// Get All Order Details with 'Dibatalkan' Status for the Authenticated User
+app.get('/get-user-orders-all-details-dibatalkan', authenticateUser, (req, res) => {
+    const firebaseUserId = req.user.uid;
+
+    const userOrdersQuery = `
+        SELECT *
+        FROM orders o
+        WHERE (o.buyer_firebase_user_id = ? OR o.seller_firebase_user_id = ?)
+        AND o.order_status = 'Dibatalkan'
+        ORDER BY o.created_at DESC;
+    `;
+
+    db.query(userOrdersQuery, [firebaseUserId, firebaseUserId], (err, results) => {
+        if (err) {
+            console.error('Error fetching user orders:', err);
+            return res.status(500).json({ error: 'Failed to fetch user orders' });
+        }
+        
+        // Check if results are empty, and return "Tidak ada" if so
+        if (results.length === 0) {
+            return res.json("Tidak ada"); // Return "Tidak ada" for empty result set
+        } else {
+            res.json(results); // Send filtered order details as JSON if not empty
+        }
+    });
+});
+
 // Start the Server
 app.listen(port, () => {
-    console.log(`listening`); 
+    console.log(`listening on port`, port); 
 });
