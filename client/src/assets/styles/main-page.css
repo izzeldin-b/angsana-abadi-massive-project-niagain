@@ -211,3 +211,37 @@ body{
     font-weight: 600;
     height: 100%;
 }
+
+.sticky-box {
+    position: fixed; /* Makes it sticky */
+    left: 2rem; /* Adjust left position as needed */
+    max-width: 220px; /* Set a fixed width */
+    padding: 15px;
+    border: 1px solid lightgrey;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+
+.sticky-box span{
+    font-weight: bold;
+    color: red;
+}
+
+#smaller-notification-text{
+    font-size: 0.8rem;
+    color: #989898;
+}
+
+.sticky-box.button {
+    cursor: pointer;
+    text-align: center;
+}
+
+@media (max-width: 1666px) {
+    .sticky-box {
+        display: none;
+    }
+}
