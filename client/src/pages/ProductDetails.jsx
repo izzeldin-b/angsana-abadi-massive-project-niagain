@@ -5,6 +5,9 @@ import axios from 'axios';
 import { auth } from "../components/Firebase"
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import Profile from '/images/profile-pic.jpg'
+import Profile2 from '/images/ugm.png'
+import Profile3 from '/images/keychain.png'
 
 
 function ProductDetails() {
@@ -215,11 +218,11 @@ function ProductDetails() {
                             {/* <!-- each product --> */}
                             <div className="product-user-reviews-individual-container">
                                 <div className="product-user-reviews-individual-profilepic">
-                                    <img src=".\src\assets\images\profile-pic.jpg" alt="" />
+                                    <img src={Profile2} alt="" />
                                 </div>
                                 <div className="product-user-reviews-individual-contents">
                                     <div className="product-user-reviews-individual-contents-username">
-                                        test_user1
+                                        gamada_12
                                     </div>
                                     <div className="product-user-reviews-individual-contents-rating">
                                         <i className="fa fa-star fa-xs"></i>
@@ -229,26 +232,26 @@ function ProductDetails() {
                                         <i className="fa fa-star fa-xs"></i>
                                     </div>
                                     <div className="product-user-reviews-individual-contents-date-and-variant">
-                                        06-05-2024 | Variasi: Hitam
+                                        06-12-2024 | Variasi: Canvas
                                     </div>
                                     <div className="product-user-reviews-individual-contents-description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Saya sangat menyukai produk ini! Warna-warna dingin yang lembut membuat ruangan saya terasa lebih sejuk dan tenang. Desain minimalistiknya sangat elegan dan tidak berlebihan, benar-benar menciptakan suasana yang damai di rumah.
                                     </div>
                                     <div className="product-user-reviews-individual-contents-photos">
+                                        {/* <img src="src\assets\images\bag-product.jpg"/>
                                         <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
+                                        <img src="src\assets\images\bag-product.jpg"/> */}
                                     </div>
                                 </div>
                             </div>
 
                             <div className="product-user-reviews-individual-container">
                                 <div className="product-user-reviews-individual-profilepic">
-                                    <img src=".\src\assets\images\profile-pic.jpg" alt="" />
+                                    <img src={Profile} alt="" />
                                 </div>
                                 <div className="product-user-reviews-individual-contents">
                                     <div className="product-user-reviews-individual-contents-username">
-                                        test_user1
+                                        thierry_tukam
                                     </div>
                                     <div className="product-user-reviews-individual-contents-rating">
                                         <i className="fa fa-star fa-xs"></i>
@@ -258,44 +261,43 @@ function ProductDetails() {
                                         <i className="fa fa-star fa-xs"></i>
                                     </div>
                                     <div className="product-user-reviews-individual-contents-date-and-variant">
-                                        06-05-2024 | Variasi: Hitam
+                                        06-16-2024 | Variasi: Hitam
                                     </div>
                                     <div className="product-user-reviews-individual-contents-description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Produk ini sangat memikat! Warna biru muda dan abu-abunya memberikan kesan yang sangat menenangkan. Sederhana tapi sangat indah, produk ini menambahkan sentuhan artistik yang sempurna di ruang tamu saya.
                                     </div>
                                     <div className="product-user-reviews-individual-contents-photos">
+                                        {/* <img src="src\assets\images\bag-product.jpg"/>
                                         <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
+                                        <img src="src\assets\images\bag-product.jpg"/> */}
                                     </div>
                                 </div>
                             </div>
 
                             <div className="product-user-reviews-individual-container">
                                 <div className="product-user-reviews-individual-profilepic">
-                                    <img src=".\src\assets\images\profile-pic.jpg" alt="" />
+                                    <img src={Profile3} alt="" />
                                 </div>
                                 <div className="product-user-reviews-individual-contents">
                                     <div className="product-user-reviews-individual-contents-username">
-                                        test_user1
+                                        lionel_pessi
                                     </div>
                                     <div className="product-user-reviews-individual-contents-rating">
                                         <i className="fa fa-star fa-xs"></i>
                                         <i className="fa fa-star fa-xs"></i>
                                         <i className="fa fa-star fa-xs"></i>
                                         <i className="fa fa-star fa-xs"></i>
-                                        <i className="fa fa-star fa-xs"></i>
                                     </div>
                                     <div className="product-user-reviews-individual-contents-date-and-variant">
-                                        06-05-2024 | Variasi: Hitam
+                                        06-21-2024 | Variasi: Hitam
                                     </div>
                                     <div className="product-user-reviews-individual-contents-description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Luar biasa! Produk ini membawa nuansa alami dan sejuk ke dalam ruangan saya. Kombinasi warna yang digunakan benar-benar membuat suasana menjadi lebih tenang dan nyaman. Sangat direkomendasikan untuk siapa saja yang mencari keindahan sederhana.
                                     </div>
                                     <div className="product-user-reviews-individual-contents-photos">
+                                        {/* <img src="src\assets\images\bag-product.jpg"/>
                                         <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
+                                        <img src="src\assets\images\bag-product.jpg"/> */}
                                     </div>
                                 </div>
                             </div>

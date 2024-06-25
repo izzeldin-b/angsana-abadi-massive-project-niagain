@@ -5,6 +5,9 @@ import axios from 'axios';
 import { auth } from "../components/Firebase"
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import Profile from '/images/profile-pic.jpg'
+import Profile2 from '/images/ugm.png'
+import Profile3 from '/images/keychain.png'
 
 
 function ServiceDetails() {
@@ -248,11 +251,11 @@ function ServiceDetails() {
                             {/* <!-- each product --> */}
                             <div className="product-user-reviews-individual-container">
                                 <div className="product-user-reviews-individual-profilepic">
-                                    <img src=".\src\assets\images\profile-pic.jpg" alt="" />
+                                    <img src={Profile2} alt="" />
                                 </div>
                                 <div className="product-user-reviews-individual-contents">
                                     <div className="product-user-reviews-individual-contents-username">
-                                        test_user1
+                                        gamada_12
                                     </div>
                                     <div className="product-user-reviews-individual-contents-rating">
                                         <i className="fa fa-star fa-xs"></i>
@@ -265,23 +268,23 @@ function ServiceDetails() {
                                         06-05-2024 | Variasi: Hitam
                                     </div>
                                     <div className="product-user-reviews-individual-contents-description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Saya sangat menyukai layanan ini! Produk yang mereka buat untuk presentasi saya sangat menarik secara visual dan sangat informatif. Tim desainer sangat profesional dan memahami kebutuhan saya dengan baik. Hasilnya benar-benar memukau audiens saya.
                                     </div>
                                     <div className="product-user-reviews-individual-contents-photos">
+                                        {/* <img src="src\assets\images\bag-product.jpg"/>
                                         <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
+                                        <img src="src\assets\images\bag-product.jpg"/> */}
                                     </div>
                                 </div>
                             </div>
 
                             <div className="product-user-reviews-individual-container">
                                 <div className="product-user-reviews-individual-profilepic">
-                                    <img src=".\src\assets\images\profile-pic.jpg" alt="" />
+                                    <img src={Profile} alt="" />
                                 </div>
                                 <div className="product-user-reviews-individual-contents">
                                     <div className="product-user-reviews-individual-contents-username">
-                                        test_user1
+                                        thierry_tukam
                                     </div>
                                     <div className="product-user-reviews-individual-contents-rating">
                                         <i className="fa fa-star fa-xs"></i>
@@ -294,23 +297,23 @@ function ServiceDetails() {
                                         06-05-2024 | Variasi: Hitam
                                     </div>
                                     <div className="product-user-reviews-individual-contents-description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Layanan yang luar biasa! Tim berhasil membuat presentasi yang sangat menarik dan efektif. Desainnya sangat elegan dan tata letaknya mudah dipahami. Sangat direkomendasikan untuk siapa saja yang membutuhkan presentasi berkualitas tinggi.
                                     </div>
                                     <div className="product-user-reviews-individual-contents-photos">
+                                        {/* <img src="src\assets\images\bag-product.jpg"/>
                                         <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
+                                        <img src="src\assets\images\bag-product.jpg"/> */}
                                     </div>
                                 </div>
                             </div>
 
                             <div className="product-user-reviews-individual-container">
                                 <div className="product-user-reviews-individual-profilepic">
-                                    <img src=".\src\assets\images\profile-pic.jpg" alt="" />
+                                    <img src={Profile3} alt="" />
                                 </div>
                                 <div className="product-user-reviews-individual-contents">
                                     <div className="product-user-reviews-individual-contents-username">
-                                        test_user1
+                                        albert_andres
                                     </div>
                                     <div className="product-user-reviews-individual-contents-rating">
                                         <i className="fa fa-star fa-xs"></i>
@@ -323,12 +326,12 @@ function ServiceDetails() {
                                         06-05-2024 | Variasi: Hitam
                                     </div>
                                     <div className="product-user-reviews-individual-contents-description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Kerja luar biasa dari tim pengembang! Mereka berhasil mengubah ide saya menjadi produk yang luar biasa. Desain UI/UX-nya sangat menarik dan intuitif, serta performa produk sangat baik. Saya sangat merekomendasikan layanan ini kepada siapa saja yang membutuhkan produk berkualitas.
                                     </div>
                                     <div className="product-user-reviews-individual-contents-photos">
+                                        {/* <img src="src\assets\images\bag-product.jpg"/>
                                         <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
-                                        <img src="src\assets\images\bag-product.jpg"/>
+                                        <img src="src\assets\images\bag-product.jpg"/> */}
                                     </div>
                                 </div>
                             </div>

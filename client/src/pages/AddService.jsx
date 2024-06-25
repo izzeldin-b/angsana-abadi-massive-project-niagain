@@ -37,7 +37,7 @@ const AddService = () => {
         name: "",
         price: "",
         service_description: "",
-        status: "Aktif",        
+        status: "Active",        
         service_variation: "",
         // image_link:""
     });
