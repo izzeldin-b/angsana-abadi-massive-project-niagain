@@ -45,7 +45,7 @@
     FIREBASE_UNIVERSE_DOMAIN=""
 
 4. Create a .env file inside the root directory of the 'client' directory
-5. Enter the following contents inside that .env file and input your own Firebase credentials
+5. Enter the following contents inside that .env file and input your own Firebase credentials and also link to API being used
 
      VITE_FIREBASE_API_KEY=""
 
@@ -58,6 +58,8 @@
      VITE_FIREBASE_MESSAGING_SENDER_ID=""
 
      VITE_FIREBASE_APP_ID=""
+
+     VITE_API_URL=""
     
-6. Run "npm run dev" on both 'server' and 'client' root directories
-7. Open the localhost port used and use the platform
+7. Run "npm run dev" on both 'server' and 'client' root directories
+8. Open the localhost port used and use the platform
