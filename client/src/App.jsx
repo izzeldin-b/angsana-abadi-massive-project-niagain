@@ -163,6 +163,7 @@ function ProtectedRoute({ children, allowedRoles }) {
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/address" element={<ProtectedRoute><Address /></ProtectedRoute>} />
           <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
+          <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
 
           {/* Protected Routes (Student Users Only) */}
           <Route 
@@ -188,10 +189,6 @@ function ProtectedRoute({ children, allowedRoles }) {
           <Route 
             path="/addservice" 
             element={<ProtectedRoute allowedRoles={['student']}><AddService /></ProtectedRoute>} 
-          />
-          <Route 
-            path="/payment" 
-            element={<ProtectedRoute allowedRoles={['student']}><Payment/></ProtectedRoute>} 
           />
 
           {/* <Route path="*" element={<Navigate to={isLoggedIn ? '/' : '/signin'} />} /> */}
