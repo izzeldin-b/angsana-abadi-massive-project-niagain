@@ -72,8 +72,8 @@ const port = process.env.PORT || 5000;
 const db = mysql.createConnection({
     host: "localhost",    
     user: process.env.DB_USER || "root",
-    password: "ZPNg#120703",
-    database: "ecommerce2",
+    password: "testing",
+    database: "ecommerce",
 });
 db.connect(err => {
     if (err) {
