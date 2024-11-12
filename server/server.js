@@ -70,10 +70,10 @@ app.use(express.static(path.join(__dirname, "public")));
 // Database Connection 
 const port = process.env.PORT || 5000; 
 const db = mysql.createConnection({
-    host: process.env.DB_HOST,    
+    host: "localhost",    
     user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_DATABASE || "ecommerce",
+    password: "ZPNg#120703",
+    database: "ecommerce2",
 });
 db.connect(err => {
     if (err) {
